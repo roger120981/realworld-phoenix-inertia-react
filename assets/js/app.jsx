@@ -7,6 +7,9 @@ import { createRoot } from "react-dom/client";
 axios.defaults.xsrfHeaderName = "x-csrf-token";
 
 createInertiaApp({
+  progress: {
+    showSpinner: true,
+  },
   resolve: async (name) => {
     return await import(`./pages/${name}.tsx`);
   },

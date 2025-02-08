@@ -44,7 +44,7 @@ defmodule ConduitWeb.Router do
   scope "/user", ConduitWeb do
     pipe_through [:browser, :authenticated]
     get "/", UserProfileController, :show
-    get "/:id/", UserProfileController, :show
+    get "/:id/profile", UserProfileController, :show
     post "/:id/profile", UserProfileController, :update
   end
 

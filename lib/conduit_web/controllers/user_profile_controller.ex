@@ -26,7 +26,7 @@ defmodule ConduitWeb.UserProfileController do
 
   def show(conn, _params) do
     id = conn.assigns.current_user.id
-    redirect(conn, to: ~p"/user/#{id}")
+    redirect(conn, to: ~p"/user/#{id}/profile")
   end
 
   def update(conn, params) do
@@ -36,7 +36,8 @@ defmodule ConduitWeb.UserProfileController do
       {:ok, user} ->
         conn
         |> assign_prop(:user, user_props(user))
-        |> redirect(to: ~p"/user")
+        |> assign_prop(:success_message, "User profile updated successfully")
+        |> render_inertia("UserProfilePage")
 
       {:error, errors} ->
         conn

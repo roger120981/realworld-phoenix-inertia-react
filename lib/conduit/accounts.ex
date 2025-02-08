@@ -8,7 +8,6 @@ defmodule Conduit.Accounts do
     resource Conduit.Accounts.Token
 
     resource Conduit.Accounts.User do
-      define :update_user_profile, action: :update_profile
       define :get_user_by_id, action: :read, get_by: :id
     end
   end
@@ -32,6 +31,12 @@ defmodule Conduit.Accounts do
 
   def request_password_reset(params) do
     action(Conduit.Accounts.User, :request_password_reset_token, params, authorize?: false)
+  end
+
+  def update_user_profile(params, opts) do
+    with {:ok, user} <- Conduit.Accounts.get_user_by_id(params["id"], opts) do
+      action(user, :update_profile, params, opts)
+    end
   end
 
   defp action(resource, action, params, opts) do

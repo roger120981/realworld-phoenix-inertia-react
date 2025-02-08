@@ -3,6 +3,7 @@ import { Camera, Mail, Lock, User, MapPin, Phone, Loader2 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/card";
 import { Alert, AlertDescription } from "@/components/alert";
 import { useForm } from "@inertiajs/react";
+import { sha256 } from "js-sha256";
 
 interface User {
   id: string;
@@ -16,9 +17,21 @@ interface Props {
   success_message: string;
 }
 
+function getGravatarURL(email: string) {
+  // Trim leading and trailing whitespace from
+  // an email address and force all characters
+  // to lower case
+  const address = email.trim().toLowerCase();
+
+  // Create a SHA256 hash of the final string
+  const hash = sha256(address);
+
+  // Grab the actual image URL
+  return `https://www.gravatar.com/avatar/${hash}`;
+}
+
 const UserProfile = ({ user, success_message }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [error, setError] = useState("");
 
   const {
     data: formData,
@@ -26,6 +39,7 @@ const UserProfile = ({ user, success_message }: Props) => {
     post,
     processing,
     errors,
+    recentlySuccessful,
   } = useForm({
     first_name: user.first_name,
     last_name: user.last_name,
@@ -36,6 +50,7 @@ const UserProfile = ({ user, success_message }: Props) => {
     avatarUrl: "",
   });
 
+  const error = errors?.error;
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -46,8 +61,12 @@ const UserProfile = ({ user, success_message }: Props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    post(`/user/${user.id}/profile`);
-    setIsEditing(false);
+    post(`/user/${user.id}/profile`, {
+      data: formData,
+      onSuccess: (e) => {
+        setIsEditing(false);
+      },
+    });
   };
 
   return (
@@ -60,7 +79,7 @@ const UserProfile = ({ user, success_message }: Props) => {
             <div className="relative flex flex-col items-center">
               <div className="mt-24 sm:mt-32 relative">
                 <img
-                  src={formData.avatarUrl}
+                  src={formData.avatarUrl || getGravatarURL(formData.email)}
                   alt="Profile"
                   className="h-32 w-32 rounded-full border-4 border-white"
                 />
@@ -85,7 +104,7 @@ const UserProfile = ({ user, success_message }: Props) => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
-              {success_message && (
+              {recentlySuccessful && success_message && (
                 <Alert className="bg-green-50 text-green-700 border-green-200">
                   <AlertDescription>{success_message}</AlertDescription>
                 </Alert>

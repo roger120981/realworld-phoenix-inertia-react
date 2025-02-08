@@ -6,8 +6,6 @@ defmodule ConduitWeb.AuthPlug do
   end
 
   def call(conn, opts) do
-    dbg(conn.assigns)
-
     case Keyword.get(opts, :mode, :user_required) do
       :user_required ->
         if !conn.assigns[:current_user],
