@@ -33,6 +33,7 @@ defmodule Conduit.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:faker, "~> 0.18"},
       {:inertia, "~> 2.0"},
       {:bcrypt_elixir, "~> 3.0"},
       {:picosat_elixir, "~> 0.2"},

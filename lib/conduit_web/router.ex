@@ -36,8 +36,8 @@ defmodule ConduitWeb.Router do
     get "/sign-out", AuthController, :sign_out
     get "/register", RegistrationController, :index
     post "/register", RegistrationController, :register
-    get "forgot-password", ForgotPasswordController, :index
-    post "forgot-password", ForgotPasswordController, :forgot_password
+    get "/forgot-password", ForgotPasswordController, :index
+    post "/forgot-password", ForgotPasswordController, :forgot_password
     get "/password-reset/:token", AuthController, :password_reset
   end
 
@@ -46,6 +46,12 @@ defmodule ConduitWeb.Router do
     get "/", UserProfileController, :show
     get "/:id/profile", UserProfileController, :show
     post "/:id/profile", UserProfileController, :update
+  end
+
+  scope "/vehicle-details", ConduitWeb do
+    pipe_through [:browser]
+    get "/", VehicleDetailsController, :index
+    post "/", VehicleDetailsController, :update
   end
 
   # Other scopes may use custom stacks.
