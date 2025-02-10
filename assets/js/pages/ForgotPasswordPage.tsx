@@ -23,7 +23,6 @@ const ForgotPasswordForm = ({ success }) => {
   });
 
   const email = formData.email;
-  const error = errors.error;
 
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
@@ -73,13 +72,6 @@ const ForgotPasswordForm = ({ success }) => {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
-            {error && (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-
             <div>
               <label
                 htmlFor="email"

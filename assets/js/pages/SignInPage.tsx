@@ -44,13 +44,6 @@ const SignInForm = () => {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
-            {errors.submit && (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>{errors.submit}</AlertDescription>
-              </Alert>
-            )}
-
             <div>
               <label
                 htmlFor="email"

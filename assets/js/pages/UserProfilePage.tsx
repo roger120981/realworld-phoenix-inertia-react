@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Camera, Mail, Lock, User, MapPin, Phone, Loader2 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/card";
 import { Alert, AlertDescription } from "@/components/alert";
-import { useForm } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 import { sha256 } from "js-sha256";
 
 interface User {
@@ -40,6 +40,8 @@ const UserProfile = ({ user, success_message }: Props) => {
     processing,
     errors,
     recentlySuccessful,
+    reset,
+    clearErrors,
   } = useForm({
     first_name: user.first_name,
     last_name: user.last_name,
@@ -50,7 +52,6 @@ const UserProfile = ({ user, success_message }: Props) => {
     avatarUrl: "",
   });
 
-  const error = errors?.error;
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -109,12 +110,6 @@ const UserProfile = ({ user, success_message }: Props) => {
                 </Alert>
               )}
 
-              {error && (
-                <Alert variant="destructive">
-                  <AlertDescription>{error}</AlertDescription>
-                </Alert>
-              )}
-
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
@@ -133,6 +128,11 @@ const UserProfile = ({ user, success_message }: Props) => {
                       className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                     />
                   </div>
+                  {errors.first_name && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.first_name}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -152,6 +152,11 @@ const UserProfile = ({ user, success_message }: Props) => {
                       className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                     />
                   </div>
+                  {errors.last_name && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.last_name}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -241,7 +246,11 @@ const UserProfile = ({ user, success_message }: Props) => {
                   <>
                     <button
                       type="button"
-                      onClick={() => setIsEditing(false)}
+                      onClick={() => {
+                        setIsEditing(false);
+                        reset();
+                        clearErrors();
+                      }}
                       className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                       Cancel
