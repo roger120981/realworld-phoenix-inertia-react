@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["ES2020.Promise", "DOM"],
+    "lib": ["ES2020", "DOM"],
     "jsx": "react",
     "baseUrl": ".",
     "paths": {

@@ -41,7 +41,7 @@ defmodule ConduitWeb.CompareProductsController do
     }
   ]
 
-  def index(conn, params) do
+  def index(conn, _params) do
     conn
     |> assign_prop(:products, @products)
     |> render_inertia("CompareProductsPage")

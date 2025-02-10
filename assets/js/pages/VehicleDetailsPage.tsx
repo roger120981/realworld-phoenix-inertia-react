@@ -4,6 +4,12 @@ import { Loader2 } from "lucide-react";
 import { useForm, router } from "@inertiajs/react";
 
 interface Props {
+  year?: number;
+  make?: string;
+  model?: string;
+  trim?: string;
+  exterior_color?: string;
+  mileage?: number;
   years: number[];
   makes: string[];
   models: string[];
@@ -67,13 +73,13 @@ const VehicleDetailsForm = (props: Props) => {
     setData: setFormData,
     post,
     processing,
-  } = useForm("VehicleDetails", {
-    year: "",
-    make: "",
-    model: "",
-    trim: "",
-    exterior_color: "",
-    mileage: 0,
+  } = useForm({
+    year: props.year || "",
+    make: props.make || "",
+    model: props.model || "",
+    trim: props.trim || "",
+    exterior_color: props.exterior_color || "",
+    mileage: props.mileage || 0,
   });
 
   const handleChange = (e) => {
@@ -92,12 +98,12 @@ const VehicleDetailsForm = (props: Props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    post("/vehicle-details", formData);
+    post("/vehicle-details");
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <Card className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
+      <Card className="max-w-6xl mx-auto  bg-gray-50">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center">
             Vehicle Details
@@ -123,7 +129,7 @@ const VehicleDetailsForm = (props: Props) => {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 >
                   <option value="">Select Year</option>
-                  {props.years?.map((year) => (
+                  {props.years.map((year) => (
                     <option key={year} value={year}>
                       {year}
                     </option>

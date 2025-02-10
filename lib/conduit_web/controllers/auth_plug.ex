@@ -14,7 +14,10 @@ defmodule ConduitWeb.AuthPlug do
     case Keyword.get(opts, :mode, :user_required) do
       :user_required ->
         if !conn.assigns[:current_user],
-          do: conn |> Phoenix.Controller.redirect(to: Keyword.get(opts, :to, ~p"/sign-in")),
+          do:
+            conn
+            |> Phoenix.Controller.redirect(to: Keyword.get(opts, :to, ~p"/sign-in"))
+            |> Plug.Conn.halt(),
           else: conn |> assign_user_prop()
 
       :user_optional ->
@@ -23,12 +26,14 @@ defmodule ConduitWeb.AuthPlug do
           else: Plug.Conn.assign(conn, :current_user, nil)
 
       :no_user ->
-        if conn.assigns[:current_user],
+        if(conn.assigns[:current_user],
           do:
             conn
             |> assign_user_prop()
-            |> Phoenix.Controller.redirect(to: Keyword.get(opts, :to, ~p"/")),
+            |> Phoenix.Controller.redirect(to: Keyword.get(opts, :to, ~p"/"))
+            |> Plug.Conn.halt(),
           else: conn
+        )
     end
   end
 

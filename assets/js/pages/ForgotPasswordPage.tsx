@@ -27,7 +27,7 @@ const ForgotPasswordForm = ({ success }) => {
 
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
-    post("forgot-password", formData);
+    post("forgot-password");
   };
 
   if (success) {
@@ -60,8 +60,8 @@ const ForgotPasswordForm = ({ success }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen bg-white flex justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <Card className="w-full max-w-md h-[350px] bg-gray-50">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">
             Reset your password

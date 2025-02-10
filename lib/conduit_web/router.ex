@@ -1,5 +1,4 @@
 defmodule ConduitWeb.Router do
-  alias ConduitWeb.AuthController
   use ConduitWeb, :router
 
   import AshAuthentication.Phoenix.Router, only: [auth_routes: 3]

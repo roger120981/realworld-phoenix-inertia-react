@@ -33,12 +33,12 @@ const SignInForm = () => {
 
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
-    post("/sign-in", formData);
+    post("/sign-in");
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen bg-white flex justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <Card className="w-full max-w-md h-[450px] bg-gray-50">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
         </CardHeader>

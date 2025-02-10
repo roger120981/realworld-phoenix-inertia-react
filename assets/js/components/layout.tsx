@@ -35,6 +35,12 @@ export default function Layout({ children }) {
             {user ? (
               <div className="flex space-x-4">
                 <Link
+                  href="/user"
+                  className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Profile
+                </Link>
+                <Link
                   href="/sign-out"
                   className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium inline-flex items-center"
                 >

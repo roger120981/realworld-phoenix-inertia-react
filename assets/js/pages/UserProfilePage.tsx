@@ -62,7 +62,6 @@ const UserProfile = ({ user, success_message }: Props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     post(`/user/${user.id}/profile`, {
-      data: formData,
       onSuccess: (e) => {
         setIsEditing(false);
       },

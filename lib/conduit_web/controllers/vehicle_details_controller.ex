@@ -113,20 +113,21 @@ defmodule ConduitWeb.VehicleDetailsController do
   end
 
   def params_to_props(conn, params) do
-    year = params["year"] || ""
-    make = params["make"] || ""
-    model = params["model"] || ""
-    trim = params["trim"] || ""
-    exterior_color = params["exterior_color"] || ""
-    mileage = params["mileage"] || 0
+    session_vehicle = get_session(conn, :vehicle_details) |> dbg()
+    year = params["year"] || session_vehicle["year"] || ""
+    make = params["make"] || session_vehicle["make"] || ""
+    model = params["model"] || session_vehicle["model"] || ""
+    trim = params["trim"] || session_vehicle["trim"] || ""
+    exterior_color = params["exterior_color"] || session_vehicle["exterior_color"] || ""
+    mileage = params["mileage"] || session_vehicle["mileage"] || 0
 
     conn
     |> assign_prop(:years, fn -> years_prop() end)
-    |> assign_prop(:makes, fn -> makes_prop(params["year"]) end)
-    |> assign_prop(:models, fn -> models_prop(params["year"], params["make"]) end)
-    |> assign_prop(:trims, fn -> trims_prop(params["year"], params["make"], params["model"]) end)
+    |> assign_prop(:makes, fn -> makes_prop(year) end)
+    |> assign_prop(:models, fn -> models_prop(year, make) end)
+    |> assign_prop(:trims, fn -> trims_prop(year, make, model) end)
     |> assign_prop(:exterior_colors, fn ->
-      colors_prop(params["year"], params["make"], params["model"])
+      colors_prop(year, make, model)
     end)
     |> assign_prop(:year, year)
     |> assign_prop(:make, make)
@@ -148,6 +149,7 @@ defmodule ConduitWeb.VehicleDetailsController do
     |> case do
       {:ok, _} ->
         conn
+        |> put_session(:vehicle_details, params)
         |> put_flash(:success, "We've found products for you!")
         |> redirect(to: "/compare-products")
 

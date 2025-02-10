@@ -37,12 +37,12 @@ const RegistrationPage = () => {
 
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
-    post("/register", formData);
+    post("/register");
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen bg-white flex justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <Card className="w-full max-w-md h-[600px] bg-gray-50">
         <CardHeader>
           <CardTitle className="text-center text-2xl font-bold">
             Create an Account
