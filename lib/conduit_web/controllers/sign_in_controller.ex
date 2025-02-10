@@ -13,7 +13,7 @@ defmodule ConduitWeb.SignInController do
       {:ok, user} ->
         conn
         |> AshAuthentication.Phoenix.Plug.store_in_session(user)
-        |> redirect(to: ~p"/")
+        |> redirect(to: ~p"/vehicle-details")
 
       {:error, errors} ->
         conn

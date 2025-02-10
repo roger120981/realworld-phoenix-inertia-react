@@ -1,26 +1,15 @@
 import React from "react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-} from "@/components/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/card";
 import { Loader2 } from "lucide-react";
 import { useForm, router } from "@inertiajs/react";
 
 interface Props {
   years: number[];
-  year?: number;
   makes: string[];
-  make?: string;
   models: string[];
-  model?: string;
   trims: string[];
-  trim?: string;
   exterior_colors: string[];
-  exterior_color?: string;
-  mileage?: number;
+  errors: any;
 }
 
 const dependantFields = {
@@ -37,16 +26,19 @@ const dependantFields = {
   model: {
     reloadData: ["year", "make"],
     reloadOnly: ["trims", "exterior_colors"],
-    clearOnChange: ["trim", "exteriorColor"],
+    clearOnChange: ["trim", "exterior_color"],
   },
 };
 
 const resetDependants = (field: string) => {
   if (field in dependantFields) {
-    return dependantFields[field].clearOnChange.reduce((acc, x) => ({
-      ...acc,
-      [x]: "",
-    }));
+    return dependantFields[field].clearOnChange.reduce(
+      (acc, x) => ({
+        ...acc,
+        [x]: "",
+      }),
+      {}
+    );
   } else {
     return {};
   }
@@ -76,12 +68,12 @@ const VehicleDetailsForm = (props: Props) => {
     post,
     processing,
   } = useForm("VehicleDetails", {
-    year: props.year,
-    make: props.make,
-    model: props.model,
-    trim: props.trim,
-    mileage: props.mileage,
-    exterior_color: props.exterior_color,
+    year: "",
+    make: "",
+    model: "",
+    trim: "",
+    exterior_color: "",
+    mileage: 0,
   });
 
   const handleChange = (e) => {
@@ -137,6 +129,11 @@ const VehicleDetailsForm = (props: Props) => {
                     </option>
                   ))}
                 </select>
+                {props.errors.year && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {props.errors.year}
+                  </p>
+                )}
               </div>
 
               {/* Make Select */}
@@ -162,6 +159,11 @@ const VehicleDetailsForm = (props: Props) => {
                     </option>
                   ))}
                 </select>
+                {props.errors.make && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {props.errors.make}
+                  </p>
+                )}
               </div>
 
               {/* Model Select */}
@@ -187,6 +189,11 @@ const VehicleDetailsForm = (props: Props) => {
                     </option>
                   ))}
                 </select>
+                {props.errors.model && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {props.errors.model}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -215,6 +222,11 @@ const VehicleDetailsForm = (props: Props) => {
                     </option>
                   ))}
                 </select>
+                {props.errors.trim && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {props.errors.trim}
+                  </p>
+                )}
               </div>
 
               {/* Color Select */}
@@ -240,6 +252,11 @@ const VehicleDetailsForm = (props: Props) => {
                     </option>
                   ))}
                 </select>
+                {props.errors.exterior_color && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {props.errors.exterior_color}
+                  </p>
+                )}
               </div>
 
               {/* Mileage Input */}
@@ -260,6 +277,11 @@ const VehicleDetailsForm = (props: Props) => {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                   min="0"
                 />
+                {props.errors.mileage && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {props.errors.mileage}
+                  </p>
+                )}
               </div>
             </div>
 

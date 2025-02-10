@@ -1,4 +1,5 @@
 defmodule ConduitWeb.Router do
+  alias ConduitWeb.AuthController
   use ConduitWeb, :router
 
   import AshAuthentication.Phoenix.Router, only: [auth_routes: 3]
@@ -20,6 +21,14 @@ defmodule ConduitWeb.Router do
     plug ConduitWeb.AuthPlug, :user_required
   end
 
+  pipeline :unauthenticated do
+    plug ConduitWeb.AuthPlug, [:no_user, "/vehicle-details"]
+  end
+
+  pipeline :auth_optional do
+    plug ConduitWeb.AuthPlug, :user_optional
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
     plug :load_from_bearer
@@ -27,31 +36,40 @@ defmodule ConduitWeb.Router do
   end
 
   scope "/", ConduitWeb do
-    pipe_through :browser
-
+    pipe_through [:browser, :auth_optional]
     get "/", PageController, :home
+    get "/password-reset/:token", AuthController, :password_reset
     auth_routes AuthController, Conduit.Accounts.User, path: "/auth"
-    get "/sign-in", SignInController, :index
-    post "/sign-in", SignInController, :sign_in
-    get "/sign-out", AuthController, :sign_out
+  end
+
+  scope "/", ConduitWeb do
+    pipe_through [:browser, :unauthenticated]
     get "/register", RegistrationController, :index
     post "/register", RegistrationController, :register
+    get "/sign-in", SignInController, :index
+    post "/sign-in", SignInController, :sign_in
     get "/forgot-password", ForgotPasswordController, :index
     post "/forgot-password", ForgotPasswordController, :forgot_password
-    get "/password-reset/:token", AuthController, :password_reset
   end
 
-  scope "/user", ConduitWeb do
+  scope "/", ConduitWeb do
     pipe_through [:browser, :authenticated]
-    get "/", UserProfileController, :show
-    get "/:id/profile", UserProfileController, :show
-    post "/:id/profile", UserProfileController, :update
-  end
+    get "/sign-out", AuthController, :sign_out
 
-  scope "/vehicle-details", ConduitWeb do
-    pipe_through [:browser]
-    get "/", VehicleDetailsController, :index
-    post "/", VehicleDetailsController, :update
+    scope "/user" do
+      get "/", UserProfileController, :show
+      get "/:id/profile", UserProfileController, :show
+      post "/:id/profile", UserProfileController, :update
+    end
+
+    scope "/vehicle-details" do
+      get "/", VehicleDetailsController, :index
+      post "/", VehicleDetailsController, :update
+    end
+
+    scope "/compare-products" do
+      get "/", CompareProductsController, :index
+    end
   end
 
   # Other scopes may use custom stacks.

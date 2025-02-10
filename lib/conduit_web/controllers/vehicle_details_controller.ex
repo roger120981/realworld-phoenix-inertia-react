@@ -113,30 +113,27 @@ defmodule ConduitWeb.VehicleDetailsController do
   end
 
   def params_to_props(conn, params) do
-    years_prop = years_prop()
-    makes_prop = makes_prop(params["year"])
-    models_prop = models_prop(params["year"], params["make"])
-    trims_prop = trims_prop(params["year"], params["make"], params["model"])
-    exterior_colors_prop = colors_prop(params["year"], params["make"], params["model"])
-    year = (params["year"] in years_prop && params["year"]) || ""
-    make = (params["make"] in makes_prop && params["make"]) || ""
-    model = (params["model"] in models_prop && params["model"]) || ""
-    trim = (params["trim"] in trims_prop && params["trim"]) || ""
-
-    exterior_color =
-      (params["exterior_color"] in exterior_colors_prop && params["exterior_color"]) || ""
+    year = params["year"] || ""
+    make = params["make"] || ""
+    model = params["model"] || ""
+    trim = params["trim"] || ""
+    exterior_color = params["exterior_color"] || ""
+    mileage = params["mileage"] || 0
 
     conn
-    |> assign_prop(:years, years_prop)
-    |> assign_prop(:makes, makes_prop)
-    |> assign_prop(:models, models_prop)
-    |> assign_prop(:trims, trims_prop)
-    |> assign_prop(:exterior_colors, exterior_colors_prop)
+    |> assign_prop(:years, fn -> years_prop() end)
+    |> assign_prop(:makes, fn -> makes_prop(params["year"]) end)
+    |> assign_prop(:models, fn -> models_prop(params["year"], params["make"]) end)
+    |> assign_prop(:trims, fn -> trims_prop(params["year"], params["make"], params["model"]) end)
+    |> assign_prop(:exterior_colors, fn ->
+      colors_prop(params["year"], params["make"], params["model"])
+    end)
     |> assign_prop(:year, year)
     |> assign_prop(:make, make)
     |> assign_prop(:model, model)
     |> assign_prop(:trim, trim)
     |> assign_prop(:exterior_color, exterior_color)
+    |> assign_prop(:mileage, mileage)
   end
 
   def index(conn, params) do
@@ -150,7 +147,9 @@ defmodule ConduitWeb.VehicleDetailsController do
     |> AshPhoenix.Form.submit(params: params)
     |> case do
       {:ok, _} ->
-        conn |> put_flash(:info, "Updated Successfully") |> redirect(to: "/")
+        conn
+        |> put_flash(:success, "We've found products for you!")
+        |> redirect(to: "/compare-products")
 
       {:error, form} ->
         conn

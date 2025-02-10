@@ -34,4 +34,10 @@ defmodule Conduit.Vehicles.VehicleDetails do
       public? true
     end
   end
+
+  validations do
+    validate compare(:mileage, greater_than_or_equal_to: 0) do
+      message "must be greater than 0"
+    end
+  end
 end
