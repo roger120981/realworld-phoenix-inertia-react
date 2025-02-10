@@ -1,13 +1,28 @@
 import React from "react";
 import { usePage, Link } from "@inertiajs/react";
+import { PageProps } from "@inertiajs/core";
 import { ArrowRight, Shield } from "lucide-react";
 
 import FlashMessage from "./flash_message";
 
+interface CommonPageProps extends PageProps {
+  user?: {
+    id: string;
+    first_name: string;
+    last_name: string;
+  };
+  flash: {
+    info?: string;
+    success?: string;
+    warning?: string;
+    error?: string;
+  };
+}
+
 export default function Layout({ children }) {
-  const page = usePage();
-  const flash: any = page.props.flash;
-  const user: any = page.props.user;
+  const page = usePage<CommonPageProps>();
+  const flash = page.props.flash;
+  const user = page.props.user;
 
   return (
     <div className="min-h-screen w-full bg-gray-50">

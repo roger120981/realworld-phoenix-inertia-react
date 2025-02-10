@@ -9,8 +9,7 @@ import {
 } from "lucide-react";
 import { Link } from "@inertiajs/react";
 
-const HomePage = ({ user }) => {
-  console.log(user);
+const HomePage = () => {
   return (
     <>
       {/* Hero Section */}
