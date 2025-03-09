@@ -41,20 +41,20 @@ config :spark,
     "Ash.Domain": [section_order: [:resources, :policies, :authorization, :domain, :execution]]
   ]
 
-config :conduit,
-  ecto_repos: [Conduit.Repo],
+config :realworld,
+  ecto_repos: [Realworld.Repo],
   generators: [timestamp_type: :utc_datetime],
-  ash_domains: [Conduit.Accounts]
+  ash_domains: [Realworld.Accounts]
 
 # Configures the endpoint
-config :conduit, ConduitWeb.Endpoint,
+config :realworld, RealworldWeb.Endpoint,
   url: [host: "localhost"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
-    formats: [html: ConduitWeb.ErrorHTML, json: ConduitWeb.ErrorJSON],
+    formats: [html: RealworldWeb.ErrorHTML, json: RealworldWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: Conduit.PubSub,
+  pubsub_server: Realworld.PubSub,
   live_view: [signing_salt: "Os4aVt9a"]
 
 # Configures the mailer
@@ -64,13 +64,13 @@ config :conduit, ConduitWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :conduit, Conduit.Mailer, adapter: Swoosh.Adapters.Local
+config :realworld, Realworld.Mailer, adapter: Swoosh.Adapters.Local
 
 config :inertia,
   # The Phoenix Endpoint module for your application. This is used for building
   # asset URLs to compute a unique version hash to track when something has
   # changed (and a reload is required on the frontend).
-  endpoint: ConduitWeb.Endpoint,
+  endpoint: RealworldWeb.Endpoint,
 
   # An optional list of static file paths to track for changes. You'll generally
   # want to include any JavaScript assets that may require a page refresh when
@@ -106,7 +106,7 @@ config :inertia,
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.21.5",
-  conduit: [
+  realworld: [
     args:
       ~w(js/app.jsx --bundle --chunk-names=chunks/[name]-[hash] --splitting --format=esm --target=es2020 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
@@ -116,7 +116,7 @@ config :esbuild,
 # Configure tailwind (the version is required)
 config :tailwind,
   version: "3.4.3",
-  conduit: [
+  realworld: [
     args: ~w(
       --config=tailwind.config.js
       --input=css/app.css

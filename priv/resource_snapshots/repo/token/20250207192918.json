@@ -99,7 +99,7 @@
     "attribute": null,
     "strategy": null
   },
-  "repo": "Elixir.Conduit.Repo",
+  "repo": "Elixir.Realworld.Repo",
   "base_filter": null,
   "custom_indexes": [],
   "custom_statements": [],

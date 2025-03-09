@@ -1,4 +1,4 @@
-defmodule Conduit.Repo.Migrations.MigrateResources1 do
+defmodule Realworld.Repo.Migrations.CreateAuthTables do
   @moduledoc """
   Updates resources based on their most recent snapshots.
 

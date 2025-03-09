@@ -66,9 +66,7 @@
   "identities": [
     {
       "name": "unique_email",
-      "keys": [
-        "email"
-      ],
+      "keys": ["email"],
       "base_filter": null,
       "index_name": "user_unique_email_index"
     }
@@ -78,7 +76,7 @@
     "attribute": null,
     "strategy": null
   },
-  "repo": "Elixir.Conduit.Repo",
+  "repo": "Elixir.Realworld.Repo",
   "base_filter": null,
   "custom_indexes": [],
   "custom_statements": [],

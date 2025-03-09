@@ -1,11 +1,11 @@
 import Config
 
 # Configure your database
-config :conduit, Conduit.Repo,
+config :realworld, Realworld.Repo,
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
-  database: "conduit_dev",
+  database: "realworld_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
@@ -17,7 +17,7 @@ config :conduit, Conduit.Repo,
 # watchers to your application. For example, we can use it
 # to bundle .js and .css sources.
 # Binding to loopback ipv4 address prevents access from other machines.
-config :conduit, ConduitWeb.Endpoint,
+config :realworld, RealworldWeb.Endpoint,
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
   http: [ip: {127, 0, 0, 1}, port: 4000],
   check_origin: false,
@@ -25,8 +25,8 @@ config :conduit, ConduitWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "4Xw8u/m0UPBWsBf2oNH8V6v0y8zxPoqyw9OZ9cSAW+EGcq2z3va4Iyj8TicVzDIM",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:conduit, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:conduit, ~w(--watch)]}
+    esbuild: {Esbuild, :install_and_run, [:realworld, ~w(--sourcemap=inline --watch)]},
+    tailwind: {Tailwind, :install_and_run, [:realworld, ~w(--watch)]}
   ]
 
 # ## SSL Support
@@ -53,17 +53,17 @@ config :conduit, ConduitWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :conduit, ConduitWeb.Endpoint,
+config :realworld, RealworldWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/(?!uploads/).*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/conduit_web/(controllers|live|components)/.*(ex|heex)$"
+      ~r"lib/realworld_web/(controllers|live|components)/.*(ex|heex)$"
     ]
   ]
 
 # Enable dev routes for dashboard and mailbox
-config :conduit, dev_routes: true, token_signing_secret: "1hR9OZ1qQDwAzd3L06xFkftoAGMxddpu"
+config :realworld, dev_routes: true, token_signing_secret: "1hR9OZ1qQDwAzd3L06xFkftoAGMxddpu"
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"

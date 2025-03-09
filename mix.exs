@@ -1,9 +1,9 @@
-defmodule Conduit.MixProject do
+defmodule Realworld.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :conduit,
+      app: :realworld,
       version: "0.1.0",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -19,7 +19,7 @@ defmodule Conduit.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Conduit.Application, []},
+      mod: {Realworld.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -87,10 +87,10 @@ defmodule Conduit.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ash.setup --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind conduit", "esbuild conduit"],
+      "assets.build": ["tailwind realworld", "esbuild realworld"],
       "assets.deploy": [
-        "tailwind conduit --minify",
-        "esbuild conduit --minify",
+        "tailwind realworld --minify",
+        "esbuild realworld --minify",
         "phx.digest"
       ],
       "ash.setup": ["ash.setup", "run priv/repo/seeds.exs"]
