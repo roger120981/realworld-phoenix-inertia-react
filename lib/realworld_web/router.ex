@@ -1,7 +1,9 @@
 defmodule RealworldWeb.Router do
   use RealworldWeb, :router
 
-  import AshAuthentication.Phoenix.Router, only: [auth_routes: 3]
+  import AshAuthentication.Phoenix.Router,
+    only: [auth_routes: 3, sign_out_route: 1, reset_route: 1]
+
   import AshAuthentication.Phoenix.Plug, only: [load_from_bearer: 2, load_from_session: 2]
   import AshAuthentication.Plug.Helpers, only: [set_actor: 2]
 
@@ -45,8 +47,8 @@ defmodule RealworldWeb.Router do
     pipe_through [:browser, :unauthenticated]
     get "/register", RegistrationController, :index
     post "/register", RegistrationController, :register
-    get "/sign-in", SignInController, :index
-    post "/sign-in", SignInController, :sign_in
+    get "/login", LoginController, :index
+    post "/login", LoginController, :login
     get "/forgot-password", ForgotPasswordController, :index
     post "/forgot-password", ForgotPasswordController, :forgot_password
   end

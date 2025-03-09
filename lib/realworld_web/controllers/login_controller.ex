@@ -1,12 +1,12 @@
-defmodule RealworldWeb.SignInController do
+defmodule RealworldWeb.LoginController do
   use RealworldWeb, :controller
 
   def index(conn, _params) do
     conn
-    |> render_inertia("SignInPage")
+    |> render_inertia("Login")
   end
 
-  def sign_in(conn, params) do
+  def login(conn, params) do
     params = Map.take(params, ["email", "password"])
 
     case Realworld.Accounts.sign_in(params) do

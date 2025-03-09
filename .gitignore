@@ -36,5 +36,5 @@ npm-debug.log
 /assets/node_modules/
 
 # database files
-*-shm
-*-wal
+realworld_dev
+realworld_dev-*
