@@ -94,9 +94,8 @@ defmodule Realworld.Accounts.Token do
       authorize_if always()
     end
 
-    policy always() do
-      description "No one aside from AshAuthentication can interact with the tokens resource."
-      forbid_if always()
+    policy action(:revoke_token) do
+      authorize_if actor_present()
     end
   end
 end

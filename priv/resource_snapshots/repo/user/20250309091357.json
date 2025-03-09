@@ -4,10 +4,10 @@
       "default": "nil",
       "size": null,
       "type": "utc_datetime_usec",
-      "source": "created_at",
+      "source": "confirmed_at",
       "references": null,
-      "allow_nil?": false,
       "primary_key?": false,
+      "allow_nil?": true,
       "generated?": false
     },
     {
@@ -16,68 +16,68 @@
       "type": "uuid",
       "source": "id",
       "references": null,
-      "allow_nil?": false,
       "primary_key?": true,
+      "allow_nil?": false,
+      "generated?": false
+    },
+    {
+      "default": "nil",
+      "size": null,
+      "type": "citext",
+      "source": "email",
+      "references": null,
+      "primary_key?": false,
+      "allow_nil?": false,
+      "generated?": false
+    },
+    {
+      "default": "nil",
+      "size": null,
+      "type": "citext",
+      "source": "username",
+      "references": null,
+      "primary_key?": false,
+      "allow_nil?": false,
       "generated?": false
     },
     {
       "default": "nil",
       "size": null,
       "type": "text",
-      "source": "jti",
+      "source": "hashed_password",
       "references": null,
+      "primary_key?": false,
       "allow_nil?": false,
-      "primary_key?": true,
       "generated?": false
     },
     {
       "default": "nil",
       "size": null,
       "type": "text",
-      "source": "subject",
+      "source": "bio",
       "references": null,
-      "allow_nil?": false,
       "primary_key?": false,
-      "generated?": false
-    },
-    {
-      "default": "nil",
-      "size": null,
-      "type": "utc_datetime",
-      "source": "expires_at",
-      "references": null,
-      "allow_nil?": false,
-      "primary_key?": false,
-      "generated?": false
-    },
-    {
-      "default": "nil",
-      "size": null,
-      "type": "text",
-      "source": "purpose",
-      "references": null,
-      "allow_nil?": false,
-      "primary_key?": false,
-      "generated?": false
-    },
-    {
-      "default": "nil",
-      "size": null,
-      "type": "map",
-      "source": "extra_data",
-      "references": null,
       "allow_nil?": true,
+      "generated?": false
+    },
+    {
+      "default": "nil",
+      "size": null,
+      "type": "text",
+      "source": "image",
+      "references": null,
       "primary_key?": false,
+      "allow_nil?": true,
       "generated?": false
     },
     {
       "default": "nil",
       "size": null,
       "type": "utc_datetime_usec",
-      "source": "inserted_at",
+      "source": "created_at",
       "references": null,
-      "allow_nil?": false,
       "primary_key?": false,
+      "allow_nil?": false,
       "generated?": false
     },
     {
@@ -86,14 +86,31 @@
       "type": "utc_datetime_usec",
       "source": "updated_at",
       "references": null,
-      "allow_nil?": false,
       "primary_key?": false,
+      "allow_nil?": false,
       "generated?": false
     }
   ],
-  "table": "token",
-  "hash": "369986C2E4C92A1A7906751AC9986BB0A2AE8EAF8838038EA05FFE3D8386AC28",
-  "identities": [],
+  "table": "user",
+  "hash": "18A4481233240E80B4A1D05F5A9480921E189D80417F4068F2226ECAB7882E14",
+  "identities": [
+    {
+      "name": "unique_email",
+      "keys": [
+        "email"
+      ],
+      "base_filter": null,
+      "index_name": "user_unique_email_index"
+    },
+    {
+      "name": "username",
+      "keys": [
+        "username"
+      ],
+      "base_filter": null,
+      "index_name": "user_username_index"
+    }
+  ],
   "multitenancy": {
     "global": null,
     "attribute": null,

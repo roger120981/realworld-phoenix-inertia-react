@@ -22,11 +22,11 @@ defmodule Realworld.Accounts.User.Senders.SendNewUserConfirmationEmail do
   end
 
   defp body(params) do
-    url = url(~p"/auth/user/confirm_new_user?#{[confirm: params[:token]]}")
+    """
+    Click this link to confirm your email:
 
     """
-    <p>Click this link to confirm your email:</p>
-    <p><a href="#{url}">#{url}</a></p>
-    """
+
+    # {url(~p"/auth/user/confirm_new_user?#{[confirm: params[:token]]}")}
   end
 end

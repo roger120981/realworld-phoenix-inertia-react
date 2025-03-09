@@ -3,28 +3,35 @@ defmodule Realworld.Accounts.User do
     otp_app: :realworld,
     domain: Realworld.Accounts,
     authorizers: [Ash.Policy.Authorizer],
-    extensions: [AshAuthentication],
+    extensions: [AshAuthentication, AshGraphql.Resource],
     data_layer: AshSqlite.DataLayer
+
+  require Ash.Query
 
   sqlite do
     table "user"
     repo Realworld.Repo
   end
 
+  field_policies do
+    field_policy [] do
+      authorize_if expr(id == ^actor(:id))
+    end
+
+    field_policy [:email, :username, :bio, :image] do
+      authorize_if always()
+    end
+  end
+
   attributes do
     uuid_primary_key :id
 
-    attribute :first_name, :string do
-      allow_nil? false
-      public? true
-    end
-
-    attribute :last_name, :string do
-      allow_nil? false
-      public? true
-    end
-
     attribute :email, :ci_string do
+      allow_nil? false
+      public? true
+    end
+
+    attribute :username, :ci_string do
       allow_nil? false
       public? true
     end
@@ -33,14 +40,38 @@ defmodule Realworld.Accounts.User do
       allow_nil? false
       sensitive? true
     end
+
+    attribute :bio, :string, public?: true
+
+    attribute :image, :string,
+      default: "https://api.realworld.io/images/smiley-cyrus.jpeg",
+      public?: true
+
+    create_timestamp :created_at
+    update_timestamp :updated_at
   end
 
   identities do
     identity :unique_email, [:email]
+    identity :username, [:username]
   end
 
   actions do
     defaults [:read]
+
+    read :current_user do
+      get? true
+
+      prepare fn
+        query, %{actor: nil} ->
+          query
+          |> Ash.Query.set_result([])
+
+        query, %{actor: %{id: id}} ->
+          query
+          |> Ash.Query.filter(id == ^id)
+      end
+    end
 
     read :get_by_subject do
       description "Get a user by the subject claim in a JWT"
@@ -91,10 +122,39 @@ defmodule Realworld.Accounts.User do
       end
     end
 
+    read :sign_in_with_token do
+      # In the generated sign in components, we validate the
+      # email and password directly in the LiveView
+      # and generate a short-lived token that can be used to sign in over
+      # a standard controller action, exchanging it for a standard token.
+      # This action performs that exchange. If you do not use the generated
+      # liveviews, you may remove this action, and set
+      # `sign_in_tokens_enabled? false` in the password strategy.
+
+      description "Attempt to sign in using a short-lived sign in token."
+      get? true
+
+      argument :token, :string do
+        description "The short-lived sign in token."
+        allow_nil? false
+        sensitive? true
+      end
+
+      # validates the provided sign in token and generates a token
+      prepare AshAuthentication.Strategy.Password.SignInWithTokenPreparation
+
+      metadata :token, :string do
+        description "A JWT that can be used to authenticate the user."
+        allow_nil? false
+      end
+    end
+
     create :register_with_password do
       description "Register a new user with a email and password."
 
-      accept [:first_name, :last_name]
+      argument :username, :ci_string do
+        allow_nil? false
+      end
 
       argument :email, :ci_string do
         allow_nil? false
@@ -115,6 +175,9 @@ defmodule Realworld.Accounts.User do
 
       # Sets the email from the argument
       change set_attribute(:email, arg(:email))
+
+      # Sets the username from the argument
+      change set_attribute(:username, arg(:username))
 
       # Hashes the provided password
       change AshAuthentication.Strategy.Password.HashPasswordChange
@@ -185,8 +248,16 @@ defmodule Realworld.Accounts.User do
       change AshAuthentication.GenerateTokenChange
     end
 
-    update :update_profile do
-      accept [:first_name, :last_name]
+    update :update do
+      require_atomic? false
+      accept [:bio, :username, :email, :image]
+
+      argument :password, :string do
+        sensitive? true
+      end
+
+      change set_context(%{strategy_name: :password})
+      change AshAuthentication.Strategy.Password.HashPasswordChange
     end
   end
 
@@ -195,9 +266,21 @@ defmodule Realworld.Accounts.User do
       authorize_if always()
     end
 
-    policy always() do
+    policy action([:register_with_password, :sign_in_with_password]) do
+      authorize_if always()
+    end
+
+    policy action([:update]) do
+      forbid_unless actor_present()
       authorize_if expr(id == ^actor(:id))
-      forbid_if always()
+    end
+
+    policy action([:current_user]) do
+      authorize_if actor_present()
+    end
+
+    policy action([:read]) do
+      authorize_if always()
     end
   end
 
