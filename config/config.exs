@@ -44,7 +44,7 @@ config :spark,
 config :realworld,
   ecto_repos: [Realworld.Repo],
   generators: [timestamp_type: :utc_datetime],
-  ash_domains: [Realworld.Accounts]
+  ash_domains: [Realworld.Accounts, Realworld.Profiles, Realworld.Articles]
 
 # Configures the endpoint
 config :realworld, RealworldWeb.Endpoint,

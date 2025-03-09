@@ -24,9 +24,7 @@ defmodule Realworld.Accounts.User.Senders.SendPasswordResetEmail do
   defp body(params) do
     """
     Click this link to reset your password:
-
+    #{url(~p"/password-reset/#{params[:token]}")}
     """
-
-    # {url(~p"/password-reset/#{params[:token]}")}
   end
 end

@@ -25,8 +25,7 @@ defmodule Realworld.Accounts.User.Senders.SendNewUserConfirmationEmail do
     """
     Click this link to confirm your email:
 
+    #{url(~p"/auth/user/confirm_new_user?#{[confirm: params[:token]]}")}
     """
-
-    # {url(~p"/auth/user/confirm_new_user?#{[confirm: params[:token]]}")}
   end
 end

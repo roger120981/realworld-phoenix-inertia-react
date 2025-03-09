@@ -42,11 +42,11 @@ defmodule Realworld.MixProject do
       {:ash_sqlite, "~> 0.2"},
       {:ash_phoenix, "~> 2.0"},
       {:sourceror, "~> 1.7", only: [:dev, :test]},
-      # {:ash, "~> 3.0"},
-      {:ash, github: "ash-project/ash", override: true},
+      {:ash, "~> 3.0"},
       {:igniter, "~> 0.5", only: [:dev, :test]},
       {:phoenix, "~> 1.7.19"},
       {:phoenix_ecto, "~> 4.5"},
+      {:earmark, "~> 1.4"},
       {:ecto_sql, "~> 3.10"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 4.1"},
@@ -69,7 +69,7 @@ defmodule Realworld.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.26"},
       {:jason, "~> 1.2"},
-      {:dns_cluster, "~> 0.1.1"},
+      {:dns_cluster, "~> 0.2"},
       {:bandit, "~> 1.5"}
     ]
   end
