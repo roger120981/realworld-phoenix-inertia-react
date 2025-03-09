@@ -33,9 +33,9 @@ defmodule Realworld.Accounts do
     action(Realworld.Accounts.User, :request_password_reset_token, params, authorize?: false)
   end
 
-  def update_user_profile(params, opts) do
+  def update_user(params, opts) do
     with {:ok, user} <- Realworld.Accounts.get_user_by_id(params["id"], opts) do
-      action(user, :update_profile, params, opts)
+      action(user, :update, params, opts)
     end
   end
 

@@ -45,7 +45,7 @@ const ForgotPasswordForm = ({ success }) => {
               </CardDescription>
               <div className="mt-6">
                 <Link
-                  href="/sign-in"
+                  href="/login"
                   className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
                 >
                   Return to sign in
@@ -105,7 +105,7 @@ const ForgotPasswordForm = ({ success }) => {
           <p className="text-sm text-gray-600">
             Remember your password?{" "}
             <Link
-              href="/sign-in"
+              href="/login"
               className="font-medium text-indigo-600 hover:text-indigo-500"
             >
               Sign in

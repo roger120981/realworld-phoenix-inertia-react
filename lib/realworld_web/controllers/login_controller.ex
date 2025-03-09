@@ -18,7 +18,7 @@ defmodule RealworldWeb.LoginController do
       {:error, errors} ->
         conn
         |> assign_errors(errors)
-        |> redirect(to: "/sign-in")
+        |> redirect(to: ~p"/login")
     end
   end
 end

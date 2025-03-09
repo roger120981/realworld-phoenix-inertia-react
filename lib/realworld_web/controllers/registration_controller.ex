@@ -16,7 +16,7 @@ defmodule RealworldWeb.RegistrationController do
       {:error, errors} ->
         conn
         |> assign_errors(errors)
-        |> redirect(to: "/register")
+        |> redirect(to: ~p"/register")
     end
   end
 end

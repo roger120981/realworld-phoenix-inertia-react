@@ -41,10 +41,10 @@ defmodule RealworldWeb.AuthController do
 
     conn
     |> put_flash(:error, message)
-    |> redirect(to: ~p"/sign-in")
+    |> redirect(to: ~p"/login")
   end
 
-  def sign_out(conn, _params) do
+  def logout(conn, _params) do
     return_to = get_session(conn, :return_to) || ~p"/"
 
     conn

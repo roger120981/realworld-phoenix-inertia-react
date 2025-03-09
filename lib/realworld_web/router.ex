@@ -2,7 +2,7 @@ defmodule RealworldWeb.Router do
   use RealworldWeb, :router
 
   import AshAuthentication.Phoenix.Router,
-    only: [auth_routes: 3, sign_out_route: 1, reset_route: 1]
+    only: [auth_routes: 3]
 
   import AshAuthentication.Phoenix.Plug, only: [load_from_bearer: 2, load_from_session: 2]
   import AshAuthentication.Plug.Helpers, only: [set_actor: 2]
@@ -55,12 +55,12 @@ defmodule RealworldWeb.Router do
 
   scope "/", RealworldWeb do
     pipe_through [:browser, :authenticated]
-    get "/sign-out", AuthController, :sign_out
+    post "/logout", AuthController, :logout
 
     scope "/user" do
-      get "/", UserProfileController, :show
-      get "/:id/profile", UserProfileController, :show
-      post "/:id/profile", UserProfileController, :update
+      get "/", SettingsController, :show
+      get "/:id/settings", SettingsController, :show
+      post "/:id/settings", SettingsController, :update
     end
 
     scope "/vehicle-details" do

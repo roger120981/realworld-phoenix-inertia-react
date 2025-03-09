@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@/components/button";
 import { useForm } from "@inertiajs/react";
+import { FieldError } from "../fieldError";
 
 export const RegistrationForm = () => {
   const formData = useForm({
@@ -20,13 +21,6 @@ export const RegistrationForm = () => {
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
     formData.post("/register");
-  };
-
-  const FieldError = ({ error: error }) => {
-    if (!error) {
-      return null;
-    }
-    return <p className="mt-1 text-sm text-red-600">{error}</p>;
   };
 
   return (

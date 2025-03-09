@@ -65,7 +65,7 @@ export default function Layout({ children }) {
             ) : (
               <div className="flex space-x-4">
                 <Link
-                  href="/sign-in"
+                  href="/login"
                   className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
                 >
                   Login

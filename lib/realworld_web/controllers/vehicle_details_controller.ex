@@ -151,7 +151,7 @@ defmodule RealworldWeb.VehicleDetailsController do
         conn
         |> put_session(:vehicle_details, params)
         |> put_flash(:success, "We've found products for you!")
-        |> redirect(to: "/compare-products")
+        |> redirect(to: ~p"/compare-products")
 
       {:error, form} ->
         conn

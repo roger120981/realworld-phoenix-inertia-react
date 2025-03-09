@@ -16,7 +16,7 @@ defmodule RealworldWeb.AuthPlug do
         if !conn.assigns[:current_user],
           do:
             conn
-            |> Phoenix.Controller.redirect(to: Keyword.get(opts, :to, ~p"/sign-in"))
+            |> Phoenix.Controller.redirect(to: Keyword.get(opts, :to, ~p"/login"))
             |> Plug.Conn.halt(),
           else: conn |> assign_user_prop()
 
