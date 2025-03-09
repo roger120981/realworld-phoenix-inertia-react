@@ -1,21 +1,21 @@
 import React from "react";
+import { RegistrationForm } from "@/components/registration-form";
 import { Link } from "@inertiajs/react";
-import { LoginForm } from "@/components/login-form";
 
-const Login = () => (
+const Register = () => (
   <div className="auth-page">
     <div className="container page">
       <div className="row">
         <div className="col-md-6 offset-md-3 col-xs-12">
-          <h1 className="text-xs-center">Sign in</h1>
+          <h1 className="text-xs-center">Sign up</h1>
           <p className="text-xs-center">
-            <Link href="/register">Need an account?</Link>
+            <Link href="/login">Have an account?</Link>
           </p>
-          <LoginForm />
+          <RegistrationForm />
         </div>
       </div>
     </div>
   </div>
 );
 
-export default Login;
+export default Register;

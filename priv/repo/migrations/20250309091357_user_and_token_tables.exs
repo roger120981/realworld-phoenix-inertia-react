@@ -32,7 +32,6 @@ defmodule Realworld.Repo.Migrations.UserAndTokenTables do
       add :expires_at, :utc_datetime, null: false
       add :subject, :text, null: false
       add :jti, :text, null: false, primary_key: true
-      add :id, :uuid, null: false, primary_key: true
       add :created_at, :utc_datetime_usec, null: false
     end
   end
