@@ -6376,6 +6376,18 @@ footer .attribution {
   cursor: pointer;
 }
 
+.tag-form {
+  & button {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+  }
+}
+
 @keyframes slidein-right {
   0% {
     transform: translateX(50px);

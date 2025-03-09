@@ -5,3 +5,12 @@ export interface User {
   image?: string;
   bio?: string;
 }
+
+export interface Article {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  body: string;
+  tags: string[];
+}
