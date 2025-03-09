@@ -5,6 +5,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./js/*"]
-    }
+    },
+    "esModuleInterop": true
+    // "allowJs": true,
   }
 }
