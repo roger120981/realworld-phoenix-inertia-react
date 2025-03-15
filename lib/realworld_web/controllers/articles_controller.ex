@@ -8,6 +8,23 @@ defmodule RealworldWeb.ArticlesController do
     |> render_inertia("CreateArticle")
   end
 
+  def edit(conn, %{"slug" => slug}) do
+    case Realworld.Articles.get_article_by_slug(slug,
+           load: [:user, :tags],
+           actor: conn.assigns.current_user
+         ) do
+      {:ok, article} ->
+        conn
+        |> ArticleSerializer.assign_prop("article", article)
+        |> render_inertia("EditArticle")
+
+      {:error, error} ->
+        conn
+        |> assign_errors(error)
+        |> redirect(to: ~p"/articles")
+    end
+  end
+
   def create(conn, params) do
     params = Map.update(params, "tags", [], fn tags -> Enum.map(tags, &%{"name" => &1}) end)
 
@@ -37,7 +54,7 @@ defmodule RealworldWeb.ArticlesController do
 
       {:error, %Ash.Error.Query.NotFound{}} ->
         conn
-        |> assign_errors(%{error: "We couldn't find that article"})
+        |> put_flash(:error, "We couldn't find that article")
         |> redirect(to: ~p"/")
     end
   end
@@ -68,17 +85,24 @@ defmodule RealworldWeb.ArticlesController do
     end
   end
 
-  # def update(conn, params) do
-  #   case Realworld.Accounts.update_user(params, actor: conn.assigns.current_user) do
-  #     {:ok, user} ->
-  #       conn
-  #       |> assign_prop("currentUser", current_user(user))
-  #       |> render_inertia("Settings")
+  def update(conn, %{"slug" => slug, "bodyRaw" => body_raw} = params) do
+    params =
+      params
+      |> Map.update("tags", [], fn tags -> Enum.map(tags, &%{"name" => &1}) end)
+      |> Map.delete("bodyRaw")
+      |> Map.put("body_raw", body_raw)
 
-  #     {:error, errors} ->
-  #       conn
-  #       |> assign_errors(errors)
-  #       |> redirect(to: ~p"/user")
-  #   end
-  # end
+    with {:ok, article} <-
+           Realworld.Articles.get_article_by_slug(slug, actor: conn.assigns.current_user),
+         {:ok, updated_article} <-
+           Realworld.Articles.update(article, params, actor: conn.assigns.current_user) do
+      conn
+      |> redirect(to: ~p"/articles/#{slug}")
+    else
+      {:error, errors} ->
+        conn
+        |> assign_errors(errors)
+        |> render_inertia("EditArticle")
+    end
+  end
 end

@@ -43,7 +43,7 @@ const FavoriteButton = (props: FavoriteButtonProps) => {
   const form = useForm();
   return (
     <form
-      className="inline"
+      className="inline action-btn"
       onSubmit={(e) => {
         e.preventDefault();
         form.post(props.path);
@@ -98,7 +98,6 @@ const Actions = ({ article, currentUser }: ActionsProps) => {
         />
       )}
       <FavoriteButton
-        slug={article.slug}
         isFavorited={article.isFavorited || false}
         favoritesCount={article.favoritesCount}
         showMessage={true}
@@ -107,12 +106,11 @@ const Actions = ({ article, currentUser }: ActionsProps) => {
             ? `/articles/${article.slug}/unfavorite`
             : `/articles/${article.slug}/favorite`
         }
-        className={"action-btn"}
       />
       {showEditArticleButton(profile.username, currentUser) && (
         <Button
           component="a"
-          href={`/editor/${article.slug}`}
+          href={`/articles/${article.slug}/edit`}
           color="secondary"
           className={"action-btn"}
         >

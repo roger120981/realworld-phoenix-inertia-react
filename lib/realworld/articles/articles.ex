@@ -37,6 +37,10 @@ defmodule Realworld.Articles do
     action(Realworld.Articles.Article, :publish, params, opts)
   end
 
+  def update(article, params, opts) do
+    action(article, :update, params, opts)
+  end
+
   defp action(resource, action, params, opts) do
     AshPhoenix.Form.for_action(resource, action, opts)
     |> AshPhoenix.Form.submit(params: params)

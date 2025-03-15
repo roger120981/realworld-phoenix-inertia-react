@@ -10,7 +10,7 @@ export const CreateArticleEditor = () => {
 export const UpdateArticleEditor = ({ article }) => {
   return (
     <ArticleEditorPresentation
-      path={`/articles/${article.id}`}
+      path={`/articles/${article.slug}`}
       defaultValues={article}
     />
   );

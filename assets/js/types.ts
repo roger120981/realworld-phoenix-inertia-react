@@ -12,6 +12,7 @@ export interface Article {
   title: string;
   description: string;
   body: string;
+  bodyRaw: string;
   tags: string[];
   author?: User;
   createdAt?: string;

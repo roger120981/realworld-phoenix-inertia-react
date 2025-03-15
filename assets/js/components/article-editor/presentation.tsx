@@ -15,7 +15,7 @@ export const ArticleEditor = ({ defaultValues, path }: Props) => {
     slug: defaultValues?.slug || "",
     title: defaultValues?.title || "",
     description: defaultValues?.description || "",
-    body: defaultValues?.body || "",
+    bodyRaw: defaultValues?.bodyRaw || "",
     tags: defaultValues?.tags || [],
   });
 
@@ -86,8 +86,8 @@ export const ArticleEditor = ({ defaultValues, path }: Props) => {
           </fieldset>
           <fieldset className="form-group">
             <textarea
-              name={"body"}
-              value={formData.data.body}
+              name={"bodyRaw"}
+              value={formData.data.bodyRaw}
               onChange={handleInput}
               rows={8}
               placeholder="Write your article (in markdown)"
