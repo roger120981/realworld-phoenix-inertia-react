@@ -66,9 +66,11 @@ defmodule RealworldWeb.Router do
     scope "/articles" do
       get "/new", ArticlesController, :new
       post "/", ArticlesController, :create
-      get "/:id", ArticlesController, :show
-      get "/:id/edit", ArticlesController, :edit
-      post "/:id", ArticlesController, :update
+      get "/:slug", ArticlesController, :show
+      get "/:slug/edit", ArticlesController, :edit
+      post "/:slug", ArticlesController, :update
+      post "/:slug/favorite", ArticlesController, :favorite
+      post "/:slug/unfavorite", ArticlesController, :unfavorite
     end
 
     scope "/vehicle-details" do

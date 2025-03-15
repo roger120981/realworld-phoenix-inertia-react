@@ -20,7 +20,6 @@ defmodule Realworld.Accounts do
         {:ok, user}
 
       {:error, error} ->
-        dbg(error)
         {:error, %{email: "Could not be found"}}
     end
   end

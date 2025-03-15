@@ -47,13 +47,11 @@ defmodule Realworld.Articles.Article do
     calculate :is_favorited, :boolean, expr(exists(favorites, id == ^actor(:id))) do
       public? true
     end
-  end
 
-  # FIXME: Realworld.Articles.Article.favorites is not aggregatable
-  # Might be because of the sqlite data layer?
-  # aggregates do
-  #   count :favorites_count, :favorites, public?: true
-  # end
+    calculate :favorites_count, :integer, {Realworld.Articles.Calculations.FavoritesCount, []} do
+      public? true
+    end
+  end
 
   relationships do
     has_many :comments, Realworld.Articles.Comment

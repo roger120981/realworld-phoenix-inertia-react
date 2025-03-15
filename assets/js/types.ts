@@ -13,4 +13,8 @@ export interface Article {
   description: string;
   body: string;
   tags: string[];
+  author?: User;
+  createdAt?: string;
+  isFavorited?: boolean;
+  favoritesCount?: number;
 }

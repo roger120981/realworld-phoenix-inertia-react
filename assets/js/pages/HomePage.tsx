@@ -8,24 +8,27 @@ import {
   Award,
 } from "lucide-react";
 import { Link } from "@inertiajs/react";
-import { useChannel } from "@/lib/hooks";
+import { useChannel } from "@/lib/useChannel";
 
 const HomePage = (props) => {
-  const [text, setText] = useState("")
-  const [incomingMessage, send] = useChannel("room:lobby", (lastMessage, channelMessage) => {
-    switch (channelMessage.event) {
-      case "shout":
-        return channelMessage.payload.messageText
-      
-      default:
-        return lastMessage
-    }
-  }, "");
+  const [text, setText] = useState("");
+  const [incomingMessage, send] = useChannel(
+    "room:lobby",
+    (lastMessage, channelMessage) => {
+      switch (channelMessage.event) {
+        case "shout":
+          return channelMessage.payload.messageText;
 
+        default:
+          return lastMessage;
+      }
+    },
+    ""
+  );
 
   const test = () => {
-    send("shout", { messageText: text })
-    setText("")
+    send("shout", { messageText: text });
+    setText("");
   };
 
   return (

@@ -113,7 +113,7 @@ defmodule RealworldWeb.VehicleDetailsController do
   end
 
   def params_to_props(conn, params) do
-    session_vehicle = get_session(conn, :vehicle_details) |> dbg()
+    session_vehicle = get_session(conn, :vehicle_details)
     year = params["year"] || session_vehicle["year"] || ""
     make = params["make"] || session_vehicle["make"] || ""
     model = params["model"] || session_vehicle["model"] || ""

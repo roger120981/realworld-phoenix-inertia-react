@@ -1,5 +1,5 @@
-defmodule ConduitWeb.RoomChannel do
-  use ConduitWeb, :channel
+defmodule RealworldWeb.RoomChannel do
+  use RealworldWeb, :channel
 
   @impl true
   def join("room:lobby", payload, socket) do

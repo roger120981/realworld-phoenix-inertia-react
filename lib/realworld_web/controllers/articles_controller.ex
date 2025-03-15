@@ -1,46 +1,84 @@
-defmodule RealworldWeb.SettingsController do
+defmodule RealworldWeb.ArticlesController do
   use RealworldWeb, :controller
+  alias RealworldWeb.ArticleSerializer
+  alias RealworldWeb.UserSerializer
 
-  defp current_user(user) do
-    %{
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      image: user.image,
-      bio: user.bio
-    }
+  def new(conn, _params) do
+    conn
+    |> render_inertia("CreateArticle")
   end
 
-  def show(conn, %{"id" => id}) do
-    case Realworld.Accounts.get_user_by_id(id, actor: conn.assigns.current_user) do
-      {:ok, user} ->
-        conn
-        |> assign_prop("currentUser", current_user(user))
-        |> render_inertia("Settings")
+  def create(conn, params) do
+    params = Map.update(params, "tags", [], fn tags -> Enum.map(tags, &%{"name" => &1}) end)
 
-      {:error, %Ash.Error.Query.NotFound{}} ->
+    case Realworld.Articles.publish(params, actor: conn.assigns.current_user) do
+      {:ok, article} ->
         conn
-        |> assign_errors(%{error: "We couldn't find that user"})
-        |> redirect(to: ~p"/")
-    end
-  end
-
-  def show(conn, _params) do
-    id = conn.assigns.current_user.id
-    redirect(conn, to: ~p"/user/#{id}/settings")
-  end
-
-  def update(conn, params) do
-    case Realworld.Accounts.update_user(params, actor: conn.assigns.current_user) do
-      {:ok, user} ->
-        conn
-        |> assign_prop("currentUser", current_user(user))
-        |> render_inertia("Settings")
+        |> redirect(to: ~p"/articles/#{article.slug}")
 
       {:error, errors} ->
         conn
         |> assign_errors(errors)
-        |> redirect(to: ~p"/user")
+        |> render_inertia("CreateArticle")
     end
   end
+
+  def show(conn, %{"slug" => slug}) do
+    case Realworld.Articles.get_article_by_slug(slug,
+           load: [:user, :favorites_count, :is_favorited],
+           actor: conn.assigns.current_user
+         ) do
+      {:ok, article} ->
+        conn
+        |> assign_prop("slug", slug)
+        |> ArticleSerializer.assign_prop("article", article)
+        |> UserSerializer.assign_prop("user", conn.assigns.current_user)
+        |> render_inertia("ViewArticle")
+
+      {:error, %Ash.Error.Query.NotFound{}} ->
+        conn
+        |> assign_errors(%{error: "We couldn't find that article"})
+        |> redirect(to: ~p"/")
+    end
+  end
+
+  def favorite(conn, %{"slug" => slug}) do
+    with {:ok, %{id: id}} <- Realworld.Articles.get_article_by_slug(slug),
+         {:ok, thing} <- Realworld.Articles.favorite(id, actor: conn.assigns.current_user) do
+      conn
+      |> redirect(to: ~p"/articles/#{slug}")
+    else
+      {:error, errors} ->
+        conn
+        |> assign_errors(errors)
+        |> render_inertia("ViewArticle")
+    end
+  end
+
+  def unfavorite(conn, %{"slug" => slug}) do
+    with {:ok, %{id: id}} <- Realworld.Articles.get_article_by_slug(slug),
+         :ok <- Realworld.Articles.unfavorite(id, actor: conn.assigns.current_user) do
+      conn
+      |> redirect(to: ~p"/articles/#{slug}")
+    else
+      {:error, errors} ->
+        conn
+        |> assign_errors(errors)
+        |> render_inertia("ViewArticle")
+    end
+  end
+
+  # def update(conn, params) do
+  #   case Realworld.Accounts.update_user(params, actor: conn.assigns.current_user) do
+  #     {:ok, user} ->
+  #       conn
+  #       |> assign_prop("currentUser", current_user(user))
+  #       |> render_inertia("Settings")
+
+  #     {:error, errors} ->
+  #       conn
+  #       |> assign_errors(errors)
+  #       |> redirect(to: ~p"/user")
+  #   end
+  # end
 end

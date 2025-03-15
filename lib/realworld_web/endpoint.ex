@@ -15,7 +15,7 @@ defmodule RealworldWeb.Endpoint do
     websocket: [connect_info: [session: @session_options]],
     longpoll: [connect_info: [session: @session_options]]
 
-  socket "/socket", ConduitWeb.UserSocket,
+  socket "/socket", RealworldWeb.UserSocket,
       websocket: true,
       longpoll: false
 

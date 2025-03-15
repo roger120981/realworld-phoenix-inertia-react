@@ -32,4 +32,18 @@ defmodule Realworld.Articles do
   authorization do
     authorize :by_default
   end
+
+  def publish(params, opts) do
+    action(Realworld.Articles.Article, :publish, params, opts)
+  end
+
+  defp action(resource, action, params, opts) do
+    AshPhoenix.Form.for_action(resource, action, opts)
+    |> AshPhoenix.Form.submit(params: params)
+    |> case do
+      :ok -> :ok
+      {:ok, result} -> {:ok, result}
+      {:error, form} -> {:error, form |> AshPhoenix.Form.errors(format: :simple) |> Map.new()}
+    end
+  end
 end

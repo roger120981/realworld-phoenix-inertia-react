@@ -1,4 +1,4 @@
-defmodule ConduitWeb.UserSocket do
+defmodule RealworldWeb.UserSocket do
   use Phoenix.Socket
 
   # A Socket handler
@@ -8,7 +8,7 @@ defmodule ConduitWeb.UserSocket do
 
   ## Channels
 
-  channel "room:*", ConduitWeb.RoomChannel
+  channel "room:*", RealworldWeb.RoomChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
@@ -36,7 +36,7 @@ defmodule ConduitWeb.UserSocket do
   # Would allow you to broadcast a "disconnect" event and terminate
   # all active sockets and channels for a given user:
   #
-  #     Elixir.ConduitWeb.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
+  #     Elixir.RealworldWeb.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
   @impl true

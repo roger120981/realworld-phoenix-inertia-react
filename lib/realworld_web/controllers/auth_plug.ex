@@ -41,7 +41,7 @@ defmodule RealworldWeb.AuthPlug do
     conn
     |> Inertia.Controller.assign_prop(
       :user,
-      Map.take(conn.assigns.current_user, [:id, :first_name, :last_name])
+      Map.take(conn.assigns.current_user, [:id, :username, :email])
     )
   end
 end

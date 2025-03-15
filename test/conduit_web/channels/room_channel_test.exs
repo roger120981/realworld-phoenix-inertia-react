@@ -1,11 +1,11 @@
-defmodule ConduitWeb.RoomChannelTest do
-  use ConduitWeb.ChannelCase
+defmodule RealworldWeb.RoomChannelTest do
+  use RealworldWeb.ChannelCase
 
   setup do
     {:ok, _, socket} =
-      ConduitWeb.UserSocket
+      RealworldWeb.UserSocket
       |> socket("user_id", %{some: :assign})
-      |> subscribe_and_join(ConduitWeb.RoomChannel, "room:lobby")
+      |> subscribe_and_join(RealworldWeb.RoomChannel, "room:lobby")
 
     %{socket: socket}
   end

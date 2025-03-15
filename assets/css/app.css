@@ -6342,6 +6342,17 @@ footer .attribution {
 .article-page .card .mod-options i:hover {
   opacity: 1;
 }
+
+.article-page .actions {
+  & * + * {
+    margin-left: 10px;
+  }
+}
+
+.article-page .action-btn + .action-btn {
+  margin-left: 5px;
+}
+
 .profile-page .user-info {
   text-align: center;
   background: #f3f3f3;
