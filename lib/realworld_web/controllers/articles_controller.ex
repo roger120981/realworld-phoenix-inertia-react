@@ -105,4 +105,17 @@ defmodule RealworldWeb.ArticlesController do
         |> render_inertia("EditArticle")
     end
   end
+
+  def delete(conn, %{"slug" => slug} = params) do
+    case Realworld.Articles.destroy_article(params, actor: conn.assigns.current_user) do
+      :ok ->
+        conn
+        |> redirect(to: "/articles")
+
+      {:error, errors} ->
+        conn
+        |> assign_errors(errors)
+        |> redirect(to: "/articles/#{slug}")
+    end
+  end
 end

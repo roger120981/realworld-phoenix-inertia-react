@@ -69,6 +69,7 @@ defmodule RealworldWeb.Router do
       get "/:slug", ArticlesController, :show
       get "/:slug/edit", ArticlesController, :edit
       post "/:slug", ArticlesController, :update
+      delete "/:slug", ArticlesController, :delete
       post "/:slug/favorite", ArticlesController, :favorite
       post "/:slug/unfavorite", ArticlesController, :unfavorite
     end

@@ -16,9 +16,6 @@ import { Article, User } from "@/types";
 const FollowButton = (props) => {
   return <button type="button">Follow</button>;
 };
-const DeleteArticleButton = (props) => {
-  return <button type="button">Delete Article</button>;
-};
 
 interface FavoriteButtonProps {
   isFavorited: boolean;
@@ -55,6 +52,34 @@ const FavoriteButton = (props: FavoriteButtonProps) => {
         disabled={form.processing}
       >
         {content}
+      </Button>
+    </form>
+  );
+};
+
+interface DeleteArticleProps {
+  path: string;
+}
+
+const DeleteArticleButton = ({ path }: DeleteArticleProps) => {
+  const form = useForm();
+  return (
+    <form
+      className={"inline action-btn"}
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (confirm("Delete this article?")) {
+          form.delete(path);
+        }
+      }}
+    >
+      <Button
+        component="button"
+        color="danger"
+        type="submit"
+        disabled={form.processing}
+      >
+        <i className="ion-trash-a"></i> Delete Article
       </Button>
     </form>
   );
@@ -118,7 +143,7 @@ const Actions = ({ article, currentUser }: ActionsProps) => {
         </Button>
       )}
       {showDeleteArticleButton(profile.username, currentUser) && (
-        <DeleteArticleButton slug={article.slug} className={"action-btn"} />
+        <DeleteArticleButton path={`/articles/${article.slug}`} />
       )}
     </div>
   );
