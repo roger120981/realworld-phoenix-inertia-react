@@ -4,20 +4,7 @@ import { PageProps } from "@inertiajs/core";
 import { ArrowRight, Shield } from "lucide-react";
 
 import FlashMessage from "./flash_message";
-
-interface CommonPageProps extends PageProps {
-  user?: {
-    id: string;
-    first_name: string;
-    last_name: string;
-  };
-  flash: {
-    info?: string;
-    success?: string;
-    warning?: string;
-    error?: string;
-  };
-}
+import { CommonPageProps } from "@/types";
 
 export default function Layout({ children }) {
   const page = usePage<CommonPageProps>();

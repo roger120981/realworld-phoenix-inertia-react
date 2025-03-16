@@ -1,3 +1,15 @@
+import { PageProps } from "@inertiajs/core";
+
+export interface CommonPageProps extends PageProps {
+  user?: User;
+  flash: {
+    info?: string;
+    success?: string;
+    warning?: string;
+    error?: string;
+  };
+}
+
 export interface User {
   id: string;
   username: string;

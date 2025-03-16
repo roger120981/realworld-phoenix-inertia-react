@@ -26,5 +26,9 @@ defmodule Realworld.Articles.ArticleTag do
 
   actions do
     defaults [:create, :read, :update, :destroy]
+
+    action :popular_tags, {:array, :string} do
+      run __MODULE__.PopularTags
+    end
   end
 end

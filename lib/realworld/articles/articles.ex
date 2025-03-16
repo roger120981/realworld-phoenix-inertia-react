@@ -8,7 +8,9 @@ defmodule Realworld.Articles do
       define :destroy_article, action: :destroy
     end
 
-    resource Realworld.Articles.ArticleTag
+    resource Realworld.Articles.ArticleTag do
+      define :popular_tags
+    end
 
     resource Realworld.Articles.Comment do
       define :destroy_comment, action: :destroy
