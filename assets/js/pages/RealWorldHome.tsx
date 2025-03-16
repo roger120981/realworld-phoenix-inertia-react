@@ -1,7 +1,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Link } from "@inertiajs/react";
-// import { GlobalArticleList } from "@/components/global-articles-list";
+import { GlobalArticleList } from "@/components/global-articles-list";
 import { TagList } from "@/components/tag-list";
 import { Article, CommonPageProps } from "@/types";
 
@@ -11,10 +11,6 @@ interface Props extends CommonPageProps {
   tag?: string;
   tags: string[];
 }
-
-const GlobalArticleList = (props) => {
-  return <div>Global Article List here</div>;
-};
 
 export default function RealWorldHome(props: Props) {
   const user = props.user;
@@ -71,7 +67,7 @@ export default function RealWorldHome(props: Props) {
                 )}
               </ul>
             </div>
-            <GlobalArticleList />
+            <GlobalArticleList articles={props.articles} />
           </div>
 
           <div className="col-md-3">

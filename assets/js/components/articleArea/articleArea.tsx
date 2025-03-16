@@ -12,49 +12,10 @@ import {
 // import { DeleteArticleButton } from "../deleteArticleButton";
 // import { FavoriteButton } from "../favoriteButton";
 import { Article, User } from "@/types";
+import { FavoriteButton } from "./FavoriteButton";
 
 const FollowButton = (props) => {
   return <button type="button">Follow</button>;
-};
-
-interface FavoriteButtonProps {
-  isFavorited: boolean;
-  showMessage: boolean;
-  path: string;
-  favoritesCount?: number;
-}
-
-const FavoriteButton = (props: FavoriteButtonProps) => {
-  const content = props.showMessage ? (
-    <>
-      <i className="ion-heart"></i>{" "}
-      {props.isFavorited ? "Unfavorite Article " : "Favorite Article "}
-      <span className="counter">({props.favoritesCount || 0})</span>
-    </>
-  ) : (
-    <>
-      <i className="ion-heart"></i> {props.favoritesCount || 0}
-    </>
-  );
-
-  const form = useForm();
-  return (
-    <form
-      className="inline action-btn"
-      onSubmit={(e) => {
-        e.preventDefault();
-        form.post(props.path);
-      }}
-    >
-      <Button
-        component="button"
-        variant={props.isFavorited ? "filled" : "outline"}
-        disabled={form.processing}
-      >
-        {content}
-      </Button>
-    </form>
-  );
 };
 
 interface DeleteArticleProps {
