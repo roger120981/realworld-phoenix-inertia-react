@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Article } from "@/types";
 import { FavoriteButton } from "./articleArea/FavoriteButton";
+import { Tag } from "./tag";
+import { Link } from "@inertiajs/react";
 
 interface Props {
   article: Article;
@@ -11,13 +13,13 @@ export const ArticleCard = (props: Props) => {
   return (
     <div className="article-preview">
       <div className="article-meta">
-        <a href={`/profile/${article.author.username}`}>
+        <Link href={`/profile/${article.author.username}`}>
           <img src={article.author?.image} />
-        </a>
+        </Link>
         <div className="info">
-          <a href={`/profile/${article.author.username}`} className="author">
+          <Link href={`/profile/${article.author.username}`} className="author">
             {article.author.username}
-          </a>
+          </Link>
           <span className="date">
             {new Date(article.createdAt).toDateString()}
           </span>
@@ -33,16 +35,18 @@ export const ArticleCard = (props: Props) => {
           }
         />
       </div>
-      <a href={`/article/${article.slug}`} className="preview-link">
+      <Link href={`/articles/${article.slug}`} className="preview-link">
         <h1>{article.title}</h1>
         <p>{article.description}</p>
         <span>Read more...</span>
         <ul className="tag-list">
           {article.tags.map((tag) => (
-            <li className="tag-default tag-pill tag-outline">{tag}</li>
+            <Tag component="li" variant="filled" key={tag}>
+              {tag}
+            </Tag>
           ))}
         </ul>
-      </a>
+      </Link>
     </div>
   );
 };

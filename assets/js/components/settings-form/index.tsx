@@ -16,7 +16,9 @@ export const SettingsForm = ({ currentUser }: Props) => {
     email: currentUser.email,
     password: "",
   });
-  const handleInput = (e) => {
+  const handleInput: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
     formData.setData((prev) => ({
@@ -24,7 +26,7 @@ export const SettingsForm = ({ currentUser }: Props) => {
       [name]: value,
     }));
   };
-  const handleSubmit = (e: SubmitEvent) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     formData.post(`/user/${currentUser.id}/settings`);
   };
@@ -37,7 +39,7 @@ export const SettingsForm = ({ currentUser }: Props) => {
             <input
               onChange={handleInput}
               type="text"
-              name="avatar-url"
+              name="image"
               value={formData.data.image}
               placeholder="URL of profile picture"
               className="form-control"
