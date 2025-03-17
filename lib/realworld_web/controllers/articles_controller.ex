@@ -26,7 +26,11 @@ defmodule RealworldWeb.ArticlesController do
   end
 
   def create(conn, params) do
-    params = Map.update(params, "tags", [], fn tags -> Enum.map(tags, &%{"name" => &1}) end)
+    params =
+      params
+      |> Map.update("tags", [], fn tags -> Enum.map(tags, &%{"name" => &1}) end)
+      |> Map.put("body_raw", params["bodyRaw"])
+      |> Map.delete("bodyRaw")
 
     case Realworld.Articles.publish(params, actor: conn.assigns.current_user) do
       {:ok, article} ->
