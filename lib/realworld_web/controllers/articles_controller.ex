@@ -21,7 +21,7 @@ defmodule RealworldWeb.ArticlesController do
       {:error, error} ->
         conn
         |> assign_errors(error)
-        |> redirect(to: ~p"/articles")
+        |> redirect(to: ~p"/")
     end
   end
 
@@ -114,7 +114,7 @@ defmodule RealworldWeb.ArticlesController do
     case Realworld.Articles.destroy_article(params, actor: conn.assigns.current_user) do
       :ok ->
         conn
-        |> redirect(to: "/articles")
+        |> redirect(to: "/")
 
       {:error, errors} ->
         conn
