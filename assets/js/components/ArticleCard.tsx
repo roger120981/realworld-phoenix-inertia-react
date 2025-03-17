@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Article } from "@/types";
-import { FavoriteButton } from "./ArticleArea/FavoriteButton";
+import { FavoriteButton } from "./FavoriteButton";
 import { Tag } from "./Tag";
 import { Link } from "@inertiajs/react";
 

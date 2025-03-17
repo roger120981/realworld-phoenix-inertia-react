@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "@inertiajs/react";
 import { Button } from "@/components/Button";
+import { Heart } from "lucide-react";
 
 interface FavoriteButtonProps {
   isFavorited: boolean;
@@ -11,13 +12,13 @@ interface FavoriteButtonProps {
 export const FavoriteButton = (props: FavoriteButtonProps) => {
   const content = props.showMessage ? (
     <>
-      <i className="ion-heart"></i>{" "}
+      <Heart className="inline h-[1rem]" />{" "}
       {props.isFavorited ? "Unfavorite Article " : "Favorite Article "}
       <span className="counter">({props.favoritesCount || 0})</span>
     </>
   ) : (
     <>
-      <i className="ion-heart"></i> {props.favoritesCount || 0}
+      <Heart className="inline h-[1rem]" /> {props.favoritesCount || 0}
     </>
   );
 

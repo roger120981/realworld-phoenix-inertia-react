@@ -41,6 +41,14 @@ defmodule RealworldWeb.Router do
     get "/", PageController, :home
     get "/password-reset/:token", AuthController, :password_reset
     auth_routes AuthController, Realworld.Accounts.User, path: "/auth"
+
+    scope "/profile" do
+      get "/:username", ProfilesController, :show
+    end
+
+    scope "/articles" do
+      get "/:slug", ArticlesController, :show
+    end
   end
 
   scope "/", RealworldWeb do
@@ -63,14 +71,9 @@ defmodule RealworldWeb.Router do
       post "/:id/settings", SettingsController, :update
     end
 
-    scope "/profile" do
-      get "/:username", ProfilesController, :show
-    end
-
     scope "/articles" do
       get "/new", ArticlesController, :new
       post "/", ArticlesController, :create
-      get "/:slug", ArticlesController, :show
       get "/:slug/edit", ArticlesController, :edit
       post "/:slug", ArticlesController, :update
       delete "/:slug", ArticlesController, :delete

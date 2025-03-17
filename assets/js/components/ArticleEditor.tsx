@@ -4,11 +4,21 @@ import { Tag } from "@/components/Tag";
 import { Button } from "@/components/Button";
 import { Article } from "@/types";
 import { useForm } from "@inertiajs/react";
-import { FieldError } from "../FieldError";
+import { FieldError } from "./FieldError";
 
 type Props = {
   defaultValues?: Article;
   path: string;
+};
+
+export const CreateArticleEditor = () => {
+  return <ArticleEditor path="/articles" />;
+};
+
+export const UpdateArticleEditor = ({ article }) => {
+  return (
+    <ArticleEditor path={`/articles/${article.slug}`} defaultValues={article} />
+  );
 };
 
 export const ArticleEditor = ({ defaultValues, path }: Props) => {

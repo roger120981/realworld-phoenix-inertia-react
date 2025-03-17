@@ -6,9 +6,8 @@ import { Trash2 } from "lucide-react";
 
 const LoginToComment = () => (
   <p>
-    <Link href={"/login"}>Sign in</Link>
-    or <Link href={"/register"}>sign up</Link>
-    to add comments on this article.
+    <Link href={"/login"}>Sign in</Link> or{" "}
+    <Link href={"/register"}>sign up</Link> to add comments on this article.
   </p>
 );
 

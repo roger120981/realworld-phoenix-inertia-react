@@ -1,6 +1,7 @@
 import { ArticleCard } from "@/components/ArticleCard";
 import { Article, CommonPageProps, User } from "@/types";
 import { Link } from "@inertiajs/react";
+import { Cog, Plus } from "lucide-react";
 import React from "react";
 
 interface Props extends CommonPageProps {
@@ -25,17 +26,18 @@ export default function ProfilePage(props: Props) {
                   className="btn btn-sm btn-outline-secondary action-btn"
                   href="/user"
                 >
-                  <i className="ion-gear-a"></i> &nbsp; Edit Profile Settings
+                  <Cog className="inline h-[1rem]" />
+                  Edit Profile Settings
                 </Link>
               ) : following ? (
                 <button className="btn btn-sm btn-outline-secondary action-btn">
-                  <i className="ion-plus-round"></i> &nbsp; Unfollow{" "}
-                  {profile.username}
+                  <Plus className="inline h-[1rem]" />
+                  Unfollow {profile.username}
                 </button>
               ) : (
                 <button className="btn btn-sm btn-outline-secondary action-btn">
-                  <i className="ion-plus-round"></i> &nbsp; Follow{" "}
-                  {profile.username}
+                  <Plus className="inline h-[1rem]" />
+                  Follow {profile.username}
                 </button>
               )}
             </div>

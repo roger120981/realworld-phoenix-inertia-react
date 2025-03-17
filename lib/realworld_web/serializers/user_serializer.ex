@@ -10,6 +10,6 @@ defmodule RealworldWeb.UserSerializer do
   end
 
   def assign_prop(conn, name, user) do
-    Inertia.Controller.assign_prop(conn, name, fn -> to_map(user) end)
+    Inertia.Controller.assign_prop(conn, name, fn -> user && to_map(user) end)
   end
 end

@@ -2,47 +2,17 @@ import React, { ReactNode } from "react";
 import { Link, useForm, usePage } from "@inertiajs/react";
 import { Tag } from "@/components/Tag";
 import { Button } from "@/components/Button";
-
-import {
-  showDeleteArticleButton,
-  showEditArticleButton,
-  showFollowButton,
-} from "./functions";
-// import { FollowButton } from "../followButton";
-// import { DeleteArticleButton } from "../deleteArticleButton";
-// import { FavoriteButton } from "../favoriteButton";
 import { Article, User } from "@/types";
-import { FavoriteButton } from "./FavoriteButton";
+import { FavoriteButton } from "@/components/FavoriteButton";
+import { DeleteArticleButton } from "@/components/DeleteArticleButton";
+import { Edit, Edit2Icon, Plus } from "lucide-react";
 
 const FollowButton = (props) => {
-  return <button type="button">Follow</button>;
-};
-
-interface DeleteArticleProps {
-  path: string;
-}
-
-const DeleteArticleButton = ({ path }: DeleteArticleProps) => {
-  const form = useForm();
   return (
-    <form
-      className={"inline action-btn"}
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (confirm("Delete this article?")) {
-          form.delete(path);
-        }
-      }}
-    >
-      <Button
-        component="button"
-        color="danger"
-        type="submit"
-        disabled={form.processing}
-      >
-        <i className="ion-trash-a"></i> Delete Article
-      </Button>
-    </form>
+    <button className="btn btn-sm btn-outline-primary action-btn">
+      <Plus className="inline h-[1rem]" />
+      Follow
+    </button>
   );
 };
 
@@ -100,7 +70,7 @@ const Actions = ({ article, currentUser }: ActionsProps) => {
           color="secondary"
           className={"action-btn"}
         >
-          <i className="ion-edit"></i> Edit Article
+          <Edit className="inline h-[1rem]" /> Edit Article
         </Button>
       )}
       {showDeleteArticleButton(profile.username, currentUser) && (
@@ -146,4 +116,25 @@ export const ArticleArea = ({
       </div>
     </div>
   );
+};
+
+const showFollowButton = (
+  authorUsername: string,
+  currentUser: User | undefined
+) => {
+  return authorUsername !== currentUser?.username;
+};
+
+const showEditArticleButton = (
+  authorUsername: string,
+  currentUser: User | undefined
+) => {
+  return authorUsername === currentUser?.username;
+};
+
+const showDeleteArticleButton = (
+  authorUsername: string,
+  currentUser: User | undefined
+) => {
+  return authorUsername === currentUser?.username;
 };

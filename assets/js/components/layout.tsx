@@ -3,6 +3,7 @@ import { usePage, Link } from "@inertiajs/react";
 
 import FlashMessage from "./FlashMessage";
 import { CommonPageProps } from "@/types";
+import { Cog, FilePlus } from "lucide-react";
 
 const NavLink = (props) => {
   const className =
@@ -36,12 +37,14 @@ export default function Layout({ children }) {
                 <>
                   <li className="nav-item">
                     <NavLink href={"/articles/new"}>
-                      <i className="ion-compose"></i>&nbsp;New Article
+                      <FilePlus className="inline h-[1rem]" />
+                      New Article
                     </NavLink>
                   </li>
                   <li className="nav-item">
                     <NavLink href={"/user"}>
-                      <i className="ion-gear-a"></i>&nbsp;Settings
+                      <Cog className="inline h-[1rem]" />
+                      Settings
                     </NavLink>
                   </li>
                   <li className="nav-item">
