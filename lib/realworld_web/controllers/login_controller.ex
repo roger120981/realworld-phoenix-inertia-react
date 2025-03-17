@@ -13,7 +13,7 @@ defmodule RealworldWeb.LoginController do
       {:ok, user} ->
         conn
         |> AshAuthentication.Phoenix.Plug.store_in_session(user)
-        |> redirect(to: ~p"/vehicle-details")
+        |> redirect(to: ~p"/")
 
       {:error, errors} ->
         conn
