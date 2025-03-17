@@ -1,7 +1,5 @@
 import React from "react";
 import { usePage, Link } from "@inertiajs/react";
-import { PageProps } from "@inertiajs/core";
-import { ArrowRight, Shield } from "lucide-react";
 
 import FlashMessage from "./flash_message";
 import { CommonPageProps } from "@/types";
@@ -37,7 +35,7 @@ export default function Layout({ children }) {
               {user ? (
                 <>
                   <li className="nav-item">
-                    <NavLink href={"/editor"}>
+                    <NavLink href={"/articles/new"}>
                       <i className="ion-compose"></i>&nbsp;New Article
                     </NavLink>
                   </li>
