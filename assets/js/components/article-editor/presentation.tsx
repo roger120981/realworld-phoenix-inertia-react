@@ -4,6 +4,7 @@ import { Tag } from "@/components/tag";
 import { Button } from "@/components/button";
 import { Article } from "@/types";
 import { useForm } from "@inertiajs/react";
+import { FieldError } from "../fieldError";
 
 type Props = {
   defaultValues?: Article;
@@ -73,6 +74,8 @@ export const ArticleEditor = ({ defaultValues, path }: Props) => {
               placeholder="Article Title"
               className="form-control form-control-lg"
             />
+            <FieldError error={formData.errors.slug} />
+            <FieldError error={formData.errors.title} />
           </fieldset>
           <fieldset className="form-group">
             <input
@@ -83,6 +86,7 @@ export const ArticleEditor = ({ defaultValues, path }: Props) => {
               placeholder="What's this article about?"
               className="form-control"
             />
+            <FieldError error={formData.errors.description} />
           </fieldset>
           <fieldset className="form-group">
             <textarea
@@ -93,6 +97,7 @@ export const ArticleEditor = ({ defaultValues, path }: Props) => {
               placeholder="Write your article (in markdown)"
               className="form-control"
             />
+            <FieldError error={formData.errors.bodyRaw} />
           </fieldset>
           <fieldset className="form-group">
             <input
