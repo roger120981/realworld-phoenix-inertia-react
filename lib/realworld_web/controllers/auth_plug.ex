@@ -1,4 +1,5 @@
 defmodule RealworldWeb.AuthPlug do
+  alias RealworldWeb.UserSerializer
   use RealworldWeb, :verified_routes
 
   def init(mode) when is_atom(mode) do
@@ -39,9 +40,6 @@ defmodule RealworldWeb.AuthPlug do
 
   defp assign_user_prop(conn) do
     conn
-    |> Inertia.Controller.assign_prop(
-      :user,
-      Map.take(conn.assigns.current_user, [:id, :username, :email])
-    )
+    |> UserSerializer.assign_prop(:user, conn.assigns.current_user)
   end
 end

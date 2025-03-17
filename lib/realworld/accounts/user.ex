@@ -216,6 +216,17 @@ defmodule Realworld.Accounts.User do
       filter expr(email == ^arg(:email))
     end
 
+    read :get_by_username do
+      description "Looks up a user by their username"
+      get? true
+
+      argument :username, :ci_string do
+        allow_nil? false
+      end
+
+      filter expr(username == ^arg(:username))
+    end
+
     update :reset_password_with_token do
       argument :reset_token, :string do
         allow_nil? false
@@ -279,7 +290,7 @@ defmodule Realworld.Accounts.User do
       authorize_if actor_present()
     end
 
-    policy action([:read]) do
+    policy action_type([:read]) do
       authorize_if always()
     end
   end

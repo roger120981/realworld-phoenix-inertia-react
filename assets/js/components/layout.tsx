@@ -40,7 +40,7 @@ export default function Layout({ children }) {
                     </NavLink>
                   </li>
                   <li className="nav-item">
-                    <NavLink href={"/settings"}>
+                    <NavLink href={"/user"}>
                       <i className="ion-gear-a"></i>&nbsp;Settings
                     </NavLink>
                   </li>
@@ -69,7 +69,15 @@ export default function Layout({ children }) {
           </div>
         </nav>
       </header>
-      {children}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        <FlashMessage
+          info={flash.info}
+          success={flash.success}
+          warning={flash.warning}
+          error={flash.error}
+        />
+      </div>
+      <main>{children}</main>
       <footer>
         <div className="container">
           <Link href="/" className="logo-font">

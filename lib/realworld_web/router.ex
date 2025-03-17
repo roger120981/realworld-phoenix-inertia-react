@@ -63,6 +63,10 @@ defmodule RealworldWeb.Router do
       post "/:id/settings", SettingsController, :update
     end
 
+    scope "/profile" do
+      get "/:username", ProfilesController, :show
+    end
+
     scope "/articles" do
       get "/new", ArticlesController, :new
       post "/", ArticlesController, :create

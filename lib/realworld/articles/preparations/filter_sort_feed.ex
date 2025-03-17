@@ -20,12 +20,15 @@ defmodule Realworld.Articles.Article.Preparations.FilterSortFeed do
     |> filter_by_favourited()
     |> filter_followed(actor)
     |> Ash.Query.sort([created_at: :desc], prepend?: true)
-    |> Ash.Query.load([
-      :user,
-      :tags,
-      :favorites_count,
-      is_favorited: %{actor_id: actor.id}
-    ])
+    |> Ash.Query.load(
+      [
+        :user,
+        :tags,
+        :favorites_count,
+        :is_favorited
+      ],
+      actor: actor
+    )
   end
 
   defp filter_followed(query, actor) do

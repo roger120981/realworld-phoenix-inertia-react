@@ -1,95 +1,148 @@
-import React, { useEffect, useState } from "react";
-import { AlertCircle, Info, XCircle, AlertTriangle, X } from "lucide-react";
-import { Alert, AlertDescription } from "@/components/alert";
+import React, { useState, useEffect } from "react";
+import { AlertCircle, AlertTriangle, CheckCircle, Info } from "lucide-react";
 
-const FlashMessage = ({
-  type = "info",
-  message,
-  className = "",
-  duration = 3000,
-  autoDissmiss = true,
+interface FlashProps {
+  info?: string;
+  success?: string;
+  warning?: string;
+  error?: string;
+}
+
+const FlashMessage: React.FC<FlashProps> = ({
+  info,
+  success,
+  warning,
+  error,
 }) => {
-  const [isVisible, setIsVisible] = useState(true);
-  const [shouldRender, setShouldRender] = useState(true);
+  const [visible, setVisible] = useState(true);
+  const [timeoutId, setTimeoutId] = useState<number | null>(null);
 
-  const variants = {
-    error: {
-      icon: XCircle,
-      className: "border-red-500 bg-red-50 text-red-900",
-      iconClassName: "text-red-500",
-      progressClassName: "bg-red-500",
-    },
-    warning: {
-      icon: AlertTriangle,
-      className: "border-yellow-500 bg-yellow-50 text-yellow-900",
-      iconClassName: "text-yellow-500",
-      progressClassName: "bg-yellow-500",
-    },
-    info: {
-      icon: Info,
-      className: "border-blue-500 bg-blue-50 text-blue-900",
-      iconClassName: "text-blue-500",
-      progressClassName: "bg-blue-500",
-    },
-    success: {
-      icon: AlertCircle,
-      className: "border-green-500 bg-green-50 text-green-900",
-      iconClassName: "text-green-500",
-      progressClassName: "bg-green-500",
-    },
-  };
-
+  // Reset visibility when flash message changes
   useEffect(() => {
-    let dismissTimeout;
+    if (info || success || warning || error) {
+      setVisible(true);
 
-    if (autoDissmiss && isVisible) {
-      dismissTimeout = setTimeout(() => {
-        handleClose();
-      }, duration);
+      // Clear any existing timeout
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+
+      // Auto-dismiss after 5 seconds
+      const id = setTimeout(() => {
+        setVisible(false);
+      }, 5000);
+
+      setTimeoutId(id);
     }
 
     return () => {
-      clearTimeout(dismissTimeout);
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
     };
-  }, [isVisible, duration, autoDissmiss]);
+  }, [info, success, warning, error]);
 
-  const handleClose = () => {
-    setIsVisible(false);
-    // Wait for exit animation to complete before unmounting
-    setTimeout(() => {
-      setShouldRender(false);
-    }, 300); // Match this with transition duration
+  const getFlashType = () => {
+    if (error) return "error";
+    if (warning) return "warning";
+    if (success) return "success";
+    if (info) return "info";
+    return null;
   };
 
-  if (!shouldRender) return null;
+  const getMessage = () => {
+    if (error) return error;
+    if (warning) return warning;
+    if (success) return success;
+    if (info) return info;
+    return "";
+  };
 
-  const variant = variants[type];
-  const Icon = variant.icon;
+  const getClassAndIcon = () => {
+    const type = getFlashType();
+
+    switch (type) {
+      case "error":
+        return {
+          bgClass: "bg-red-100 border-red-400 text-red-700",
+          iconColor: "text-red-500",
+        };
+      case "warning":
+        return {
+          bgClass: "bg-yellow-100 border-yellow-400 text-yellow-700",
+          iconColor: "text-yellow-500",
+        };
+      case "success":
+        return {
+          bgClass: "bg-green-100 border-green-400 text-green-700",
+          iconColor: "text-green-500",
+        };
+      case "info":
+        return {
+          bgClass: "bg-blue-100 border-blue-400 text-blue-700",
+          iconColor: "text-blue-500",
+        };
+      default:
+        return {
+          bgClass: "",
+          iconColor: "",
+        };
+    }
+  };
+
+  const closeFlash = () => {
+    setVisible(false);
+  };
+
+  const flashType = getFlashType();
+
+  if (!flashType || !visible) {
+    return null;
+  }
+
+  const { bgClass, iconColor } = getClassAndIcon();
+  const message = getMessage();
+
+  // Render the appropriate Lucide icon based on flash type
+  const renderIcon = () => {
+    const iconProps = {
+      className: iconColor,
+      size: 20,
+    };
+
+    switch (flashType) {
+      case "error":
+        return <AlertCircle {...iconProps} />;
+      case "warning":
+        return <AlertTriangle {...iconProps} />;
+      case "success":
+        return <CheckCircle {...iconProps} />;
+      case "info":
+        return <Info {...iconProps} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <div
-      className={`
-      transform transition-all duration-300 ease-in-out
-      ${isVisible ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"}
-    `}
+      className={`border px-4 py-3 rounded relative ${bgClass}`}
+      role="alert"
     >
-      <Alert
-        className={`
-        relative flex items-center p-4 mb-4 overflow-hidden
-        ${variant.className} ${className}
-      `}
-      >
-        <Icon className={`h-5 w-5 ${variant.iconClassName}`} />
-        <AlertDescription className="ml-3 text-sm font-medium">
-          {message}
-        </AlertDescription>
-        <button
-          onClick={handleClose}
-          className="absolute right-2 top-2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
-        >
-          <X className="h-4 w-4" />
-        </button>
-      </Alert>
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex items-center">
+          <span className="mr-2">{renderIcon()}</span>
+          <span className="block sm:inline">{message}</span>
+          <button
+            type="button"
+            className="ml-auto"
+            onClick={closeFlash}
+            aria-label="Close"
+          >
+            <span className="text-xl font-semibold">&times;</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
