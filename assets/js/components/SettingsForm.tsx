@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "@/components/Button";
 import { useForm } from "@inertiajs/react";
 import { User } from "@/types";
-import { FieldError } from "../FieldError";
+import { FieldError } from "./FieldError";
 
 interface Props {
   currentUser: User;
