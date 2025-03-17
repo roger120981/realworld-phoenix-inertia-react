@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import { Button } from "@/components/Button";
 import { useForm } from "@inertiajs/react";
 import { FieldError } from "@/components/FieldError";
@@ -18,7 +18,7 @@ export const RegistrationForm = () => {
       [name]: value,
     }));
   };
-  const handleSubmit = (e: SubmitEvent) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     formData.post("/register");
   };
