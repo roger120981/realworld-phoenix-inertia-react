@@ -45,10 +45,6 @@ defmodule RealworldWeb.Router do
     scope "/profile" do
       get "/:username", ProfilesController, :show
     end
-
-    scope "/articles" do
-      get "/:slug", ArticlesController, :show
-    end
   end
 
   scope "/", RealworldWeb do
@@ -71,17 +67,6 @@ defmodule RealworldWeb.Router do
       post "/:id/settings", SettingsController, :update
     end
 
-    scope "/articles" do
-      get "/new", ArticlesController, :new
-      post "/", ArticlesController, :create
-      get "/:slug/edit", ArticlesController, :edit
-      post "/:slug", ArticlesController, :update
-      delete "/:slug", ArticlesController, :delete
-      post "/:slug/favorite", ArticlesController, :favorite
-      post "/:slug/unfavorite", ArticlesController, :unfavorite
-      post "/:slug/comments", CommentsController, :create
-    end
-
     scope "/comments" do
       delete "/:id", CommentsController, :delete
     end
@@ -94,6 +79,23 @@ defmodule RealworldWeb.Router do
     scope "/compare-products" do
       get "/", CompareProductsController, :index
     end
+  end
+
+  scope "/articles", RealworldWeb do
+    pipe_through [:browser, :authenticated]
+    get "/new", ArticlesController, :new
+    post "/", ArticlesController, :create
+    get "/:slug/edit", ArticlesController, :edit
+    post "/:slug", ArticlesController, :update
+    delete "/:slug", ArticlesController, :delete
+    post "/:slug/favorite", ArticlesController, :favorite
+    post "/:slug/unfavorite", ArticlesController, :unfavorite
+    post "/:slug/comments", CommentsController, :create
+  end
+
+  scope "/articles", RealworldWeb do
+    pipe_through [:browser, :auth_optional]
+    get "/:slug", ArticlesController, :show
   end
 
   # Other scopes may use custom stacks.

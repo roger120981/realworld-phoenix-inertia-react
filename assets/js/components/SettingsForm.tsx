@@ -10,9 +10,9 @@ interface Props {
 
 export const SettingsForm = ({ currentUser }: Props) => {
   const formData = useForm({
-    image: currentUser.image,
+    image: currentUser.image || "",
     username: currentUser.username,
-    bio: currentUser.bio,
+    bio: currentUser.bio || "",
     email: currentUser.email,
     password: "",
   });

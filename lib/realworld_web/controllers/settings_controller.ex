@@ -24,6 +24,7 @@ defmodule RealworldWeb.SettingsController do
     case Realworld.Accounts.update_user(params, actor: conn.assigns.current_user) do
       {:ok, user} ->
         conn
+        |> put_flash(:success, "User profile updated")
         |> UserSerializer.assign_prop("currentUser", user)
         |> render_inertia("user/Settings")
 
