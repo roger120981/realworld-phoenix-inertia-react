@@ -6,69 +6,84 @@ import { ArrowRight, Shield } from "lucide-react";
 import FlashMessage from "./flash_message";
 import { CommonPageProps } from "@/types";
 
+const NavLink = (props) => {
+  const className =
+    window.location.pathname == props.href ? "nav-link active" : "nav-link";
+
+  return (
+    <Link className={className} href={props.href}>
+      {props.children}
+    </Link>
+  );
+};
+
 export default function Layout({ children }) {
   const page = usePage<CommonPageProps>();
   const flash = page.props.flash;
   const user = page.props.user;
 
   return (
-    <div className="min-h-screen w-full bg-gray-50">
-      {flash?.info && <FlashMessage type="info" message={flash.info} />}
-      {flash?.error && <FlashMessage type="error" message={flash.error} />}
-      {flash?.warning && (
-        <FlashMessage type="warning" message={flash.warning} />
-      )}
-      {flash?.success && (
-        <FlashMessage type="success" message={flash.success} />
-      )}
-
-      {/* Navigation */}
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16 items-center">
-            <Link href="/">
-              <div className="flex-shrink-0 flex items-center">
-                <Shield className="h-8 w-8 text-blue-600" />
-                <span className="ml-2 text-xl font-bold text-gray-900">
-                  InsureCompare
-                </span>
-              </div>
+    <>
+      <header>
+        <nav className="navbar navbar-light">
+          <div className="container">
+            <Link className="navbar-brand" href={"/"}>
+              conduit
             </Link>
-            {user ? (
-              <div className="flex space-x-4">
-                <Link
-                  href="/user"
-                  className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Profile
-                </Link>
-                <Link
-                  href="/sign-out"
-                  className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium inline-flex items-center"
-                >
-                  Logout
-                </Link>
-              </div>
-            ) : (
-              <div className="flex space-x-4">
-                <Link
-                  href="/login"
-                  className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/register"
-                  className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium inline-flex items-center"
-                >
-                  Sign up <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </div>
-            )}
+            <ul className="nav navbar-nav pull-xs-right">
+              <li className="nav-item">
+                <NavLink href={"/"}>Home</NavLink>
+              </li>
+              {user ? (
+                <>
+                  <li className="nav-item">
+                    <NavLink href={"/editor"}>
+                      <i className="ion-compose"></i>&nbsp;New Article
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink href={"/settings"}>
+                      <i className="ion-gear-a"></i>&nbsp;Settings
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink href={`/profile/${user.username}`}>
+                      <img
+                        className="user-pic"
+                        src={user.image}
+                        loading="lazy"
+                      />
+                      {user.username}
+                    </NavLink>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="nav-item">
+                    <NavLink href={"/login"}>Sign in</NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink href={"/register"}>Sign up</NavLink>
+                  </li>
+                </>
+              )}
+            </ul>
           </div>
-        </div>
-      </nav>
+        </nav>
+      </header>
       {children}
-    </div>
+      <footer>
+        <div className="container">
+          <Link href="/" className="logo-font">
+            conduit
+          </Link>
+          <span className="attribution">
+            An interactive learning project from{" "}
+            <Link href="https://thinkster.io">Thinkster</Link>. Code &amp;
+            design licensed under MIT.
+          </span>
+        </div>
+      </footer>
+    </>
   );
 }
