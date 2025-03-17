@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/Card";
 import { Loader2 } from "lucide-react";
 import { useForm, router } from "@inertiajs/react";
 

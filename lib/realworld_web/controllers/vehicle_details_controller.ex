@@ -140,7 +140,7 @@ defmodule RealworldWeb.VehicleDetailsController do
   def index(conn, params) do
     conn
     |> params_to_props(params)
-    |> render_inertia("VehicleDetailsPage")
+    |> render_inertia("insurance/VehicleDetailsPage")
   end
 
   def update(conn, params) do
@@ -157,7 +157,7 @@ defmodule RealworldWeb.VehicleDetailsController do
         conn
         |> params_to_props(params)
         |> assign_errors(AshPhoenix.Form.errors(form, format: :simple) |> Map.new())
-        |> render_inertia("VehicleDetailsPage")
+        |> render_inertia("insurance/VehicleDetailsPage")
     end
   end
 end

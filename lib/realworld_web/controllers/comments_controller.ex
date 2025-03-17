@@ -14,20 +14,25 @@ defmodule RealworldWeb.CommentsController do
       {:error, errors} ->
         conn
         |> assign_errors(errors)
-        |> render_inertia("ViewArticle")
+        |> redirect(to: ~p"/articles/#{slug}")
     end
   end
 
-  # def delete(conn, %{"slug" => slug} = params) do
-  #   case Realworld.Articles.destroy_article(params, actor: conn.assigns.current_user) do
-  #     :ok ->
-  #       conn
-  #       |> redirect(to: "/")
+  def delete(conn, %{"id" => comment_id}) do
+    current_user = conn.assigns.current_user
 
-  #     {:error, errors} ->
-  #       conn
-  #       |> assign_errors(errors)
-  #       |> redirect(to: "/articles/#{slug}")
-  #   end
-  # end
+    with {:ok, comment} <-
+           Realworld.Articles.get_comment_by_id(comment_id, actor: current_user, load: [:article]),
+         :ok <- Realworld.Articles.destroy_comment(comment, actor: current_user) do
+      conn
+      |> redirect(to: ~p"/articles/#{comment.article.slug}")
+    else
+      err ->
+        dbg(err)
+
+        conn
+        |> put_flash(:error, "Failed to delete comment")
+        |> redirect(to: "/")
+    end
+  end
 end

@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "@inertiajs/react";
-import { Button } from "@/components/button";
+import { Button } from "@/components/Button";
 
 interface FavoriteButtonProps {
   isFavorited: boolean;

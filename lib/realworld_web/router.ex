@@ -79,6 +79,10 @@ defmodule RealworldWeb.Router do
       post "/:slug/comments", CommentsController, :create
     end
 
+    scope "/comments" do
+      delete "/:id", CommentsController, :delete
+    end
+
     scope "/vehicle-details" do
       get "/", VehicleDetailsController, :index
       post "/", VehicleDetailsController, :update

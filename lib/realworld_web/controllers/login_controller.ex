@@ -3,7 +3,7 @@ defmodule RealworldWeb.LoginController do
 
   def index(conn, _params) do
     conn
-    |> render_inertia("Login")
+    |> render_inertia("user/Login")
   end
 
   def login(conn, params) do

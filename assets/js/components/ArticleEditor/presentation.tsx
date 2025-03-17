@@ -1,10 +1,10 @@
 import React from "react";
 import { KeyboardEventHandler } from "react";
-import { Tag } from "@/components/tag";
-import { Button } from "@/components/button";
+import { Tag } from "@/components/Tag";
+import { Button } from "@/components/Button";
 import { Article } from "@/types";
 import { useForm } from "@inertiajs/react";
-import { FieldError } from "../fieldError";
+import { FieldError } from "../FieldError";
 
 type Props = {
   defaultValues?: Article;

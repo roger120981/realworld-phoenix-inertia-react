@@ -1,5 +1,5 @@
 import React from "react";
-import { CreateArticleEditor } from "@/components/article-editor";
+import { CreateArticleEditor } from "@/components/ArticleEditor";
 
 const CreateArticle = () => (
   <div className="editor-page">

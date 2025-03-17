@@ -1,7 +1,7 @@
 import React from "react";
 import { usePage, Link } from "@inertiajs/react";
 
-import FlashMessage from "./flash_message";
+import FlashMessage from "./FlashMessage";
 import { CommonPageProps } from "@/types";
 
 const NavLink = (props) => {

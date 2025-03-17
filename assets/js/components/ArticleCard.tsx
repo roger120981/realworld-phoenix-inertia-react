@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Article } from "@/types";
-import { FavoriteButton } from "./articleArea/FavoriteButton";
-import { Tag } from "./tag";
+import { FavoriteButton } from "./ArticleArea/FavoriteButton";
+import { Tag } from "./Tag";
 import { Link } from "@inertiajs/react";
 
 interface Props {

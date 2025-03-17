@@ -3,7 +3,7 @@ defmodule RealworldWeb.ForgotPasswordController do
 
   def index(conn, _params) do
     conn
-    |> render_inertia("ForgotPasswordPage")
+    |> render_inertia("user/ForgotPasswordPage")
   end
 
   def forgot_password(conn, params) do
@@ -13,7 +13,7 @@ defmodule RealworldWeb.ForgotPasswordController do
       :ok ->
         conn
         |> assign_prop(:success, true)
-        |> render_inertia("ForgotPasswordPage")
+        |> render_inertia("user/ForgotPasswordPage")
 
       {:error, errors} ->
         conn

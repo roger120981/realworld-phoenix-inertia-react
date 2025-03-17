@@ -1,4 +1,4 @@
-import { ArticleCard } from "@/components/article-card";
+import { ArticleCard } from "@/components/ArticleCard";
 import { Article, CommonPageProps, User } from "@/types";
 import { Link } from "@inertiajs/react";
 import React from "react";

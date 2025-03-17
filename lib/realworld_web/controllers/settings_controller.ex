@@ -4,10 +4,9 @@ defmodule RealworldWeb.SettingsController do
 
   def show(conn, %{"id" => id}) do
     case Realworld.Accounts.get_user_by_id(id, actor: conn.assigns.current_user) do
-      {:ok, user} ->
+      {:ok, _user} ->
         conn
-        |> UserSerializer.assign_prop("currentUser", user)
-        |> render_inertia("Settings")
+        |> render_inertia("user/Settings")
 
       {:error, %Ash.Error.Query.NotFound{}} ->
         conn
@@ -26,7 +25,7 @@ defmodule RealworldWeb.SettingsController do
       {:ok, user} ->
         conn
         |> UserSerializer.assign_prop("currentUser", user)
-        |> render_inertia("Settings")
+        |> render_inertia("user/Settings")
 
       {:error, errors} ->
         conn

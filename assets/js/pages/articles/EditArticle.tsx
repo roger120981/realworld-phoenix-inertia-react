@@ -1,5 +1,5 @@
 import React from "react";
-import { UpdateArticleEditor } from "@/components/article-editor";
+import { UpdateArticleEditor } from "@/components/ArticleEditor";
 import { Article } from "@/types";
 
 interface Props {

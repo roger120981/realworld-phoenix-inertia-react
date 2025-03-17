@@ -3,7 +3,7 @@ defmodule RealworldWeb.RegistrationController do
 
   def index(conn, _params) do
     conn
-    |> render_inertia("Register")
+    |> render_inertia("user/Register")
   end
 
   def register(conn, params) do

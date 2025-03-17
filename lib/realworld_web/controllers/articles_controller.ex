@@ -6,7 +6,7 @@ defmodule RealworldWeb.ArticlesController do
 
   def new(conn, _params) do
     conn
-    |> render_inertia("CreateArticle")
+    |> render_inertia("articles/CreateArticle")
   end
 
   def edit(conn, %{"slug" => slug}) do
@@ -17,7 +17,7 @@ defmodule RealworldWeb.ArticlesController do
       {:ok, article} ->
         conn
         |> ArticleSerializer.assign_prop("article", article)
-        |> render_inertia("EditArticle")
+        |> render_inertia("articles/EditArticle")
 
       {:error, error} ->
         conn
@@ -41,7 +41,7 @@ defmodule RealworldWeb.ArticlesController do
       {:error, errors} ->
         conn
         |> assign_errors(errors)
-        |> render_inertia("CreateArticle")
+        |> render_inertia("articles/CreateArticle")
     end
   end
 
@@ -56,7 +56,7 @@ defmodule RealworldWeb.ArticlesController do
         |> ArticleSerializer.assign_prop("article", article)
         |> UserSerializer.assign_prop("user", conn.assigns.current_user)
         |> assign_prop("comments", article.comments |> Enum.map(&CommentSerializer.to_map/1))
-        |> render_inertia("ViewArticle")
+        |> render_inertia("articles/ViewArticle")
 
       {:error, %Ash.Error.Query.NotFound{}} ->
         conn
@@ -74,7 +74,7 @@ defmodule RealworldWeb.ArticlesController do
       {:error, errors} ->
         conn
         |> assign_errors(errors)
-        |> render_inertia("ViewArticle")
+        |> render_inertia("articles/ViewArticle")
     end
   end
 
@@ -87,7 +87,7 @@ defmodule RealworldWeb.ArticlesController do
       {:error, errors} ->
         conn
         |> assign_errors(errors)
-        |> render_inertia("ViewArticle")
+        |> render_inertia("articles/ViewArticle")
     end
   end
 
@@ -108,7 +108,7 @@ defmodule RealworldWeb.ArticlesController do
       {:error, errors} ->
         conn
         |> assign_errors(errors)
-        |> render_inertia("EditArticle")
+        |> render_inertia("articles/EditArticle")
     end
   end
 

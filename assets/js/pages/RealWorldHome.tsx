@@ -1,8 +1,8 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Link } from "@inertiajs/react";
-import { GlobalArticleList } from "@/components/global-articles-list";
-import { TagList } from "@/components/tag-list";
+import { GlobalArticleList } from "@/components/GlobalArticlesList";
+import { TagList } from "@/components/TagList";
 import { Article, CommonPageProps } from "@/types";
 
 interface Props extends CommonPageProps {

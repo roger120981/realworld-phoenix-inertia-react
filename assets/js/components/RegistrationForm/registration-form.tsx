@@ -1,7 +1,7 @@
 import React from "react";
-import { Button } from "@/components/button";
+import { Button } from "@/components/Button";
 import { useForm } from "@inertiajs/react";
-import { FieldError } from "../fieldError";
+import { FieldError } from "../FieldError";
 
 export const RegistrationForm = () => {
   const formData = useForm({

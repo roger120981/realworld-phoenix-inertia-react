@@ -15,6 +15,7 @@ defmodule Realworld.Articles do
     resource Realworld.Articles.Comment do
       define :create_comment, action: :create
       define :destroy_comment, action: :destroy
+      define :get_comment_by_id, action: :read, get_by: :id
     end
 
     resource Realworld.Articles.Favorite do

@@ -18,7 +18,7 @@ defmodule RealworldWeb.ProfilesController do
       |> assign_prop(:pages, ceil(page.count / page_limit))
       |> assign_prop(:profile, user |> UserSerializer.to_map())
       |> assign_prop(:following, following(current_user, user))
-      |> render_inertia("ProfilePage")
+      |> render_inertia("user/ProfilePage")
     else
       err ->
         dbg(err)
@@ -38,7 +38,7 @@ defmodule RealworldWeb.ProfilesController do
       {:error, errors} ->
         conn
         |> assign_errors(errors)
-        |> render_inertia("ViewArticle")
+        |> render_inertia("articles/ViewArticle")
     end
   end
 
@@ -51,7 +51,7 @@ defmodule RealworldWeb.ProfilesController do
       {:error, errors} ->
         conn
         |> assign_errors(errors)
-        |> render_inertia("ViewArticle")
+        |> render_inertia("articles/ViewArticle")
     end
   end
 

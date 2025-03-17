@@ -44,6 +44,6 @@ defmodule RealworldWeb.CompareProductsController do
   def index(conn, _params) do
     conn
     |> assign_prop(:products, @products)
-    |> render_inertia("CompareProductsPage")
+    |> render_inertia("insurance/CompareProductsPage")
   end
 end

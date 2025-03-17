@@ -1,6 +1,6 @@
 import { Article } from "@/types";
 import React from "react";
-import { ArticleCard } from "@/components/article-card";
+import { ArticleCard } from "@/components/ArticleCard";
 
 interface Props {
   articles: Article[];

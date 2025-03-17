@@ -1,6 +1,6 @@
 import React from "react";
 import { AlertCircle, CheckCircle2 } from "lucide-react";
-import { Alert, AlertDescription } from "@/components/alert";
+import { Alert, AlertDescription } from "@/components/Alert";
 import {
   Card,
   CardHeader,
@@ -8,7 +8,7 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from "@/components/card";
+} from "@/components/Card";
 import { Link, useForm } from "@inertiajs/react";
 
 const ForgotPasswordForm = ({ success }) => {

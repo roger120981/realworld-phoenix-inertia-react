@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { Link, useForm, usePage } from "@inertiajs/react";
-import { Tag } from "@/components/tag";
-import { Button } from "@/components/button";
+import { Tag } from "@/components/Tag";
+import { Button } from "@/components/Button";
 
 import {
   showDeleteArticleButton,

@@ -3,7 +3,7 @@ import axios from "axios";
 
 import { createInertiaApp } from "@inertiajs/react";
 import { createRoot } from "react-dom/client";
-import Layout from "./components/layout";
+import Layout from "./components/Layout";
 
 import { PhoenixSocketProvider } from "./lib/phoenixSocketContext";
 
