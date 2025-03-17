@@ -57,7 +57,7 @@ const CommentForm = ({ user, article }) => {
 
 const CommentCard = ({ user, comment }) => {
   const deleteComment = (id) => {
-    router.delete(`/comments/${id}`);
+    router.delete(`/comments/${id}`, { preserveScroll: true });
   };
 
   return (
