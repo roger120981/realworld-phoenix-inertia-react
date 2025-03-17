@@ -12,8 +12,8 @@ module.exports = {
     "./js/**/*.jsx",
     "./js/**/*.ts",
     "./js/**/*.tsx",
-    "../lib/conduit_web.ex",
-    "../lib/conduit_web/**/*.*ex",
+    "../lib/realworld_web.ex",
+    "../lib/realworld_web/**/*.*ex",
   ],
   theme: {
     extend: {

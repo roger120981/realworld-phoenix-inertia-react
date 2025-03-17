@@ -1,9 +1,9 @@
-defmodule Conduit.MixProject do
+defmodule Realworld.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :conduit,
+      app: :realworld,
       version: "0.1.0",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -19,7 +19,7 @@ defmodule Conduit.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Conduit.Application, []},
+      mod: {Realworld.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -42,11 +42,11 @@ defmodule Conduit.MixProject do
       {:ash_sqlite, "~> 0.2"},
       {:ash_phoenix, "~> 2.0"},
       {:sourceror, "~> 1.7", only: [:dev, :test]},
-      # {:ash, "~> 3.0"},
-      {:ash, github: "ash-project/ash", override: true},
+      {:ash, "~> 3.0"},
       {:igniter, "~> 0.5", only: [:dev, :test]},
       {:phoenix, "~> 1.7.19"},
       {:phoenix_ecto, "~> 4.5"},
+      {:earmark, "~> 1.4"},
       {:ecto_sql, "~> 3.10"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 4.1"},
@@ -69,7 +69,7 @@ defmodule Conduit.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.26"},
       {:jason, "~> 1.2"},
-      {:dns_cluster, "~> 0.1.1"},
+      {:dns_cluster, "~> 0.2"},
       {:bandit, "~> 1.5"}
     ]
   end
@@ -87,10 +87,10 @@ defmodule Conduit.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ash.setup --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind conduit", "esbuild conduit"],
+      "assets.build": ["tailwind realworld", "esbuild realworld"],
       "assets.deploy": [
-        "tailwind conduit --minify",
-        "esbuild conduit --minify",
+        "tailwind realworld --minify",
+        "esbuild realworld --minify",
         "phx.digest"
       ],
       "ash.setup": ["ash.setup", "run priv/repo/seeds.exs"]
