@@ -47,7 +47,7 @@ defmodule RealworldWeb.ArticlesController do
 
   def show(conn, %{"slug" => slug}) do
     case Realworld.Articles.get_article_by_slug(slug,
-           load: [:user, :favorites_count, :is_favorited, :comments],
+           load: [:user, :favorites_count, :is_favorited, comments: :user],
            actor: conn.assigns.current_user
          ) do
       {:ok, article} ->

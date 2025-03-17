@@ -76,6 +76,7 @@ defmodule RealworldWeb.Router do
       delete "/:slug", ArticlesController, :delete
       post "/:slug/favorite", ArticlesController, :favorite
       post "/:slug/unfavorite", ArticlesController, :unfavorite
+      post "/:slug/comments", CommentsController, :create
     end
 
     scope "/vehicle-details" do

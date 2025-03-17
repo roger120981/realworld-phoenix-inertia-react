@@ -98,7 +98,7 @@ const CommentCard = ({ user, comment }) => (
         {comment.user.username}
       </Link>
       <span className="date-posted">
-        {new Date(comment.created_at).toDateString()}
+        {new Date(comment.createdAt).toDateString()}
       </span>
       {user && user.id == comment.user.id && (
         <span className="mod-options">
@@ -119,7 +119,7 @@ const Comments = (props) => {
         <CommentForm user={user} article={article} />
       )}
       {comments.map((comment) => (
-        <CommentCard user={user} comment={comment} />
+        <CommentCard key={comment.id} user={user} comment={comment} />
       ))}
     </div>
   );

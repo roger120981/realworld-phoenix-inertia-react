@@ -13,6 +13,7 @@ defmodule Realworld.Articles do
     end
 
     resource Realworld.Articles.Comment do
+      define :create_comment, action: :create
       define :destroy_comment, action: :destroy
     end
 
