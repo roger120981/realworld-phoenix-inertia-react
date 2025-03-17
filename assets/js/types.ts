@@ -31,3 +31,10 @@ export interface Article {
   isFavorited?: boolean;
   favoritesCount?: number;
 }
+
+export interface Comment {
+  id: string;
+  body: string;
+  user: User;
+  createdAt: string;
+}

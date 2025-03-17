@@ -2,6 +2,7 @@ defmodule RealworldWeb.ArticlesController do
   use RealworldWeb, :controller
   alias RealworldWeb.ArticleSerializer
   alias RealworldWeb.UserSerializer
+  alias RealworldWeb.CommentSerializer
 
   def new(conn, _params) do
     conn
@@ -46,7 +47,7 @@ defmodule RealworldWeb.ArticlesController do
 
   def show(conn, %{"slug" => slug}) do
     case Realworld.Articles.get_article_by_slug(slug,
-           load: [:user, :favorites_count, :is_favorited],
+           load: [:user, :favorites_count, :is_favorited, :comments],
            actor: conn.assigns.current_user
          ) do
       {:ok, article} ->
@@ -54,6 +55,7 @@ defmodule RealworldWeb.ArticlesController do
         |> assign_prop("slug", slug)
         |> ArticleSerializer.assign_prop("article", article)
         |> UserSerializer.assign_prop("user", conn.assigns.current_user)
+        |> assign_prop("comments", article.comments |> Enum.map(&CommentSerializer.to_map/1))
         |> render_inertia("ViewArticle")
 
       {:error, %Ash.Error.Query.NotFound{}} ->
