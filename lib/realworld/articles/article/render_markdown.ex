@@ -11,6 +11,6 @@ defmodule Realworld.Articles.Changes.RenderMarkdown do
 
   defp render_markdown(changeset) do
     body = changeset |> Changeset.get_attribute(:body_raw) |> Earmark.as_html!()
-    Changeset.change_attribute(changeset, :body, body)
+    Changeset.force_change_attribute(changeset, :body, body)
   end
 end
