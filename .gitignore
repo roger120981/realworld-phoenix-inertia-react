@@ -39,3 +39,6 @@ npm-debug.log
 realworld_dev
 realworld_dev-*
 .elixir_ls/
+realworld_test
+realworld_test-shm
+realworld_test-wal
