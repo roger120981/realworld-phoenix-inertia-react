@@ -9,6 +9,7 @@ defmodule RealworldWeb.UserSocket do
   ## Channels
 
   channel "room:*", RealworldWeb.RoomChannel
+  channel "comments:*", RealworldWeb.CommentsChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
@@ -25,8 +26,9 @@ defmodule RealworldWeb.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   @impl true
-  def connect(_params, socket, _connect_info) do
-    {:ok, socket}
+  def connect(params, socket, _connect_info) do
+    # TODO: Use a token here...
+    {:ok, assign(socket, :user_id, params["user_id"])}
   end
 
   # Socket IDs are topics that allow you to identify all sockets for a given user:
@@ -40,5 +42,5 @@ defmodule RealworldWeb.UserSocket do
   #
   # Returning `nil` makes this socket anonymous.
   @impl true
-  def id(_socket), do: nil
+  def id(socket), do: "users_socket:#{socket.assigns.user_id}"
 end

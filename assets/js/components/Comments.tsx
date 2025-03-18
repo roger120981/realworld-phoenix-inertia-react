@@ -3,6 +3,7 @@ import { Link, useForm, router } from "@inertiajs/react";
 import { FieldError } from "./FieldError";
 import { Article, Comment, User } from "@/types";
 import { Trash2 } from "lucide-react";
+import { useChannel } from "@/lib/useChannel";
 
 const LoginToComment = () => (
   <p>
@@ -99,8 +100,26 @@ interface CommentsProps {
   comments: Comment[];
 }
 
+const useComments = (articleId: string, initialComments: Comment[]) => {
+  const topic = `comments:${articleId}`;
+  const reducer = (comments: Comment[], message: any) => {
+    switch (message.event) {
+      case "comment:created":
+        return [...comments, message.payload];
+      case "comment:destroyed":
+        return comments.filter((x) => x.id !== message.payload.id);
+      default:
+        return comments;
+    }
+  };
+  const [comments, _] = useChannel(topic, reducer, initialComments);
+  return comments;
+};
+
 export const Comments = (props: CommentsProps) => {
-  const { article, user, comments } = props;
+  const { article, user, comments: initialComments } = props;
+  const comments = useComments(article.id, initialComments);
+
   return (
     <div>
       {!user ? (

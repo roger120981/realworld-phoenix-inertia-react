@@ -22,7 +22,7 @@ createInertiaApp({
   },
   setup({ App, el, props }) {
     createRoot(el).render(
-      <PhoenixSocketProvider>
+      <PhoenixSocketProvider userId={props.initialPage?.props?.user?.id}>
         <App {...props} />
       </PhoenixSocketProvider>
     );

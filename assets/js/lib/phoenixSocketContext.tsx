@@ -3,12 +3,13 @@ import { Socket } from "phoenix";
 
 const PhoenixSocketContext = createContext({ socket: null });
 
-const PhoenixSocketProvider = ({ children }) => {
+const PhoenixSocketProvider = ({ children, userId }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     if (!socket) {
-      const newSocket = new Socket("/socket");
+      // TODO: This should be a signed token
+      const newSocket = new Socket("/socket", { params: { userId: userId } });
       newSocket.connect();
       setSocket(newSocket);
     }
