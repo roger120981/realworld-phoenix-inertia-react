@@ -38,7 +38,8 @@ npm-debug.log
 # database files
 realworld_dev
 realworld_dev-*
-.elixir_ls/
 realworld_test
-realworld_test-shm
-realworld_test-wal
+realworld_test-*
+
+# Language Server
+.elixir_ls/
