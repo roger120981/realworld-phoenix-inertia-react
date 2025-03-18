@@ -1,5 +1,5 @@
 defmodule Realworld.Articles do
-  use Ash.Domain, otp_app: :realworld, extensions: [AshGraphql.Domain]
+  use Ash.Domain, otp_app: :realworld
 
   resources do
     resource Realworld.Articles.Article do
