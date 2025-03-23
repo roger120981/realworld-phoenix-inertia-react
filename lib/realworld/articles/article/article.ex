@@ -127,30 +127,6 @@ defmodule Realworld.Articles.Article do
       change Realworld.Articles.Changes.SlugifyTitle
       change Realworld.Articles.Changes.RenderMarkdown
     end
-
-    update :favorite do
-      require_atomic? false
-      accept []
-
-      change after_action(fn _changeset, result, %{actor: actor} ->
-               case Realworld.Articles.favorite(result.id, actor: actor) do
-                 {:ok, _} -> {:ok, result}
-                 {:error, error} -> {:error, error}
-               end
-             end)
-    end
-
-    update :unfavorite do
-      require_atomic? false
-      accept []
-
-      change after_action(fn _changeset, result, %{actor: actor} ->
-               case Realworld.Articles.unfavorite(result.id, actor: actor) do
-                 :ok -> {:ok, result}
-                 {:error, error} -> {:error, error}
-               end
-             end)
-    end
   end
 
   policies do
@@ -164,10 +140,6 @@ defmodule Realworld.Articles.Article do
 
     policy action(:update) do
       authorize_if relates_to_actor_via(:user)
-    end
-
-    policy action([:favorite, :unfavorite]) do
-      authorize_if actor_present()
     end
 
     policy action_type(:destroy) do

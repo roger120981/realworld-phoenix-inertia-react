@@ -3,6 +3,7 @@ import { Article } from "@/types";
 import { FavoriteButton } from "./FavoriteButton";
 import { Tag } from "./Tag";
 import { Link } from "@inertiajs/react";
+import { useChannel } from "@/lib/useChannel";
 
 interface Props {
   article: Article;
@@ -10,6 +11,7 @@ interface Props {
 
 export const ArticleCard = (props: Props) => {
   const article = props.article;
+
   return (
     <div className="article-preview">
       <div className="article-meta">
@@ -25,14 +27,10 @@ export const ArticleCard = (props: Props) => {
           </span>
         </div>
         <FavoriteButton
+          articleId={article.id}
           isFavorited={article.isFavorited}
           favoritesCount={article.favoritesCount}
           showMessage={false}
-          path={
-            article.isFavorited
-              ? `/articles/${article.slug}/unfavorite`
-              : `/articles/${article.slug}/favorite`
-          }
         />
       </div>
       <Link href={`/articles/${article.slug}`} className="preview-link">

@@ -10,6 +10,7 @@ defmodule RealworldWeb.UserSocket do
 
   channel "room:*", RealworldWeb.RoomChannel
   channel "comments:*", RealworldWeb.CommentsChannel
+  channel "favorites:*", RealworldWeb.FavoritesChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
@@ -28,7 +29,15 @@ defmodule RealworldWeb.UserSocket do
   @impl true
   def connect(params, socket, _connect_info) do
     # TODO: Use a token here...
-    {:ok, assign(socket, :user_id, params["user_id"])}
+    user_id = params["userId"]
+
+    user =
+      case user_id do
+        nil -> nil
+        _ -> Realworld.Accounts.get_user_by_id!(params["userId"], authorize?: false)
+      end
+
+    {:ok, assign(socket, :current_user, user)}
   end
 
   # Socket IDs are topics that allow you to identify all sockets for a given user:
@@ -42,5 +51,6 @@ defmodule RealworldWeb.UserSocket do
   #
   # Returning `nil` makes this socket anonymous.
   @impl true
-  def id(socket), do: "users_socket:#{socket.assigns.user_id}"
+  def id(socket = %{assigns: %{current_user: %{id: user_id}}}), do: "users_socket:#{user_id}"
+  def id(_socket), do: nil
 end

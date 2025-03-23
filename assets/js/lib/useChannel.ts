@@ -25,9 +25,7 @@ const joinChannel = (socket, channelTopic, dispatch, setBroadcast) => {
 
   channel
     .join()
-    .receive("ok", ({ messages }) =>
-      console.log("successfully joined channel", messages || "")
-    )
+    .receive("ok", ({ messages }) => {})
     .receive("error", ({ reason }) =>
       console.error("failed to join channel", reason)
     );

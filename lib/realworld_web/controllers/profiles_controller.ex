@@ -21,8 +21,6 @@ defmodule RealworldWeb.ProfilesController do
       |> render_inertia("user/ProfilePage")
     else
       err ->
-        dbg(err)
-
         conn
         |> put_flash(:error, "Unable to fetch articles. Please try again later.")
         |> redirect(to: "/")

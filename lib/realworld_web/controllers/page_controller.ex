@@ -4,6 +4,8 @@ defmodule RealworldWeb.PageController do
   use RealworldWeb, :controller
 
   def home(conn, params) do
+    current_user = conn.assigns.current_user
+
     filter =
       Enum.reduce(params, %{}, fn
         {"tag", tag}, filter -> Map.put(filter, :tag, tag)
@@ -14,21 +16,22 @@ defmodule RealworldWeb.PageController do
 
     conn
     |> assign(:page_title, "Realworld")
-    |> assign_prop(:articles, fn -> list_articles(filter, page) end)
+    |> assign_prop(:articles, fn -> list_articles(filter, page, current_user) end)
     |> assign_prop(:tags, fn -> Realworld.Articles.popular_tags!() end)
     |> assign_prop(:tab, params["tab"])
     |> assign_prop(:tag, params["tag"])
     |> render_inertia("RealWorldHome")
   end
 
-  defp list_articles(filter, page) do
+  defp list_articles(filter, page, current_user) do
     page_size = 10
 
     articles =
       Realworld.Articles.list_articles!(
         %{filter: filter},
         page: [limit: page_size, offset: page_size * (page - 1)],
-        load: [:user, :tags, :is_favorited, :favorites_count]
+        load: [:user, :tags, :is_favorited, :favorites_count],
+        actor: current_user
       )
 
     PageSerializer.to_map(articles, &ArticleSerializer.to_map/1)

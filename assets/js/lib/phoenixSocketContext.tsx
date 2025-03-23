@@ -9,7 +9,8 @@ const PhoenixSocketProvider = ({ children, userId }) => {
   useEffect(() => {
     if (!socket) {
       // TODO: This should be a signed token
-      const newSocket = new Socket("/socket", { params: { userId: userId } });
+      const params = userId ? { userId } : {};
+      const newSocket = new Socket("/socket", { params });
       newSocket.connect();
       setSocket(newSocket);
     }

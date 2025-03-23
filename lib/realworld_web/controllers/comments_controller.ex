@@ -28,8 +28,6 @@ defmodule RealworldWeb.CommentsController do
       |> redirect(to: ~p"/articles/#{comment.article.slug}")
     else
       err ->
-        dbg(err)
-
         conn
         |> put_flash(:error, "Failed to delete comment")
         |> redirect(to: "/")
