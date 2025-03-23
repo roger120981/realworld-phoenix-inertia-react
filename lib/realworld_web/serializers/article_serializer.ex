@@ -1,5 +1,5 @@
 defmodule RealworldWeb.ArticleSerializer do
-  def to_map(article) do
+  def to_map(%Realworld.Articles.Article{} = article) do
     %{
       id: article.id,
       slug: article.slug,
