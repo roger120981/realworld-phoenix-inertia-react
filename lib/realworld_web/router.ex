@@ -39,6 +39,8 @@ defmodule RealworldWeb.Router do
   scope "/", RealworldWeb do
     pipe_through [:browser, :auth_optional]
     get "/", PageController, :home
+    get "/datatable", DataTableController, :index
+
     get "/password-reset/:token", AuthController, :password_reset
     auth_routes AuthController, Realworld.Accounts.User, path: "/auth"
 

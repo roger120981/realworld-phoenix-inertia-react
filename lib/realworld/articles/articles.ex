@@ -58,7 +58,7 @@ defmodule Realworld.Articles do
   end
 
   mix_tasks do
-    action Realworld.Articles.Article, :generate_article, :generate
+    action Realworld.Articles.Article, :generate_article, :generate, arguments: [:count]
     list Realworld.Articles.Article, :list_articles, :read
   end
 end

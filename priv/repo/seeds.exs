@@ -1,11 +1,2 @@
-# Script for populating the database. You can run it as:
-#
-#     mix run priv/repo/seeds.exs
-#
-# Inside the script, you can read and write to any of your
-# repositories directly:
-#
-#     Realworld.Repo.insert!(%Realworld.SomeSchema{})
-#
-# We recommend using the bang functions (`insert!`, `update!`
-# and so on) as they will fail if something goes wrong.
+# Generate 10 users
+{:ok, users} = Realworld.Accounts.User.generate(10)

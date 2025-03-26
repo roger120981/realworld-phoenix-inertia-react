@@ -340,4 +340,8 @@ defmodule Realworld.Accounts.User do
       end
     end
   end
+
+  code_interface do
+    define :generate, args: [:count]
+  end
 end

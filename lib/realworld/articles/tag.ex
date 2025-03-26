@@ -4,9 +4,6 @@ defmodule Realworld.Articles.Tag do
     extensions: [AshGraphql.Resource],
     domain: Realworld.Articles
 
-  @derive {Ymlr.Encoder, except: [:__meta__,   :__lateral_join_source__,  :__metadata__, :__order__, :calculations, :aggregates]}
-
-
   sqlite do
     table "tag"
     repo Realworld.Repo
