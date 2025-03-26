@@ -2,7 +2,8 @@ defmodule Realworld.Accounts do
   require AshAuthentication.Strategies
 
   use Ash.Domain,
-    otp_app: :realworld
+    otp_app: :realworld,
+    extensions: [AshOps]
 
   resources do
     resource Realworld.Accounts.Token
@@ -11,6 +12,11 @@ defmodule Realworld.Accounts do
       define :get_user_by_id, action: :read, get_by: :id
       define :get_user_by_username, action: :get_by_username, args: [:username]
     end
+  end
+
+  mix_tasks do
+    action Realworld.Accounts.User, :generate_user, :generate
+    list Realworld.Accounts.User, :list_users, :read
   end
 
   def sign_in(params) do

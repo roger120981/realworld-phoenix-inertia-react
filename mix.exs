@@ -43,6 +43,7 @@ defmodule Realworld.MixProject do
       {:ash_phoenix, "~> 2.0"},
       {:sourceror, "~> 1.7", only: [:dev, :test]},
       {:ash, "~> 3.0"},
+      {:ash_ops, "~> 0.2"},
       {:igniter, "~> 0.5", only: [:dev, :test]},
       {:phoenix, "~> 1.7.19"},
       {:phoenix_ecto, "~> 4.5"},
@@ -93,7 +94,9 @@ defmodule Realworld.MixProject do
         "esbuild realworld --minify",
         "phx.digest"
       ],
-      "ash.setup": ["ash.setup", "run priv/repo/seeds.exs"]
+      "ash.setup": ["ash.setup", "run priv/repo/seeds.exs"],
+      "gen.user": ["realworld.accounts.generate_user"],
+      "gen.article": ["realworld.articles.generate_article"]
     ]
   end
 end

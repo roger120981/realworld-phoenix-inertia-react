@@ -1,5 +1,7 @@
 defmodule Realworld.Articles do
-  use Ash.Domain, otp_app: :realworld
+  use Ash.Domain,
+    otp_app: :realworld,
+    extensions: [AshOps]
 
   resources do
     resource Realworld.Articles.Article do
@@ -53,5 +55,10 @@ defmodule Realworld.Articles do
       {:ok, result} -> {:ok, result}
       {:error, form} -> {:error, form |> AshPhoenix.Form.errors(format: :simple) |> Map.new()}
     end
+  end
+
+  mix_tasks do
+    action Realworld.Articles.Article, :generate_article, :generate
+    list Realworld.Articles.Article, :list_articles, :read
   end
 end

@@ -270,6 +270,16 @@ defmodule Realworld.Accounts.User do
       change set_context(%{strategy_name: :password})
       change AshAuthentication.Strategy.Password.HashPasswordChange
     end
+
+    action :generate, :map do
+      argument :count, :integer, allow_nil?: false
+      run fn(input, ctx) ->
+        Realworld.Accounts.UserGenerator.user()
+        |> Ash.Generator.generate_many(input.arguments.count)
+        |> Enum.map(& &1 |> Map.from_struct() |> Map.drop([:__meta__,   :__lateral_join_source__,  :__metadata__, :__order__, :calculations, :aggregates]))
+        |> then(& {:ok, &1})
+      end
+    end
   end
 
   policies do
@@ -291,6 +301,10 @@ defmodule Realworld.Accounts.User do
     end
 
     policy action_type([:read]) do
+      authorize_if always()
+    end
+
+    policy action_type([:action]) do
       authorize_if always()
     end
   end

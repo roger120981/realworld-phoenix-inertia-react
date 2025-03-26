@@ -5,6 +5,8 @@ defmodule Realworld.Articles.Article do
     domain: Realworld.Articles,
     extensions: [AshGraphql.Resource]
 
+  @derive {Ymlr.Encoder, except: [:__meta__,   :__lateral_join_source__,  :__metadata__, :__order__, :calculations, :aggregates]}
+
   sqlite do
     table "article"
     repo Realworld.Repo
@@ -85,6 +87,17 @@ defmodule Realworld.Articles.Article do
   actions do
     defaults [:read, :destroy]
 
+    action :generate, :struct do
+      constraints [instance_of: __MODULE__]
+      argument :count, :integer, allow_nil?: false
+      run fn(input, ctx) ->
+        dbg(ctx)
+        Realworld.Articles.ArticleGenerator.article(Ash.Context.to_opts(ctx))
+        |> Ash.Generator.generate_many(input.arguments.count)
+        |> then(& {:ok, &1})
+      end
+    end
+
     read :list_articles do
       argument :filter, :map, allow_nil?: true
       argument :private_feed?, :boolean, allow_nil?: false, default: false
@@ -144,6 +157,10 @@ defmodule Realworld.Articles.Article do
 
     policy action_type(:destroy) do
       authorize_if relates_to_actor_via(:user)
+    end
+
+    policy action_type([:action]) do
+      authorize_if always()
     end
   end
 end
