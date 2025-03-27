@@ -77,11 +77,12 @@ const StatusPill = ({ status }) => {
 
 // Action menu component
 const ActionMenu = ({
+  rowId,
+  isEnabled,
   onEdit,
   onViewVersions,
   onEnable,
   onDelete,
-  isEnabled,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -96,16 +97,16 @@ const ActionMenu = ({
 
     switch (action) {
       case "edit":
-        onEdit();
+        onEdit(rowId, action);
         break;
       case "viewVersions":
-        onViewVersions();
+        onViewVersions(rowId, action);
         break;
       case "enable":
-        onEnable();
+        onEnable(rowId, action);
         break;
       case "delete":
-        onDelete();
+        onDelete(rowId, action);
         break;
       default:
         break;
@@ -161,55 +162,32 @@ const ActionMenu = ({
 const DataTable = ({
   data,
   columns,
+  sortConfig,
+  searchValue,
   onRowSelect,
   onSelectAll,
   onSort,
-  onFilter,
   onSearch,
   onRowAction,
   selectedRows = [],
 }) => {
-  const [searchValue, setSearchValue] = useState("");
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [filtersOpen, setFiltersOpen] = useState(false);
-
-  // Handle sort
-  const handleSort = (columnKey, direction) => {
-    setSortConfig({ key: columnKey, direction });
-    if (onSort) {
-      onSort(columnKey, direction);
-    }
-  };
 
   // Handle search
   const handleSearch = (e) => {
     const value = e.target.value;
-    setSearchValue(value);
-
-    if (onSearch) {
-      onSearch(value);
-    }
+    onSearch(value)
   };
 
   // Handle select all
   const handleSelectAll = (e) => {
-    if (onSelectAll) {
-      onSelectAll(e.target.checked);
-    }
+    onSelectAll(e.target.checked);
   };
 
   // Handle row selection
-  const handleRowSelect = (id, e) => {
-    if (onRowSelect) {
-      onRowSelect(id, e.target.checked);
-    }
-  };
-
-  // Handle row actions
-  const handleRowAction = (id, action) => {
-    if (onRowAction) {
-      onRowAction(id, action);
-    }
+  const handleRowSelect = (e) => {
+    const rowId = Number(e.target.dataset.rowId)
+    onRowSelect(rowId, e.target.checked);
   };
 
   return (
@@ -263,9 +241,9 @@ const DataTable = ({
                   key={column.key}
                   title={column.label}
                   sortable={column.sortable}
-                  sorted={sortConfig.key === column.key}
-                  sortDirection={sortConfig.direction}
-                  onSort={handleSort}
+                  sorted={sortConfig?.key === column.key}
+                  sortDirection={sortConfig?.direction}
+                  onSort={onSort}
                 />
               ))}
 
@@ -289,7 +267,8 @@ const DataTable = ({
                       type="checkbox"
                       className="w-4 h-4 text-blue-600 border-gray-300 rounded"
                       checked={isSelected}
-                      onChange={(e) => handleRowSelect(row.id, e)}
+                      data-row-id={row.id}
+                      onChange={handleRowSelect}
                     />
                   </td>
 
@@ -313,12 +292,11 @@ const DataTable = ({
                   <td className="p-3 text-right">
                     <ActionMenu
                       isEnabled={row.status === "Enabled"}
-                      onEdit={() => handleRowAction(row.id, "edit")}
-                      onViewVersions={() =>
-                        handleRowAction(row.id, "viewVersions")
-                      }
-                      onEnable={() => handleRowAction(row.id, "enable")}
-                      onDelete={() => handleRowAction(row.id, "delete")}
+                      rowId={row.id}
+                      onEdit={onRowAction}
+                      onViewVersions={onRowAction}
+                      onEnable={onRowAction}
+                      onDelete={onRowAction}
                     />
                   </td>
                 </tr>

@@ -1,88 +1,27 @@
 import React, { useState, useEffect } from "react";
 import DataTable from "@/components/DataTable";
+import { router } from "@inertiajs/react";
 
-const DatasetPage = () => {
-  // Sample data matching the screenshot
-  const initialData = [
-    {
-      id: 1,
-      name: "Contact properties",
-      workspace: "Workspace 1, Workspace 2",
-      type: "System",
-      elements: 12,
-      version: 1,
-      lastModified: "2023-04-15",
-      attachedTo: "Programs",
-      status: "Enabled",
-    },
-    {
-      id: 2,
-      name: "Regional questions",
-      workspace: "Workspace 1",
-      type: "System",
-      elements: 45,
-      version: 5,
-      lastModified: "2022-11-30",
-      attachedTo: "Contacts",
-      status: "Enabled",
-    },
-    {
-      id: 3,
-      name: "Skills",
-      workspace: "Workspace 2",
-      type: "System",
-      elements: 45,
-      version: 5,
-      lastModified: "2022-11-30",
-      attachedTo: "Contacts",
-      status: "Enabled",
-    },
-    {
-      id: 4,
-      name: "Delegation properties",
-      workspace: "Workspace 1, Workspace 2",
-      type: "System",
-      elements: 31,
-      version: 1,
-      lastModified: "2021-07-22",
-      attachedTo: "Users",
-      status: "Enabled",
-    },
-    {
-      id: 5,
-      name: "Automatic scoring",
-      workspace: "Workspace 2",
-      type: "System",
-      elements: 4,
-      version: 5,
-      lastModified: "2020-03-11",
-      attachedTo: "Project",
-      status: "Disabled",
-    },
-    {
-      id: 6,
-      name: "Organization information",
-      workspace: "Workspace 2",
-      type: "Custom",
-      elements: 4,
-      version: 5,
-      lastModified: "2020-03-11",
-      attachedTo: "Project",
-      status: "Enabled",
-    },
-    {
-      id: 7,
-      name: "Budget info",
-      workspace: "Workspace 2",
-      type: "Custom",
-      elements: 4,
-      version: 5,
-      lastModified: "2020-03-11",
-      attachedTo: "Project",
-      status: "Disabled",
-    },
-  ];
+interface Props {
+  items:  {
+    id: number
+    name: string
+    workspace: string
+    type: string
+    elements: number
+    version: number
+    lastModified: string
+    attachedTo: string
+    status: "Enabled" | "Disabled"
+  }[],
+  sort: {
+    key: "name" | "workspace" | "type" | "elements" | "version" | "lastModified" | "status"
+    direction: "asc" | "desc"
+  }  | null,
+  search: string
+}
 
+const DatasetPage = ({items: data, sort, search}: Props) => {
   // Define table columns
   const columns = [
     { key: "name", label: "NAME", sortable: true },
@@ -96,56 +35,7 @@ const DatasetPage = () => {
   ];
 
   // State for data management
-  const [data, setData] = useState(initialData);
-  const [filteredData, setFilteredData] = useState(initialData);
   const [selectedRows, setSelectedRows] = useState([]);
-  const [filterParams, setFilterParams] = useState({});
-  const [sortParams, setSortParams] = useState({ key: null, direction: "asc" });
-  const [searchQuery, setSearchQuery] = useState("");
-
-  // Apply filters, sorting, and search to the data
-  useEffect(() => {
-    let result = [...data];
-
-    // Apply search
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      result = result.filter(
-        (item) =>
-          item.name.toLowerCase().includes(query) ||
-          item.workspace.toLowerCase().includes(query) ||
-          item.type.toLowerCase().includes(query) ||
-          item.attachedTo.toLowerCase().includes(query)
-      );
-    }
-
-    // Apply filters
-    Object.entries(filterParams).forEach(([key, value]) => {
-      if (value) {
-        result = result.filter((item) => String(item[key]) === String(value));
-      }
-    });
-
-    // Apply sorting
-    if (sortParams.key) {
-      result.sort((a, b) => {
-        const aValue = a[sortParams.key];
-        const bValue = b[sortParams.key];
-
-        if (typeof aValue === "string") {
-          return sortParams.direction === "asc"
-            ? aValue.localeCompare(bValue)
-            : bValue.localeCompare(aValue);
-        } else {
-          return sortParams.direction === "asc"
-            ? aValue - bValue
-            : bValue - aValue;
-        }
-      });
-    }
-
-    setFilteredData(result);
-  }, [data, filterParams, sortParams, searchQuery]);
 
   // Handler for row selection
   const handleRowSelect = (id, isSelected) => {
@@ -156,46 +46,22 @@ const DatasetPage = () => {
 
   // Handler for "select all" checkbox
   const handleSelectAll = (isSelected) => {
-    setSelectedRows(isSelected ? filteredData.map((row) => row.id) : []);
+    setSelectedRows(isSelected ? data.map((row) => row.id) : []);
   };
 
   // Handler for sorting
   const handleSort = (key, direction) => {
-    setSortParams({ key, direction });
-  };
-
-  // Handler for filtering
-  const handleFilter = (filters) => {
-    setFilterParams(filters);
+    router.reload({data: {sort: key, sort_dir: direction}})
   };
 
   // Handler for search
   const handleSearch = (query) => {
-    setSearchQuery(query);
+    router.reload({data: {search: query}})
   };
 
   // Handler for row actions
   const handleRowAction = (id, action) => {
     console.log(`Action: ${action} on row with ID: ${id}`);
-
-    // Example implementation for some actions
-    switch (action) {
-      case "enable":
-        setData((prev) =>
-          prev.map((row) =>
-            row.id === id ? { ...row, status: "Enabled" } : row
-          )
-        );
-        break;
-      case "delete":
-        setData((prev) => prev.filter((row) => row.id !== id));
-        setSelectedRows((prev) => prev.filter((rowId) => rowId !== id));
-        break;
-      default:
-        // For other actions like 'edit', 'viewVersions', etc.
-        // You would typically navigate to another page or open a modal
-        break;
-    }
   };
 
   // Create dataset handler
@@ -216,13 +82,14 @@ const DatasetPage = () => {
       </div>
 
       <DataTable
-        data={filteredData}
+        data={data}
         columns={columns}
         selectedRows={selectedRows}
+        sortConfig={sort}
+        searchValue={search}
         onRowSelect={handleRowSelect}
         onSelectAll={handleSelectAll}
         onSort={handleSort}
-        onFilter={handleFilter}
         onSearch={handleSearch}
         onRowAction={handleRowAction}
       />
