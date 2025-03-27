@@ -90,9 +90,11 @@ defmodule RealworldWeb.DataTableController do
   end
 
   defp apply_search(data, search) do
+    search = String.downcase(search)
+
     Enum.filter(data, fn item ->
       Enum.any?(item, fn {_key, value} ->
-        is_binary(value) and value =~ search
+        is_binary(value) and String.downcase(value) =~ search
       end)
     end)
   end

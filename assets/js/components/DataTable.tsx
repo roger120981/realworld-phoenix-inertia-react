@@ -83,17 +83,17 @@ const ActionMenu = ({
   onViewVersions,
   onEnable,
   onDelete,
+  menuOpen,
+  setMenuOpen,
 }) => {
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  const toggleMenu = (e) => {
+  const handleMenuClick = (e) => {
     e.stopPropagation();
-    setMenuOpen(!menuOpen);
+    setMenuOpen(rowId, !menuOpen);
   };
 
   const handleAction = (action, e) => {
     e.stopPropagation();
-    setMenuOpen(false);
+    setMenuOpen(rowId, false);
 
     switch (action) {
       case "edit":
@@ -116,7 +116,7 @@ const ActionMenu = ({
   return (
     <div className="relative">
       <button
-        onClick={toggleMenu}
+        onClick={handleMenuClick}
         className="p-1 text-gray-500 hover:text-gray-700"
       >
         <MoreVertical size={16} />
@@ -171,12 +171,12 @@ const DataTable = ({
   onRowAction,
   selectedRows = [],
 }) => {
-  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [menuOpenRowId, setMenuOpenRowId] = useState(null);
 
   // Handle search
   const handleSearch = (e) => {
     const value = e.target.value;
-    onSearch(value)
+    onSearch(value);
   };
 
   // Handle select all
@@ -186,7 +186,7 @@ const DataTable = ({
 
   // Handle row selection
   const handleRowSelect = (e) => {
-    const rowId = Number(e.target.dataset.rowId)
+    const rowId = Number(e.target.dataset.rowId);
     onRowSelect(rowId, e.target.checked);
   };
 
@@ -297,6 +297,8 @@ const DataTable = ({
                       onViewVersions={onRowAction}
                       onEnable={onRowAction}
                       onDelete={onRowAction}
+                      menuOpen={menuOpenRowId === row.id}
+                      setMenuOpen={setMenuOpenRowId}
                     />
                   </td>
                 </tr>

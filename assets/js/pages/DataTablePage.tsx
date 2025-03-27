@@ -39,6 +39,7 @@ const DatasetPage = ({items: data, sort, search}: Props) => {
 
   // Handler for row selection
   const handleRowSelect = (id, isSelected) => {
+    console.log({id, isSelected})
     setSelectedRows((prev) =>
       isSelected ? [...prev, id] : prev.filter((rowId) => rowId !== id)
     );
