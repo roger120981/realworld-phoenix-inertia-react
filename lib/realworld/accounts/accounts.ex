@@ -5,6 +5,11 @@ defmodule Realworld.Accounts do
     otp_app: :realworld,
     extensions: [AshOps]
 
+  mix_tasks do
+    action Realworld.Accounts.User, :generate_user, :generate
+    list Realworld.Accounts.User, :list_users, :read
+  end
+
   resources do
     resource Realworld.Accounts.Token
 
@@ -12,11 +17,6 @@ defmodule Realworld.Accounts do
       define :get_user_by_id, action: :read, get_by: :id
       define :get_user_by_username, action: :get_by_username, args: [:username]
     end
-  end
-
-  mix_tasks do
-    action Realworld.Accounts.User, :generate_user, :generate
-    list Realworld.Accounts.User, :list_users, :read
   end
 
   def sign_in(params) do

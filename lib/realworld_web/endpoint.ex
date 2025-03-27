@@ -16,9 +16,8 @@ defmodule RealworldWeb.Endpoint do
     longpoll: [connect_info: [session: @session_options]]
 
   socket "/socket", RealworldWeb.UserSocket,
-      websocket: true,
-      longpoll: false
-
+    websocket: true,
+    longpoll: false
 
   # Serve at "/" the static files from "priv/static" directory.
   #

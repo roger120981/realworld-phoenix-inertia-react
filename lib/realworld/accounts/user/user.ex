@@ -273,13 +273,29 @@ defmodule Realworld.Accounts.User do
 
     action :generate, :map do
       argument :count, :integer, allow_nil?: false
-      run fn(input, ctx) ->
+
+      run fn input, ctx ->
         Realworld.Accounts.UserGenerator.user()
         |> Ash.Generator.generate_many(input.arguments.count)
-        |> Enum.map(& &1 |> Map.from_struct() |> Map.drop([:__meta__,   :__lateral_join_source__,  :__metadata__, :__order__, :calculations, :aggregates]))
-        |> then(& {:ok, &1})
+        |> Enum.map(
+          &(&1
+            |> Map.from_struct()
+            |> Map.drop([
+              :__meta__,
+              :__lateral_join_source__,
+              :__metadata__,
+              :__order__,
+              :calculations,
+              :aggregates
+            ]))
+        )
+        |> then(&{:ok, &1})
       end
     end
+  end
+
+  code_interface do
+    define :generate, args: [:count]
   end
 
   policies do
@@ -339,9 +355,5 @@ defmodule Realworld.Accounts.User do
         sender Realworld.Accounts.User.Senders.SendNewUserConfirmationEmail
       end
     end
-  end
-
-  code_interface do
-    define :generate, args: [:count]
   end
 end

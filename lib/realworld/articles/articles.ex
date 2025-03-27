@@ -3,6 +3,11 @@ defmodule Realworld.Articles do
     otp_app: :realworld,
     extensions: [AshOps]
 
+  mix_tasks do
+    action(Realworld.Articles.Article, :generate_article, :generate, arguments: [:count])
+    list Realworld.Articles.Article, :list_articles, :read
+  end
+
   resources do
     resource Realworld.Articles.Article do
       define :get_article_by_slug, action: :read, get_by: :slug
@@ -35,10 +40,6 @@ defmodule Realworld.Articles do
     resource Realworld.Articles.Tag
   end
 
-  authorization do
-    authorize :by_default
-  end
-
   def publish(params, opts) do
     action(Realworld.Articles.Article, :publish, params, opts)
   end
@@ -57,8 +58,7 @@ defmodule Realworld.Articles do
     end
   end
 
-  mix_tasks do
-    action Realworld.Articles.Article, :generate_article, :generate, arguments: [:count]
-    list Realworld.Articles.Article, :list_articles, :read
+  authorization do
+    authorize :by_default
   end
 end

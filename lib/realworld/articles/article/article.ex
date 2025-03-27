@@ -86,12 +86,13 @@ defmodule Realworld.Articles.Article do
     defaults [:read, :destroy]
 
     action :generate, :struct do
-      constraints [instance_of: __MODULE__]
+      constraints instance_of: __MODULE__
       argument :count, :integer, allow_nil?: false
-      run fn(input, ctx) ->
+
+      run fn input, ctx ->
         Realworld.Articles.ArticleGenerator.article(Ash.Context.to_opts(ctx))
         |> Ash.Generator.generate_many(input.arguments.count)
-        |> then(& {:ok, &1})
+        |> then(&{:ok, &1})
       end
     end
 

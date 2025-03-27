@@ -9,11 +9,13 @@ defmodule Realworld.Articles.ArticleGenerator do
       defaults: [
         title: StreamData.repeatedly(fn -> Faker.Lorem.sentence(3..6) end),
         description: StreamData.repeatedly(fn -> Faker.Lorem.paragraph(1..2) end),
-        body_raw: StreamData.repeatedly(fn -> Faker.Lorem.paragraphs(3..5) |> Enum.join("\n\n") end),
-        tags: StreamData.repeatedly(fn ->
-          Faker.Lorem.words(3)
-          |> Enum.map(&%{name: &1})
-        end)
+        body_raw:
+          StreamData.repeatedly(fn -> Faker.Lorem.paragraphs(3..5) |> Enum.join("\n\n") end),
+        tags:
+          StreamData.repeatedly(fn ->
+            Faker.Lorem.words(3)
+            |> Enum.map(&%{name: &1})
+          end)
       ],
       overrides: opts,
       actor: opts[:actor]
