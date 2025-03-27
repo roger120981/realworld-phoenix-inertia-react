@@ -1,27 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DataTable from "@/components/DataTable";
 import { router } from "@inertiajs/react";
 
 interface Props {
-  items:  {
-    id: number
-    name: string
-    workspace: string
-    type: string
-    elements: number
-    version: number
-    lastModified: string
-    attachedTo: string
-    status: "Enabled" | "Disabled"
-  }[],
+  items: {
+    id: number;
+    name: string;
+    workspace: string;
+    type: string;
+    elements: number;
+    version: number;
+    lastModified: string;
+    attachedTo: string;
+    status: "Enabled" | "Disabled";
+  }[];
   sort: {
-    key: "name" | "workspace" | "type" | "elements" | "version" | "lastModified" | "status"
-    direction: "asc" | "desc"
-  }  | null,
-  search: string
+    key:
+      | "name"
+      | "workspace"
+      | "type"
+      | "elements"
+      | "version"
+      | "lastModified"
+      | "status";
+    direction: "asc" | "desc";
+  } | null;
+  search: string;
 }
 
-const DatasetPage = ({items: data, sort, search}: Props) => {
+const DatasetPage = ({ items: data, sort, search }: Props) => {
   // Define table columns
   const columns = [
     { key: "name", label: "NAME", sortable: true },
@@ -39,7 +46,7 @@ const DatasetPage = ({items: data, sort, search}: Props) => {
 
   // Handler for row selection
   const handleRowSelect = (id, isSelected) => {
-    console.log({id, isSelected})
+    console.log({ id, isSelected });
     setSelectedRows((prev) =>
       isSelected ? [...prev, id] : prev.filter((rowId) => rowId !== id)
     );
@@ -52,12 +59,18 @@ const DatasetPage = ({items: data, sort, search}: Props) => {
 
   // Handler for sorting
   const handleSort = (key, direction) => {
-    router.reload({data: {sort: key, sort_dir: direction}})
+    router.reload({
+      only: ["items", "sort"],
+      data: { sort: key, sort_dir: direction },
+    });
   };
 
   // Handler for search
   const handleSearch = (query) => {
-    router.reload({data: {search: query}})
+    router.reload({
+      only: ["items", "search"],
+      data: { search: query },
+    });
   };
 
   // Handler for row actions
