@@ -67,7 +67,7 @@ defmodule RealworldWeb.ArticlesController do
 
   def favorite(conn, %{"slug" => slug}) do
     with {:ok, %{id: id}} <- Realworld.Articles.get_article_by_slug(slug),
-         {:ok, thing} <- Realworld.Articles.favorite(id, actor: conn.assigns.current_user) do
+         {:ok, _thing} <- Realworld.Articles.favorite(id, actor: conn.assigns.current_user) do
       conn
       |> redirect(to: ~p"/articles/#{slug}")
     else
@@ -100,7 +100,7 @@ defmodule RealworldWeb.ArticlesController do
 
     with {:ok, article} <-
            Realworld.Articles.get_article_by_slug(slug, actor: conn.assigns.current_user),
-         {:ok, updated_article} <-
+         {:ok, _updated_article} <-
            Realworld.Articles.update(article, params, actor: conn.assigns.current_user) do
       conn
       |> redirect(to: ~p"/articles/#{slug}")

@@ -20,7 +20,7 @@ defmodule RealworldWeb.ProfilesController do
       |> assign_prop(:following, following(current_user, user))
       |> render_inertia("user/ProfilePage")
     else
-      err ->
+      _err ->
         conn
         |> put_flash(:error, "Unable to fetch articles. Please try again later.")
         |> redirect(to: "/")
@@ -29,7 +29,7 @@ defmodule RealworldWeb.ProfilesController do
 
   def follow(conn, %{"slug" => slug}) do
     with {:ok, %{id: id}} <- Realworld.Articles.get_article_by_slug(slug),
-         {:ok, thing} <- Realworld.Articles.favorite(id, actor: conn.assigns.current_user) do
+         {:ok, _thing} <- Realworld.Articles.favorite(id, actor: conn.assigns.current_user) do
       conn
       |> redirect(to: ~p"/articles/#{slug}")
     else

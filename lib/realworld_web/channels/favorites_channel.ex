@@ -10,6 +10,9 @@ defmodule RealworldWeb.FavoritesChannel do
 
       Phoenix.PubSub.subscribe(Realworld.PubSub, "article:favorited:#{article_id}")
       Phoenix.PubSub.subscribe(Realworld.PubSub, "article:unfavorited:#{article_id}")
+
+      send(self(), :after_join)
+
       {:ok, socket}
     else
       {:error, %{reason: "unauthorized"}}
@@ -31,6 +34,26 @@ defmodule RealworldWeb.FavoritesChannel do
     )
 
     {:reply, {:ok, %{}}, socket}
+  end
+
+  # Send the current state immediately after joining.
+  # This addresses the issue with Inertia pages being shown with stale
+  # props when navigating by history back / forward.
+  @impl true
+  def handle_info(:after_join, socket) do
+    article =
+      Ash.get!(Realworld.Articles.Article, socket.assigns.article_id,
+        load: [:favorites_count, :is_favorited],
+        actor: socket.assigns.current_user
+      )
+
+    push(socket, "article", %{
+      "articleId" => article.id,
+      "favoritesCount" => article.favorites_count,
+      "isFavorited" => article.is_favorited
+    })
+
+    {:noreply, socket}
   end
 
   @impl true

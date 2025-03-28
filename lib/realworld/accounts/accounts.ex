@@ -6,7 +6,7 @@ defmodule Realworld.Accounts do
     extensions: [AshOps]
 
   mix_tasks do
-    action Realworld.Accounts.User, :generate_user, :generate
+    action(Realworld.Accounts.Generator, :generate_user, :generate_user, arguments: [:count])
     list Realworld.Accounts.User, :list_users, :read
   end
 
@@ -17,6 +17,8 @@ defmodule Realworld.Accounts do
       define :get_user_by_id, action: :read, get_by: :id
       define :get_user_by_username, action: :get_by_username, args: [:username]
     end
+
+    resource Realworld.Accounts.Generator
   end
 
   def sign_in(params) do
@@ -26,7 +28,7 @@ defmodule Realworld.Accounts do
       {:ok, user} ->
         {:ok, user}
 
-      {:error, error} ->
+      {:error, _error} ->
         {:error, %{email: "Could not be found"}}
     end
   end

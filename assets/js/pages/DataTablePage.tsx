@@ -42,19 +42,27 @@ const DatasetPage = ({ items: data, sort, search }: Props) => {
   ];
 
   // State for data management
-  const [selectedRows, setSelectedRows] = useState([]);
+  const [selectedRows, setSelectedRows] = useState(new Set<number>());
 
   // Handler for row selection
   const handleRowSelect = (id, isSelected) => {
-    console.log({ id, isSelected });
-    setSelectedRows((prev) =>
-      isSelected ? [...prev, id] : prev.filter((rowId) => rowId !== id)
-    );
+    setSelectedRows((prev) => {
+      // A Set data structure would be better here
+      const set = new Set(prev);
+      if (isSelected) {
+        set.add(id);
+      } else {
+        set.delete(id);
+      }
+      return set;
+    });
   };
 
   // Handler for "select all" checkbox
   const handleSelectAll = (isSelected) => {
-    setSelectedRows(isSelected ? data.map((row) => row.id) : []);
+    setSelectedRows(
+      isSelected ? new Set(data.map((row) => row.id)) : new Set()
+    );
   };
 
   // Handler for sorting

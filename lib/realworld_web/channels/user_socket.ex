@@ -51,6 +51,6 @@ defmodule RealworldWeb.UserSocket do
   #
   # Returning `nil` makes this socket anonymous.
   @impl true
-  def id(socket = %{assigns: %{current_user: %{id: user_id}}}), do: "users_socket:#{user_id}"
+  def id(_socket = %{assigns: %{current_user: %{id: user_id}}}), do: "users_socket:#{user_id}"
   def id(_socket), do: nil
 end

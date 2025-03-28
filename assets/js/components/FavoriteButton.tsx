@@ -12,6 +12,7 @@ const useFavorite = (
   const topic = `favorites:${articleId}`;
   const reducer = (state, message: any) => {
     switch (message.event) {
+      case "article":
       case "article:favorited":
       case "article:unfavorited":
         const { isFavorited, favoritesCount } = message.payload;

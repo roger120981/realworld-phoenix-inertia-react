@@ -4,7 +4,10 @@ defmodule Realworld.Articles do
     extensions: [AshOps]
 
   mix_tasks do
-    action(Realworld.Articles.Article, :generate_article, :generate, arguments: [:count])
+    action(Realworld.Articles.Generator, :generate_article, :generate_article,
+      arguments: [:count]
+    )
+
     list Realworld.Articles.Article, :list_articles, :read
   end
 
@@ -38,6 +41,7 @@ defmodule Realworld.Articles do
     end
 
     resource Realworld.Articles.Tag
+    resource Realworld.Articles.Generator
   end
 
   def publish(params, opts) do

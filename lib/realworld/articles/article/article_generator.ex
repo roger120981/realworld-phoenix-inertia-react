@@ -14,6 +14,7 @@ defmodule Realworld.Articles.ArticleGenerator do
         tags:
           StreamData.repeatedly(fn ->
             Faker.Lorem.words(3)
+            |> Enum.uniq()
             |> Enum.map(&%{name: &1})
           end)
       ],

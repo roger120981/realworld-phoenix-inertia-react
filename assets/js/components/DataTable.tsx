@@ -169,7 +169,7 @@ const DataTable = ({
   onSort,
   onSearch,
   onRowAction,
-  selectedRows = [],
+  selectedRows = new Set(),
 }) => {
   const [menuOpenRowId, setMenuOpenRowId] = useState(null);
 
@@ -210,7 +210,7 @@ const DataTable = ({
         <div className="flex space-x-2">
           <button
             className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-            onClick={() => setFiltersOpen(!filtersOpen)}
+            onClick={() => {}}
           >
             <Filter size={16} className="mr-1" />
             Filters
@@ -230,8 +230,7 @@ const DataTable = ({
                   className="w-4 h-4 text-blue-600 border-gray-300 rounded"
                   onChange={handleSelectAll}
                   checked={
-                    selectedRows.length > 0 &&
-                    selectedRows.length === data.length
+                    selectedRows.size > 0 && selectedRows.size === data.length
                   }
                 />
               </th>
@@ -253,7 +252,7 @@ const DataTable = ({
 
           <tbody className="bg-white divide-y divide-gray-200">
             {data.map((row) => {
-              const isSelected = selectedRows.includes(row.id);
+              const isSelected = selectedRows.has(row.id);
 
               return (
                 <tr
