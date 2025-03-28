@@ -54,14 +54,10 @@ const Actions = ({ article, currentUser }: ActionsProps) => {
         />
       )}
       <FavoriteButton
+        articleId={article.id}
         isFavorited={article.isFavorited || false}
         favoritesCount={article.favoritesCount}
         showMessage={true}
-        path={
-          article.isFavorited
-            ? `/articles/${article.slug}/unfavorite`
-            : `/articles/${article.slug}/favorite`
-        }
       />
       {showEditArticleButton(profile.username, currentUser) && (
         <Button
