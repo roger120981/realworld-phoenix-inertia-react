@@ -3,7 +3,7 @@ alias Realworld.Accounts.UserGenerator
 alias Realworld.Articles.ArticleGenerator
 
 # Generate 10 users
-{:ok, users} = Generator.generate_many(UserGenerator.user(), 10)
+users = Generator.generate_many(UserGenerator.user(), 10)
 
 # Generate 3 articles for each user
 Enum.each(users, fn user ->
