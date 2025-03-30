@@ -1,11 +1,16 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { usePage, Link } from "@inertiajs/react";
 
 import FlashMessage from "./FlashMessage";
 import { CommonPageProps } from "@/types";
 import { Cog, FilePlus } from "lucide-react";
+import { PhoenixSocketProvider } from "@/lib/phoenixSocketContext";
 
-const NavLink = (props) => {
+interface NavLinkProps {
+  href: string;
+  children: ReactNode;
+}
+const NavLink = (props: NavLinkProps) => {
   const className =
     window.location.pathname == props.href ? "nav-link active" : "nav-link";
 
@@ -16,13 +21,16 @@ const NavLink = (props) => {
   );
 };
 
-export default function Layout({ children }) {
+interface LayoutProps {
+  children: ReactNode;
+}
+export default function Layout({ children }: LayoutProps) {
   const page = usePage<CommonPageProps>();
   const flash = page.props.flash;
   const user = page.props.user;
 
   return (
-    <>
+    <PhoenixSocketProvider userId={user?.id}>
       <header>
         <nav className="navbar navbar-light">
           <div className="container">
@@ -93,6 +101,6 @@ export default function Layout({ children }) {
           </span>
         </div>
       </footer>
-    </>
+    </PhoenixSocketProvider>
   );
 }

@@ -89,7 +89,7 @@ config :inertia,
   # Instruct the client side whether to encrypt the page object in the window history
   # state. This can also be set/overridden on a per-request basis, using the `encrypt_history`
   # controller helper. Defaults to `false`.
-  history: [encrypt: false],
+  history: [encrypt: true],
 
   # Enable server-side rendering for page responses (requires some additional setup,
   # see instructions below). Defaults to `false`.

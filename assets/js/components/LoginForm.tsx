@@ -1,10 +1,10 @@
-import React from "react";
+import React, { ChangeEvent, FormEvent } from "react";
 import { Button } from "@/components/Button";
 import { useForm } from "@inertiajs/react";
 
 export const LoginForm = () => {
   const formData = useForm({ email: "", password: "" });
-  const handleInput = (e) => {
+  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { name, value } = e.target;
     formData.setData((prev) => ({
@@ -12,7 +12,7 @@ export const LoginForm = () => {
       [name]: value,
     }));
   };
-  const handleSubmit = (e: SubmitEvent) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     formData.post("/login");
   };

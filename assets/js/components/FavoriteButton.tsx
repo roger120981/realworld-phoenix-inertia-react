@@ -2,16 +2,20 @@ import React from "react";
 import { Button } from "@/components/Button";
 import { Heart } from "lucide-react";
 import { useChannel } from "@/lib/useChannel";
-import { useRemember } from "@inertiajs/react";
+
+type FavoriteState = { isFavorited: boolean; favoritesCount: number };
+type FavoriteActions = { favorite: () => void; unfavorite: () => void };
 
 const useFavorite = (
   articleId: string,
   initialCount: number,
   initialIsFavorited: boolean
-) => {
+): [FavoriteState, FavoriteActions] => {
   const topic = `favorites:${articleId}`;
-  const reducer = (state, message: any) => {
+  const reducer = (state: FavoriteState, message: any) => {
     switch (message.event) {
+      case "closed":
+        return { ...state, isFavorited: false };
       case "article":
       case "article:favorited":
       case "article:unfavorited":
@@ -27,10 +31,10 @@ const useFavorite = (
   });
   const actions = {
     favorite() {
-      broadcast("favorite");
+      broadcast("favorite", {});
     },
     unfavorite() {
-      broadcast("unfavorite");
+      broadcast("unfavorite", {});
     },
   };
   return [state, actions];
@@ -44,8 +48,6 @@ interface FavoriteButtonProps {
 }
 
 export const FavoriteButton = (props: FavoriteButtonProps) => {
-  // TODO: favorite state from props being updated locally should use
-  // the useRemember hook to keep history updated.
   const [{ favoritesCount, isFavorited }, favoriteApi] = useFavorite(
     props.articleId,
     props.favoritesCount ?? 0,

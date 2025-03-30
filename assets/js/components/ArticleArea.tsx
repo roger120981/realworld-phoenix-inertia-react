@@ -1,13 +1,17 @@
 import React, { ReactNode } from "react";
-import { Link, useForm, usePage } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
 import { Tag } from "@/components/Tag";
 import { Button } from "@/components/Button";
 import { Article, User } from "@/types";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { DeleteArticleButton } from "@/components/DeleteArticleButton";
-import { Edit, Edit2Icon, Plus } from "lucide-react";
+import { Edit, Plus } from "lucide-react";
 
-const FollowButton = (props) => {
+interface FollowButtonProps {
+  username: string;
+  following: boolean;
+}
+const FollowButton = (_props: FollowButtonProps) => {
   return (
     <button className="btn btn-sm btn-outline-primary action-btn">
       <Plus className="inline h-[1rem]" />
@@ -30,28 +34,25 @@ interface ActionsProps {
 
 const Actions = ({ article, currentUser }: ActionsProps) => {
   const profile = article.author;
+  if (!profile) {
+    return null;
+  }
 
   return (
     <div className="article-meta">
-      {profile && (
-        <Link href={`/profile/${profile.username}`}>
-          {profile.image && <img src={profile.image} alt="" />}
-        </Link>
-      )}
+      <Link href={`/profile/${profile.username}`}>
+        {profile.image && <img src={profile.image} alt="" />}
+      </Link>
       <div className="info">
         <Link href={`/profile/${profile.username}`} className="author">
           {profile.username}
         </Link>
         <span className="date">
-          {new Date(article.createdAt).toDateString()}
+          {article.createdAt && new Date(article.createdAt).toDateString()}
         </span>
       </div>
       {showFollowButton(profile.username, currentUser) && (
-        <FollowButton
-          username={profile.username}
-          following={false}
-          className={"action-btn"}
-        />
+        <FollowButton username={profile.username} following={false} />
       )}
       <FavoriteButton
         articleId={article.id}

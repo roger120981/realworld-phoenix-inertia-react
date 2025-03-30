@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent, FormEvent } from "react";
 import { KeyboardEventHandler } from "react";
 import { Tag } from "@/components/Tag";
 import { Button } from "@/components/Button";
@@ -6,22 +6,26 @@ import { Article } from "@/types";
 import { useForm } from "@inertiajs/react";
 import { FieldError } from "./FieldError";
 
-type Props = {
-  defaultValues?: Article;
-  path: string;
-};
-
 export const CreateArticleEditor = () => {
   return <ArticleEditor path="/articles" />;
 };
 
-export const UpdateArticleEditor = ({ article }) => {
+interface UpdateArticleProps {
+  article: Article;
+}
+
+export const UpdateArticleEditor = ({ article }: UpdateArticleProps) => {
   return (
     <ArticleEditor path={`/articles/${article.slug}`} defaultValues={article} />
   );
 };
 
-export const ArticleEditor = ({ defaultValues, path }: Props) => {
+interface ArticleEditorProps {
+  defaultValues?: Article;
+  path: string;
+}
+
+export const ArticleEditor = ({ defaultValues, path }: ArticleEditorProps) => {
   const formData = useForm({
     slug: defaultValues?.slug || "",
     title: defaultValues?.title || "",
@@ -30,7 +34,9 @@ export const ArticleEditor = ({ defaultValues, path }: Props) => {
     tags: defaultValues?.tags || [],
   });
 
-  const handleInput = (e) => {
+  const handleInput = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     e.preventDefault();
     const { name, value } = e.target;
     formData.setData((prev) => ({
@@ -39,7 +45,7 @@ export const ArticleEditor = ({ defaultValues, path }: Props) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     formData.post(path);
   };

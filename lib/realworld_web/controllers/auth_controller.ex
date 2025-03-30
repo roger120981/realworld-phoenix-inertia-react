@@ -47,8 +47,12 @@ defmodule RealworldWeb.AuthController do
   def logout(conn, _params) do
     return_to = get_session(conn, :return_to) || ~p"/"
 
+    current_user = conn.assigns.current_user
+    RealworldWeb.Endpoint.broadcast("user_socket:#{current_user.id}", "disconnect", %{})
+
     conn
     |> clear_session()
+    |> Inertia.Controller.clear_history(true)
     |> put_flash(:info, "You are now signed out")
     |> redirect(to: return_to)
   end

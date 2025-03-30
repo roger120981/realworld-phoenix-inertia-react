@@ -1,11 +1,12 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import { Button } from "@/components/Button";
-import { useForm } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 
 export const LogoutButton = () => {
   const formData = useForm();
-  const handleSubmit = (e: SubmitEvent) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    router.clearHistory();
     formData.post(`/logout`);
   };
   return (
