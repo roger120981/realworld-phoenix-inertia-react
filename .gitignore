@@ -43,3 +43,6 @@ realworld_test-*
 
 # Language Server
 .elixir_ls/
+
+# Local dev cert
+priv/cert/
