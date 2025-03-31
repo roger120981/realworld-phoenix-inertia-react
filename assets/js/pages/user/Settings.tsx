@@ -1,9 +1,11 @@
 import React from "react";
 import { SettingsForm } from "@/components/SettingsForm";
 import { LogoutButton } from "@/components/LogoutButton";
-import { CommonPageProps, User } from "@/types";
+import { User } from "@/types";
 
-interface Props extends CommonPageProps {}
+interface Props {
+  user: User;
+}
 
 const Page = ({ user }: Props) => {
   return (

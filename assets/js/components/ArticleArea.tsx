@@ -3,9 +3,13 @@ import { Link } from "@inertiajs/react";
 import { Tag } from "@/components/Tag";
 import { Button } from "@/components/Button";
 import { Article, User } from "@/types";
-import { FavoriteButton } from "@/components/FavoriteButton";
+import {
+  FavoriteButton,
+  FavoriteButtonDisplay,
+} from "@/components/FavoriteButton";
 import { DeleteArticleButton } from "@/components/DeleteArticleButton";
 import { Edit, Plus } from "lucide-react";
+import { FavoriteActions, FavoriteState, useFavorite } from "@/lib/useFavorite";
 
 interface FollowButtonProps {
   username: string;
@@ -30,9 +34,16 @@ interface ArticleAreaProps {
 interface ActionsProps {
   article: Article;
   currentUser: User;
+  favoriteData: FavoriteState;
+  favoriteActions: FavoriteActions;
 }
 
-const Actions = ({ article, currentUser }: ActionsProps) => {
+const Actions = ({
+  article,
+  favoriteData,
+  favoriteActions,
+  currentUser,
+}: ActionsProps) => {
   const profile = article.author;
   if (!profile) {
     return null;
@@ -54,10 +65,12 @@ const Actions = ({ article, currentUser }: ActionsProps) => {
       {showFollowButton(profile.username, currentUser) && (
         <FollowButton username={profile.username} following={false} />
       )}
-      <FavoriteButton
+      <FavoriteButtonDisplay
         articleId={article.id}
-        isFavorited={article.isFavorited || false}
-        favoritesCount={article.favoritesCount}
+        isFavorited={favoriteData.isFavorited}
+        favoritesCount={favoriteData.favoritesCount}
+        favorite={favoriteActions.favorite}
+        unfavorite={favoriteActions.unfavorite}
         showMessage={true}
       />
       {showEditArticleButton(profile.username, currentUser) && (
@@ -83,12 +96,22 @@ export const ArticleArea = ({
   children,
   currentUser,
 }: ArticleAreaProps) => {
+  const [favoriteData, favoriteActions] = useFavorite(
+    article.id,
+    article.favoritesCount ?? 0,
+    article.isFavorited ?? false
+  );
   return (
     <div className="article-page">
       <div className="banner">
         <div className="container">
           <h1>{article.title}</h1>
-          <Actions article={article} currentUser={currentUser} />
+          <Actions
+            article={article}
+            favoriteData={favoriteData}
+            favoriteActions={favoriteActions}
+            currentUser={currentUser}
+          />
         </div>
       </div>
 
@@ -107,7 +130,12 @@ export const ArticleArea = ({
         </div>
         <hr />
         <div className="article-actions">
-          <Actions article={article} currentUser={currentUser} />
+          <Actions
+            article={article}
+            favoriteData={favoriteData}
+            favoriteActions={favoriteActions}
+            currentUser={currentUser}
+          />
         </div>
         {children}
       </div>
