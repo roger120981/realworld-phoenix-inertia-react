@@ -92,6 +92,8 @@ defmodule RealworldWeb.Router do
     delete "/:slug", ArticlesController, :delete
     post "/:slug/favorite", ArticlesController, :favorite
     post "/:slug/unfavorite", ArticlesController, :unfavorite
+    post "/:slug/follow", ArticlesController, :follow
+    post "/:slug/unfollow", ArticlesController, :unfollow
     post "/:slug/comments", CommentsController, :create
   end
 

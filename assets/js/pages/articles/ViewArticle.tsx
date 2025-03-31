@@ -4,8 +4,8 @@ import { Article, Comment, User } from "@/types";
 import { Comments } from "@/components/Comments";
 
 interface Props {
-  slug: string;
   article: Article;
+  following: boolean;
   comments: Comment[];
   user: User;
 }
@@ -13,9 +13,9 @@ interface Props {
 const ViewArticlePage = (props: Props) => {
   return (
     <ArticleArea
-      slug={props.slug}
       article={props.article}
       currentUser={props.user}
+      following={props.following}
     >
       <div className="row">
         <div className="col-xs-12 col-md-8 offset-md-2">

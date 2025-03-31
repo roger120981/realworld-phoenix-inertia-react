@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import { Tag } from "@/components/Tag";
 import { Button } from "@/components/Button";
 import { Article, User } from "@/types";
@@ -12,22 +12,48 @@ import { Edit, Plus } from "lucide-react";
 import { FavoriteActions, FavoriteState, useFavorite } from "@/lib/useFavorite";
 
 interface FollowButtonProps {
+  slug: string;
   username: string;
   following: boolean;
 }
-const FollowButton = (_props: FollowButtonProps) => {
-  return (
-    <button className="btn btn-sm btn-outline-primary action-btn">
+const FollowButton = (props: FollowButtonProps) => {
+  return props.following ? (
+    <Button
+      component="button"
+      className="btn btn-sm btn-outline-primary action-btn"
+      onClick={() =>
+        router.post(
+          `/articles/${props.slug}/unfollow`,
+          {},
+          { preserveScroll: true, only: ["following"] }
+        )
+      }
+    >
+      <Plus className="inline h-[1rem]" />
+      Unfollow
+    </Button>
+  ) : (
+    <Button
+      component="button"
+      className="btn btn-sm btn-outline-primary action-btn"
+      onClick={() =>
+        router.post(
+          `/articles/${props.slug}/follow`,
+          {},
+          { preserveScroll: true, only: ["following"] }
+        )
+      }
+    >
       <Plus className="inline h-[1rem]" />
       Follow
-    </button>
+    </Button>
   );
 };
 
 interface ArticleAreaProps {
-  slug: string;
   article: Article;
   currentUser: User;
+  following: boolean;
   children: ReactNode;
 }
 
@@ -36,6 +62,7 @@ interface ActionsProps {
   currentUser: User;
   favoriteData: FavoriteState;
   favoriteActions: FavoriteActions;
+  following: boolean;
 }
 
 const Actions = ({
@@ -43,6 +70,7 @@ const Actions = ({
   favoriteData,
   favoriteActions,
   currentUser,
+  following,
 }: ActionsProps) => {
   const profile = article.author;
   if (!profile) {
@@ -63,7 +91,11 @@ const Actions = ({
         </span>
       </div>
       {showFollowButton(profile.username, currentUser) && (
-        <FollowButton username={profile.username} following={false} />
+        <FollowButton
+          slug={article.slug}
+          username={profile.username}
+          following={following}
+        />
       )}
       <FavoriteButtonDisplay
         articleId={article.id}
@@ -91,10 +123,10 @@ const Actions = ({
 };
 
 export const ArticleArea = ({
-  slug,
   article,
   children,
   currentUser,
+  following,
 }: ArticleAreaProps) => {
   const [favoriteData, favoriteActions] = useFavorite(
     article.id,
@@ -111,6 +143,7 @@ export const ArticleArea = ({
             favoriteData={favoriteData}
             favoriteActions={favoriteActions}
             currentUser={currentUser}
+            following={following}
           />
         </div>
       </div>
@@ -135,6 +168,7 @@ export const ArticleArea = ({
             favoriteData={favoriteData}
             favoriteActions={favoriteActions}
             currentUser={currentUser}
+            following={following}
           />
         </div>
         {children}

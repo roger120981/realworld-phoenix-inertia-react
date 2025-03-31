@@ -12,7 +12,12 @@ const LoginToComment = () => (
   </p>
 );
 
-const CommentForm = ({ user, article }) => {
+interface CommentFormProps {
+  user: User;
+  article: Article;
+}
+
+const CommentForm = ({ user, article }: CommentFormProps) => {
   const formData = useForm({
     body: "",
   });
@@ -30,6 +35,7 @@ const CommentForm = ({ user, article }) => {
     e.preventDefault();
     formData.post(`/articles/${article.slug}/comments`, {
       preserveScroll: true,
+      only: ["comments"],
     });
     formData.reset();
   };
@@ -55,9 +61,16 @@ const CommentForm = ({ user, article }) => {
   );
 };
 
-const CommentCard = ({ user, comment }) => {
-  const deleteComment = (id) => {
-    router.delete(`/comments/${id}`, { preserveScroll: true });
+interface CommentCardProps {
+  user: User;
+  comment: Comment;
+}
+const CommentCard = ({ user, comment }: CommentCardProps) => {
+  const deleteComment = (id: string) => {
+    router.delete(`/comments/${id}`, {
+      preserveScroll: true,
+      only: ["comments"],
+    });
   };
 
   return (

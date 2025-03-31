@@ -46,18 +46,26 @@ defmodule RealworldWeb.ArticlesController do
   end
 
   def show(conn, %{"slug" => slug}) do
-    case Realworld.Articles.get_article_by_slug(slug,
-           load: [:user, :favorites_count, :is_favorited, comments: :user],
-           actor: conn.assigns.current_user
-         ) do
-      {:ok, article} ->
-        conn
-        |> assign_prop("slug", slug)
-        |> ArticleSerializer.assign_prop("article", article)
-        |> UserSerializer.assign_prop("user", conn.assigns.current_user)
-        |> assign_prop("comments", article.comments |> Enum.map(&CommentSerializer.to_map/1))
-        |> render_inertia("articles/ViewArticle")
+    current_user = conn.assigns.current_user
 
+    with {:ok, article} <-
+           Realworld.Articles.get_article_by_slug(slug,
+             load: [:user, :favorites_count, :is_favorited, comments: :user],
+             actor: current_user
+           ),
+         {:ok, following} <-
+           Realworld.Profiles.following(article.user_id,
+             actor: current_user,
+             not_found_error?: false
+           ) do
+      conn
+      |> assign_prop("slug", slug)
+      |> ArticleSerializer.assign_prop("article", article)
+      |> UserSerializer.assign_prop("user", current_user)
+      |> assign_prop("following", following != nil)
+      |> assign_prop("comments", article.comments |> Enum.map(&CommentSerializer.to_map/1))
+      |> render_inertia("articles/ViewArticle")
+    else
       {:error, %Ash.Error.Query.NotFound{}} ->
         conn
         |> put_flash(:error, "We couldn't find that article")
@@ -81,6 +89,32 @@ defmodule RealworldWeb.ArticlesController do
   def unfavorite(conn, %{"slug" => slug}) do
     with {:ok, %{id: id}} <- Realworld.Articles.get_article_by_slug(slug),
          :ok <- Realworld.Articles.unfavorite(id, actor: conn.assigns.current_user) do
+      conn
+      |> redirect(to: ~p"/articles/#{slug}")
+    else
+      {:error, errors} ->
+        conn
+        |> assign_errors(errors)
+        |> render_inertia("articles/ViewArticle")
+    end
+  end
+
+  def follow(conn, %{"slug" => slug}) do
+    with {:ok, %{user_id: user_id}} <- Realworld.Articles.get_article_by_slug(slug),
+         {:ok, _thing} <- Realworld.Profiles.follow(user_id, actor: conn.assigns.current_user) do
+      conn
+      |> redirect(to: ~p"/articles/#{slug}")
+    else
+      {:error, errors} ->
+        conn
+        |> assign_errors(errors)
+        |> render_inertia("articles/ViewArticle")
+    end
+  end
+
+  def unfollow(conn, %{"slug" => slug}) do
+    with {:ok, %{user_id: user_id}} <- Realworld.Articles.get_article_by_slug(slug),
+         :ok <- Realworld.Profiles.unfollow(user_id, actor: conn.assigns.current_user) do
       conn
       |> redirect(to: ~p"/articles/#{slug}")
     else
