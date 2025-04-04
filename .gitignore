@@ -44,5 +44,8 @@ realworld_test-*
 # Language Server
 .elixir_ls/
 
+# VS Code settings
+.vscode/settings.json
+
 # Local dev cert
 priv/cert/
