@@ -4,8 +4,8 @@ defmodule Realworld.Articles.Generator do
     domain: Realworld.Articles
 
   actions do
-    action :generate_article, :struct do
-      constraints instance_of: __MODULE__
+    action :generate_article, {:array, :struct} do
+      constraints items: [instance_of: Realworld.Articles.Article]
       argument :count, :integer, allow_nil?: false
 
       run fn input, ctx ->

@@ -29,7 +29,7 @@ defmodule RealworldWeb.ChannelCase do
   end
 
   setup tags do
-    Conduit.DataCase.setup_sandbox(tags)
+    Realworld.DataCase.setup_sandbox(tags)
     :ok
   end
 end

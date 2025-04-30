@@ -4,7 +4,8 @@ defmodule Realworld.Accounts.Generator do
     domain: Realworld.Accounts
 
   actions do
-    action :generate_user, {:array, :map} do
+    action :generate_user, {:array, :struct} do
+      constraints items: [instance_of: Realworld.Accounts.User]
       argument :count, :integer, allow_nil?: false
 
       run fn input, ctx ->
