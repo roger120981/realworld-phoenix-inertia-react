@@ -3,13 +3,13 @@ defmodule RealworldWeb.PageControllerTest do
   import Ash.Generator
 
   test "GET /", %{conn: conn} do
-    props = conn = conn |> get(~p"/") |> Inertia.Testing.inertia_props()
+    props = conn |> get(~p"/") |> Inertia.Testing.inertia_props()
     assert props.articles.results == []
   end
 
   test "GET / with articles", %{conn: conn} do
     user = generate(Realworld.Accounts.UserGenerator.user())
-    article = generate(Realworld.Articles.ArticleGenerator.article(actor: user))
+    _article = generate(Realworld.Articles.ArticleGenerator.article(actor: user))
 
     props = conn |> get(~p"/") |> Inertia.Testing.inertia_props()
     assert [article] = props.articles.results
