@@ -33,6 +33,7 @@ defmodule Realworld.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:tidewave, "~> 0.1", only: [:dev]},
       {:faker, "~> 0.18"},
       {:inertia, "~> 2.0"},
       {:bcrypt_elixir, "~> 3.0"},

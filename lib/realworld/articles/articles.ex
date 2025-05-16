@@ -4,9 +4,7 @@ defmodule Realworld.Articles do
     extensions: [AshOps]
 
   mix_tasks do
-    action(Realworld.Articles.Generator, :generate_article, :generate_article,
-      arguments: [:count]
-    )
+    action Realworld.Articles.Generator, :generate_article, :generate_article, arguments: [:count]
 
     list Realworld.Articles.Article, :list_articles, :read
   end
