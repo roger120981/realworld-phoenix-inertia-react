@@ -6,7 +6,7 @@ defmodule Realworld.Accounts do
     extensions: [AshOps]
 
   mix_tasks do
-    action(Realworld.Accounts.Generator, :generate_user, :generate_user, arguments: [:count])
+    action Realworld.Accounts.Generator, :generate_user, :generate_user, arguments: [:count]
     list Realworld.Accounts.User, :list_users, :read
   end
 
