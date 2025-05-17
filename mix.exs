@@ -44,7 +44,7 @@ defmodule Realworld.MixProject do
       {:ash_phoenix, "~> 2.0"},
       {:ash_ops, github: "ash-project/ash_ops"},
       {:sourceror, "~> 1.7", only: [:dev, :test]},
-      {:ash, "~> 3.0"},
+      {:ash, github: "ash-project/ash", override: true},
       {:igniter, "~> 0.5", only: [:dev, :test]},
       {:phoenix, "~> 1.7.19"},
       {:phoenix_ecto, "~> 4.5"},
