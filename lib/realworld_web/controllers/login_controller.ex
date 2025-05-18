@@ -15,9 +15,9 @@ defmodule RealworldWeb.LoginController do
         |> AshAuthentication.Phoenix.Plug.store_in_session(user)
         |> redirect(to: ~p"/")
 
-      {:error, errors} ->
+      {:error, %Ash.Error.Forbidden{}} ->
         conn
-        |> assign_errors(errors)
+        |> put_flash(:error, "Invalid username or password")
         |> redirect(to: ~p"/login")
     end
   end
