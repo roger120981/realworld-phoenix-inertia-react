@@ -54,8 +54,7 @@ defmodule RealworldWeb.ArticlesController do
              actor: current_user
            ),
          {:ok, following} <-
-           Realworld.Profiles.following(article.user_id,
-             actor: current_user,
+           Realworld.Profiles.following(article.user_id, get_in(current_user.id),
              not_found_error?: false
            ) do
       conn

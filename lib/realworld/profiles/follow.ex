@@ -45,7 +45,11 @@ defmodule Realworld.Profiles.Follow do
         allow_nil? false
       end
 
-      filter expr(user_id == ^actor(:id) and target_id == ^arg(:target_id))
+      argument :actor_id, :uuid do
+        allow_nil? true
+      end
+
+      filter expr(user_id == ^arg(:actor_id) and target_id == ^arg(:target_id))
     end
 
     create :follow do
