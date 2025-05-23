@@ -6,7 +6,8 @@ defmodule RealworldWeb.CommentSerializer do
       id: comment.id,
       body: comment.body,
       createdAt: comment.created_at,
-      user: UserSerializer.to_map(comment.user)
+      user: UserSerializer.to_map(comment.user),
+      reactions: comment.reaction_counts
     }
   end
 end

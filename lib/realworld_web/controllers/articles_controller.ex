@@ -50,7 +50,7 @@ defmodule RealworldWeb.ArticlesController do
 
     with {:ok, article} <-
            Realworld.Articles.get_article_by_slug(slug,
-             load: [:user, :favorites_count, :is_favorited, comments: :user],
+             load: [:user, :favorites_count, :is_favorited, comments: [:user, :reaction_counts]],
              actor: current_user
            ),
          {:ok, following} <-
@@ -62,7 +62,7 @@ defmodule RealworldWeb.ArticlesController do
       |> ArticleSerializer.assign_prop("article", article)
       |> UserSerializer.assign_prop("user", current_user)
       |> assign_prop("following", following != nil)
-      |> assign_prop("comments", article.comments |> Enum.map(&CommentSerializer.to_map/1))
+      |> assign_prop("comments", Enum.map(article.comments, &CommentSerializer.to_map/1))
       |> render_inertia("articles/ViewArticle")
     else
       {:error, %Ash.Error.Query.NotFound{}} ->

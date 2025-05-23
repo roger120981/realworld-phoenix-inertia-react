@@ -14,6 +14,7 @@ defmodule RealworldWeb.ResourceSerializer do
   """
   @spec to_map(any()) :: nil | serialized_resource | list(serialized_resource)
   def to_map(nil), do: nil
+  def to_map(%Ash.NotLoaded{}), do: nil
 
   def to_map(resource) when is_list(resource), do: Enum.map(resource, &to_map/1)
 

@@ -4,6 +4,7 @@ import { FieldError } from "./FieldError";
 import { Article, Comment, User } from "@/types";
 import { Trash2 } from "lucide-react";
 import { useChannel } from "@/lib/useChannel";
+import { CommentReactions } from "./CommentReactions";
 
 const LoginToComment = () => (
   <p>
@@ -77,6 +78,11 @@ const CommentCard = ({ user, comment }: CommentCardProps) => {
     <div className="card" id={comment.id}>
       <div className="card-block">
         <p className="card-text">{comment.body}</p>
+        <CommentReactions
+          commentId={comment.id}
+          reactions={comment.reactions}
+          isLoggedIn={!!user}
+        />
       </div>
       <div className="card-footer">
         <Link

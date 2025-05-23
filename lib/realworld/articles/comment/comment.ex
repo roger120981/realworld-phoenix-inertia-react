@@ -22,12 +22,20 @@ defmodule Realworld.Articles.Comment do
     update_timestamp :updated_at
   end
 
+  calculations do
+    calculate :reaction_counts, :map, {Realworld.Articles.Calculations.ReactionCounts, []} do
+      public? true
+    end
+  end
+
   relationships do
     belongs_to :article, Realworld.Articles.Article do
       allow_nil? false
     end
 
     belongs_to :user, Realworld.Accounts.User
+
+    has_many :reactions, Realworld.Articles.Reaction
   end
 
   actions do

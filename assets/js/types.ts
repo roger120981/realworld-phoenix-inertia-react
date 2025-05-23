@@ -32,9 +32,29 @@ export interface Article {
   favoritesCount?: number;
 }
 
+export type ReactionType =
+  | "like"
+  | "laugh"
+  | "love"
+  | "clap"
+  | "wow"
+  | "sad"
+  | "angry";
+
+export interface ReactionCounts {
+  like?: number;
+  laugh?: number;
+  love?: number;
+  clap?: number;
+  wow?: number;
+  sad?: number;
+  angry?: number;
+}
+
 export interface Comment {
   id: string;
   body: string;
   user: User;
   createdAt: string;
+  reactions?: ReactionCounts;
 }

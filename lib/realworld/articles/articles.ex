@@ -11,6 +11,7 @@ defmodule Realworld.Articles do
 
   resources do
     resource Realworld.Articles.Article do
+      define :publish
       define :get_article_by_slug, action: :read, get_by: :slug
       define :list_articles
       define :destroy_article, action: :destroy
@@ -40,10 +41,16 @@ defmodule Realworld.Articles do
 
     resource Realworld.Articles.Tag
     resource Realworld.Articles.Generator
-  end
 
-  def publish(params, opts) do
-    action(Realworld.Articles.Article, :publish, params, opts)
+    resource Realworld.Articles.Reaction do
+      define :react, action: :react, args: [:comment_id, :type]
+      define :unreact, action: :unreact
+      define :get_reactions_by_comment, action: :reactions_by_comment, args: [:comment_id]
+
+      define :get_reaction_by_user_and_comment,
+        action: :reaction_by_user_and_comment,
+        args: [:comment_id]
+    end
   end
 
   def update(article, params, opts) do
