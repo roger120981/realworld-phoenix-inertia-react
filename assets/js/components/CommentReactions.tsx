@@ -29,17 +29,20 @@ interface ReactionIconProps {
   type: ReactionType;
   count: number;
   onClick: () => void;
+  isSelected?: boolean;
 }
 
 interface CommentReactionsProps {
   commentId: string;
   reactions?: ReactionCounts;
   isLoggedIn: boolean;
+  userReaction?: ReactionType | null;
 }
 
 interface ReactionMenuProps {
   isOpen: boolean;
   onReact: (type: ReactionType) => void;
+  userReaction?: ReactionType | null;
 }
 
 // Individual reaction icon component
@@ -47,12 +50,15 @@ const ReactionIcon: React.FC<ReactionIconProps> = ({
   type,
   count,
   onClick,
+  isSelected = false,
 }) => {
   return (
     <div className="relative group">
       <button
         onClick={onClick}
-        className="flex items-center gap-1 px-2 py-1 rounded-full text-sm hover:bg-gray-100"
+        className={`flex items-center gap-1 px-2 py-1 rounded-full text-sm hover:bg-gray-100 ${
+          isSelected ? "bg-blue-100 border-blue-300 border" : ""
+        }`}
       >
         <span>{emojis[type]}</span>
         {count > 0 && <span>{count}</span>}
@@ -62,7 +68,7 @@ const ReactionIcon: React.FC<ReactionIconProps> = ({
 };
 
 // Reaction menu component
-const ReactionMenu: React.FC<ReactionMenuProps> = ({ isOpen, onReact }) => {
+const ReactionMenu: React.FC<ReactionMenuProps> = ({ isOpen, onReact, userReaction }) => {
   if (!isOpen) return null;
 
   return (
@@ -73,7 +79,9 @@ const ReactionMenu: React.FC<ReactionMenuProps> = ({ isOpen, onReact }) => {
           <button
             key={type}
             onClick={() => onReact(type)}
-            className="p-2 hover:bg-gray-100 rounded-full"
+            className={`p-2 hover:bg-gray-100 rounded-full ${
+              userReaction === type ? "bg-blue-100 border-blue-300 border" : ""
+            }`}
             title={type.charAt(0).toUpperCase() + type.slice(1)}
           >
             <span>{emoji}</span>
@@ -88,7 +96,8 @@ const ReactionMenu: React.FC<ReactionMenuProps> = ({ isOpen, onReact }) => {
 const ExistingReactions: React.FC<{
   reactions: ReactionCounts;
   onReact: (type: ReactionType) => void;
-}> = ({ reactions, onReact }) => {
+  userReaction?: ReactionType | null;
+}> = ({ reactions, onReact, userReaction }) => {
   return (
     <>
       {reactionTypes.map((type) => {
@@ -101,6 +110,7 @@ const ExistingReactions: React.FC<{
               type={type}
               count={count}
               onClick={() => onReact(type)}
+              isSelected={userReaction === type}
             />
           </div>
         );
@@ -115,7 +125,8 @@ const AddReactionButton: React.FC<{
   toggleOpen: () => void;
   menuRef: React.RefObject<HTMLDivElement | null>;
   onReact: (type: ReactionType) => void;
-}> = ({ isOpen, toggleOpen, menuRef, onReact }) => {
+  userReaction?: ReactionType | null;
+}> = ({ isOpen, toggleOpen, menuRef, onReact, userReaction }) => {
   return (
     <div className="relative" ref={menuRef}>
       <button
@@ -125,7 +136,7 @@ const AddReactionButton: React.FC<{
       >
         <span>+</span>
       </button>
-      <ReactionMenu isOpen={isOpen} onReact={onReact} />
+      <ReactionMenu isOpen={isOpen} onReact={onReact} userReaction={userReaction} />
     </div>
   );
 };
@@ -154,10 +165,14 @@ export const CommentReactions: React.FC<CommentReactionsProps> = ({
   commentId,
   reactions = {},
   isLoggedIn,
+  userReaction,
 }) => {
   const [isReactionMenuOpen, setIsReactionMenuOpen] = useState(false);
   const [currentReactions, setCurrentReactions] = useState<ReactionCounts>(
     reactions || {}
+  );
+  const [currentUserReaction, setCurrentUserReaction] = useState<ReactionType | null>(
+    userReaction || null
   );
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -176,6 +191,9 @@ export const CommentReactions: React.FC<CommentReactionsProps> = ({
       if (response.data?.reactions) {
         setCurrentReactions(response.data.reactions);
       }
+      if (response.data?.userReaction) {
+        setCurrentUserReaction(response.data.userReaction);
+      }
       setIsReactionMenuOpen(false);
     } catch (error) {
       console.error("Failed to react:", error);
@@ -189,7 +207,11 @@ export const CommentReactions: React.FC<CommentReactionsProps> = ({
   return (
     <div className="mt-2">
       <div className="flex flex-wrap gap-1">
-        <ExistingReactions reactions={currentReactions} onReact={handleReact} />
+        <ExistingReactions 
+          reactions={currentReactions} 
+          onReact={handleReact}
+          userReaction={currentUserReaction} 
+        />
 
         {isLoggedIn && (
           <AddReactionButton
@@ -197,6 +219,7 @@ export const CommentReactions: React.FC<CommentReactionsProps> = ({
             toggleOpen={toggleReactionMenu}
             menuRef={menuRef}
             onReact={handleReact}
+            userReaction={currentUserReaction}
           />
         )}
       </div>

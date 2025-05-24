@@ -82,6 +82,7 @@ const CommentCard = ({ user, comment }: CommentCardProps) => {
           commentId={comment.id}
           reactions={comment.reactions}
           isLoggedIn={!!user}
+          userReaction={comment.userReaction}
         />
       </div>
       <div className="card-footer">

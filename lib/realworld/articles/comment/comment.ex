@@ -26,6 +26,10 @@ defmodule Realworld.Articles.Comment do
     calculate :reaction_counts, :map, {Realworld.Articles.Calculations.ReactionCounts, []} do
       public? true
     end
+
+    calculate :user_reaction, :atom, {Realworld.Articles.Calculations.UserReaction, []} do
+      public? true
+    end
   end
 
   relationships do

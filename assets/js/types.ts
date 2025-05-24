@@ -57,4 +57,5 @@ export interface Comment {
   user: User;
   createdAt: string;
   reactions?: ReactionCounts;
+  userReaction?: ReactionType | null;
 }

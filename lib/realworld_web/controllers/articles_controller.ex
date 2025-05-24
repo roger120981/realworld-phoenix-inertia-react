@@ -50,7 +50,7 @@ defmodule RealworldWeb.ArticlesController do
 
     with {:ok, article} <-
            Realworld.Articles.get_article_by_slug(slug,
-             load: [:user, :favorites_count, :is_favorited, comments: [:user, :reaction_counts]],
+             load: [:user, :favorites_count, :is_favorited, comments: [:user, :reaction_counts, :user_reaction]],
              actor: current_user
            ),
          {:ok, following} <-
