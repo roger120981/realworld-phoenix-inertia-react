@@ -118,6 +118,7 @@ defmodule RealworldWeb.Router do
 
       live_dashboard "/dashboard", metrics: RealworldWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
+      get "/error-test", RealworldWeb.ErrorTestController, :index
     end
   end
 end

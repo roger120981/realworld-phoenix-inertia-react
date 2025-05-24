@@ -4,8 +4,13 @@ import axios from "axios";
 import { createInertiaApp } from "@inertiajs/react";
 import { createRoot } from "react-dom/client";
 import Layout from "./components/Layout";
+import { ErrorBoundary } from "./components/ErrorBoundary";
+import { setupGlobalErrorHandlers } from "./lib/errorUtils";
 
 axios.defaults.xsrfHeaderName = "x-csrf-token";
+
+// Setup global error handlers
+setupGlobalErrorHandlers();
 
 createInertiaApp({
   progress: {
@@ -19,6 +24,10 @@ createInertiaApp({
     return page;
   },
   setup({ App, el, props }) {
-    createRoot(el).render(<App {...props} />);
+    createRoot(el).render(
+      <ErrorBoundary>
+        <App {...props} />
+      </ErrorBoundary>
+    );
   },
 });
