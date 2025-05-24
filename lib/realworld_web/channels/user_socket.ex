@@ -11,6 +11,7 @@ defmodule RealworldWeb.UserSocket do
   channel "room:*", RealworldWeb.RoomChannel
   channel "comments:*", RealworldWeb.CommentsChannel
   channel "favorites:*", RealworldWeb.FavoritesChannel
+  channel "reactions:*", RealworldWeb.ReactionsChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After

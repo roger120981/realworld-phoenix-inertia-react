@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ReactionType, ReactionCounts } from "../types";
-import axios from "axios";
+import { useReactions } from "../lib/useReactions";
 
 // Map reaction types to emojis
 const emojis: Record<ReactionType, string> = {
@@ -168,48 +168,7 @@ const useOutsideClickHandler = (
   }, [ref, callback]);
 };
 
-const handleRemoveReaction = async (
-  commentId: string,
-  updateReactionState: (data: any) => unknown,
-) => {
-  try {
-    const response = await axios.delete(`/comments/${commentId}/react`);
-    updateReactionState(response.data);
-  } catch (error) {
-    console.error("Failed to remove reaction:", error);
-  }
-};
 
-const handleAddOrChangeReaction = async (
-  commentId: string,
-  type: ReactionType,
-  updateReactionState: (data: any) => unknown,
-) => {
-  try {
-    const response = await axios.post(`/comments/${commentId}/react`, {
-      type,
-    });
-    updateReactionState(response.data);
-  } catch (error) {
-    console.error("Failed to add reaction:", error);
-  }
-};
-
-const handleReact = async (
-  commentId: string,
-  type: ReactionType,
-  currentUserReaction: ReactionType | null,
-  updateReactionState: (data: any) => unknown,
-) => {
-  // If clicking the same reaction, remove it (toggle off)
-  if (type === currentUserReaction) {
-    await handleRemoveReaction(commentId, updateReactionState);
-    return;
-  }
-
-  // Otherwise, add or change reaction
-  await handleAddOrChangeReaction(commentId, type, updateReactionState);
-};
 
 // Main component
 export const CommentReactions: React.FC<CommentReactionsProps> = ({
@@ -219,35 +178,32 @@ export const CommentReactions: React.FC<CommentReactionsProps> = ({
   userReaction,
 }) => {
   const [isReactionMenuOpen, setIsReactionMenuOpen] = useState(false);
-  const [currentReactions, setCurrentReactions] = useState<ReactionCounts>(
-    reactions || {},
-  );
-  const [currentUserReaction, setCurrentUserReaction] =
-    useState<ReactionType | null>(userReaction || null);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  // Use the live reactions hook
+  const [{ reactions: currentReactions, userReaction: currentUserReaction }, { react, unreact }] = 
+    useReactions(commentId, reactions, userReaction);
 
   // Close menu when clicking outside
   useOutsideClickHandler(menuRef, () => setIsReactionMenuOpen(false));
-
-  const updateReactionState = (responseData: any) => {
-    if (responseData?.reactions) {
-      setCurrentReactions(responseData.reactions);
-    }
-    setCurrentUserReaction(responseData?.userReaction || null);
-    setIsReactionMenuOpen(false);
-  };
 
   const toggleReactionMenu = () => {
     setIsReactionMenuOpen(!isReactionMenuOpen);
   };
 
-  const onReact = (reactionType: ReactionType) =>
-    handleReact(
-      commentId,
-      reactionType,
-      currentUserReaction,
-      updateReactionState,
-    );
+  const onReact = (reactionType: ReactionType) => {
+    if (!isLoggedIn) return;
+    
+    // If clicking the same reaction, remove it (toggle off)
+    if (reactionType === currentUserReaction) {
+      unreact();
+    } else {
+      // Otherwise, add or change reaction
+      react(reactionType);
+    }
+    
+    setIsReactionMenuOpen(false);
+  };
 
   return (
     <div className="mt-2">

@@ -115,7 +115,12 @@ defmodule Realworld.Articles.Reaction do
     module RealworldWeb.Endpoint
     prefix "comment"
 
+    transform fn %Ash.Notifier.Notification{} = notification ->
+      %{notification | data: Ash.load!(notification.data, comment: [:reaction_counts])}
+    end
+
     publish :react, ["reaction", :comment_id]
+    publish :destroy, ["reaction", :comment_id]
   end
 
   defp unreact(comment_id, user) do
