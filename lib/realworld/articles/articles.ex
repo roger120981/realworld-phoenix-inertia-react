@@ -44,11 +44,12 @@ defmodule Realworld.Articles do
 
     resource Realworld.Articles.Reaction do
       define :react, action: :react, args: [:comment_id, :type]
-      define :unreact, action: :unreact
+      define :unreact, action: :unreact, args: [:comment_id]
       define :get_reactions_by_comment, action: :reactions_by_comment, args: [:comment_id]
 
-      define :get_reaction_by_user_and_comment,
+      define :get_user_reaction,
         action: :reaction_by_user_and_comment,
+        get?: true,
         args: [:comment_id]
     end
   end

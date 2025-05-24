@@ -34,8 +34,8 @@ interface ReactionIconProps {
 
 interface CommentReactionsProps {
   commentId: string;
-  reactions?: ReactionCounts;
   isLoggedIn: boolean;
+  reactions?: ReactionCounts;
   userReaction?: ReactionType | null;
 }
 
@@ -68,7 +68,11 @@ const ReactionIcon: React.FC<ReactionIconProps> = ({
 };
 
 // Reaction menu component
-const ReactionMenu: React.FC<ReactionMenuProps> = ({ isOpen, onReact, userReaction }) => {
+const ReactionMenu: React.FC<ReactionMenuProps> = ({
+  isOpen,
+  onReact,
+  userReaction,
+}) => {
   if (!isOpen) return null;
 
   return (
@@ -136,7 +140,11 @@ const AddReactionButton: React.FC<{
       >
         <span>+</span>
       </button>
-      <ReactionMenu isOpen={isOpen} onReact={onReact} userReaction={userReaction} />
+      <ReactionMenu
+        isOpen={isOpen}
+        onReact={onReact}
+        userReaction={userReaction}
+      />
     </div>
   );
 };
@@ -144,7 +152,7 @@ const AddReactionButton: React.FC<{
 // Hook for handling outside clicks
 const useOutsideClickHandler = (
   ref: React.RefObject<HTMLElement | null>,
-  callback: () => void
+  callback: () => void,
 ) => {
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -160,6 +168,49 @@ const useOutsideClickHandler = (
   }, [ref, callback]);
 };
 
+const handleRemoveReaction = async (
+  commentId: string,
+  updateReactionState: (data: any) => unknown,
+) => {
+  try {
+    const response = await axios.delete(`/comments/${commentId}/react`);
+    updateReactionState(response.data);
+  } catch (error) {
+    console.error("Failed to remove reaction:", error);
+  }
+};
+
+const handleAddOrChangeReaction = async (
+  commentId: string,
+  type: ReactionType,
+  updateReactionState: (data: any) => unknown,
+) => {
+  try {
+    const response = await axios.post(`/comments/${commentId}/react`, {
+      type,
+    });
+    updateReactionState(response.data);
+  } catch (error) {
+    console.error("Failed to add reaction:", error);
+  }
+};
+
+const handleReact = async (
+  commentId: string,
+  type: ReactionType,
+  currentUserReaction: ReactionType | null,
+  updateReactionState: (data: any) => unknown,
+) => {
+  // If clicking the same reaction, remove it (toggle off)
+  if (type === currentUserReaction) {
+    await handleRemoveReaction(commentId, updateReactionState);
+    return;
+  }
+
+  // Otherwise, add or change reaction
+  await handleAddOrChangeReaction(commentId, type, updateReactionState);
+};
+
 // Main component
 export const CommentReactions: React.FC<CommentReactionsProps> = ({
   commentId,
@@ -169,48 +220,42 @@ export const CommentReactions: React.FC<CommentReactionsProps> = ({
 }) => {
   const [isReactionMenuOpen, setIsReactionMenuOpen] = useState(false);
   const [currentReactions, setCurrentReactions] = useState<ReactionCounts>(
-    reactions || {}
+    reactions || {},
   );
-  const [currentUserReaction, setCurrentUserReaction] = useState<ReactionType | null>(
-    userReaction || null
-  );
+  const [currentUserReaction, setCurrentUserReaction] =
+    useState<ReactionType | null>(userReaction || null);
   const menuRef = useRef<HTMLDivElement>(null);
 
   // Close menu when clicking outside
   useOutsideClickHandler(menuRef, () => setIsReactionMenuOpen(false));
 
-  const handleReact = async (type: ReactionType) => {
-    if (!isLoggedIn) {
-      return;
+  const updateReactionState = (responseData: any) => {
+    if (responseData?.reactions) {
+      setCurrentReactions(responseData.reactions);
     }
-
-    try {
-      const response = await axios.post(`/comments/${commentId}/react`, {
-        type,
-      });
-      if (response.data?.reactions) {
-        setCurrentReactions(response.data.reactions);
-      }
-      if (response.data?.userReaction) {
-        setCurrentUserReaction(response.data.userReaction);
-      }
-      setIsReactionMenuOpen(false);
-    } catch (error) {
-      console.error("Failed to react:", error);
-    }
+    setCurrentUserReaction(responseData?.userReaction || null);
+    setIsReactionMenuOpen(false);
   };
 
   const toggleReactionMenu = () => {
     setIsReactionMenuOpen(!isReactionMenuOpen);
   };
 
+  const onReact = (reactionType: ReactionType) =>
+    handleReact(
+      commentId,
+      reactionType,
+      currentUserReaction,
+      updateReactionState,
+    );
+
   return (
     <div className="mt-2">
       <div className="flex flex-wrap gap-1">
-        <ExistingReactions 
-          reactions={currentReactions} 
-          onReact={handleReact}
-          userReaction={currentUserReaction} 
+        <ExistingReactions
+          reactions={currentReactions}
+          onReact={onReact}
+          userReaction={currentUserReaction}
         />
 
         {isLoggedIn && (
@@ -218,7 +263,7 @@ export const CommentReactions: React.FC<CommentReactionsProps> = ({
             isOpen={isReactionMenuOpen}
             toggleOpen={toggleReactionMenu}
             menuRef={menuRef}
-            onReact={handleReact}
+            onReact={onReact}
             userReaction={currentUserReaction}
           />
         )}

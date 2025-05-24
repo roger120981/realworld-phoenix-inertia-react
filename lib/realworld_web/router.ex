@@ -72,6 +72,7 @@ defmodule RealworldWeb.Router do
     scope "/comments" do
       delete "/:id", CommentsController, :delete
       post "/:comment_id/react", ReactionsController, :react
+      delete "/:comment_id/react", ReactionsController, :unreact
     end
 
     scope "/vehicle-details" do
